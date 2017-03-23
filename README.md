@@ -10,6 +10,7 @@ No messy code with confusing arrays of attributes and texts
 
 No complicated configuration files.
 
+
 ```
  $table=new Table($pdf, 3, 'width:100; align:C;);
  
@@ -53,6 +54,14 @@ No complicated configuration files.
 
 # Examples
 
+- [Evolution of a table](https://github.com/fpdf-easytable/fpdf-easytable/blob/master/example-1.pdf)
+  * [Code](https://github.com/fpdf-easytable/fpdf-easytable/blob/master/example1.php)
+  
+- [Table with header](https://github.com/fpdf-easytable/fpdf-easytable/blob/master/example-2.pdf)
+  * [Code](https://github.com/fpdf-easytable/fpdf-easytable/blob/master/example2.php)
+
+- [Simple invoice](https://github.com/fpdf-easytable/fpdf-easytable/blob/master/example-3.pdf)
+  * [Code](https://github.com/fpdf-easytable/fpdf-easytable/blob/master/example3.php)
 
 # Requirements
 
@@ -437,9 +446,8 @@ Default value: empty.
 # License
 
 This program is free software; you can redistribute it and/or modify
-it under the terms of the[GNU General Public License](http://www.gnu.org/licenses/gpl.txt) 
-as published by
-the Free Software Foundation; either version 2 of the License, or
+it under the terms of the [GNU General Public License](http://www.gnu.org/licenses/gpl.txt) 
+as published by the Free Software Foundation; either version 2 of the License, or
 (at your option) any later version.
  
 This program is distributed in the hope that it will be useful, but
