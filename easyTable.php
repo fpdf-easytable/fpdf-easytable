@@ -1,5 +1,4 @@
-<?php
-
+ <?php
 /*********************************************************************
 * FPDF easyTable                                                       *
 *                                                                    *
@@ -8,7 +7,6 @@
 * Author:  Dan Machado                                               *
 * Require  FPDF v1.81                                                *
 **********************************************************************/
-  
  
  class easyTable{
     const LP=0.4;
@@ -37,6 +35,7 @@
     private $blocks;
     private $overflow;
     private $header_row;
+
     private function get_available(){
        static $k=0;
        $t=count($this->grid);
@@ -57,6 +56,7 @@
       }
       return $t;
    }
+
    private function is_rgb($str){
       $a=true;
       $tmp=explode(',', trim($str, ','));
@@ -68,6 +68,7 @@
       }
       return $a;
    }
+
    private function is_hex($str){
       $a=true;
       $n=strlen($str);
@@ -84,6 +85,7 @@
       }
       return $a;
    }
+
    private function hextodec($str){
       $result=array();
       $str=substr($str,1);
@@ -97,6 +99,7 @@
       }
       return $result;
    }
+
    private function set_color($str){
       $result=array();
       if($this->is_hex($str)){
@@ -112,6 +115,7 @@
       }
       return $result;
    }
+
    private function getColor($str){
       $result=array(null, null, null);
       $i=0;
@@ -124,6 +128,7 @@
       }
       return $result;
    }
+
    private function resetColor($array, $p='F'){
       if($p=='T'){
          $this->pdf_obj->SetTextColor($array[0],$array[1],$array[2]);
@@ -135,6 +140,7 @@
          $this->pdf_obj->SetFillColor($array[0],$array[1],$array[2]);
       }
    }
+
    private function get_style($str, $c){
       $result=self::$style;
       if($c=='C'){
@@ -411,6 +417,7 @@
       }
       return $sty;
    }
+ 
    private function row_content_loop($counter, $f){
       $t=0;
       if($counter>0){
@@ -442,6 +449,7 @@
          $this->row_data[$i][1]['border']['T']=0;
       }
    }
+
    private function print_text($i, $y, $split){
       $padding=$this->row_data[$i][1]['padding-y'];
       $k=$padding;
@@ -496,8 +504,8 @@
          $this->resetColor($this->document_style['bgcolor']);
       }
    }
+
    private function printing_loop(){
-      $this->pdf_obj->SetX($this->baseX);
       $y=$this->pdf_obj->GetY();
       $tmp=array();
       $rw=array();
@@ -576,8 +584,9 @@
             $y+=$h;
          }
       }
-      return $y;
+      $this->pdf_obj->SetXY($this->baseX, $y);
    }
+
    private function imgbreak($i, $y){
       $li=$y+$this->row_data[$i][1]['padding-y'];
       $ls=$this->row_data[$i][1]['img']['h'];
@@ -594,6 +603,7 @@
       }
       return $result;
    }
+
    private function scan_for_breaks($index, $H, $l=true){
       $print_cell=0;
       $h=($H+$this->row_data[$index][5])-$this->pdf_obj->PageBreak();
@@ -629,7 +639,7 @@
       }
       return $print_cell;
    }
-   
+
 
 /***********************************************************************
 function __construct($fpdf_obj, $num_cols, $style='')                                        
@@ -642,7 +652,7 @@ INPUT:
         $style        String, the global style for the table (see documentation)
            
 ***********************************************************************/
-
+   
    public function __construct($fpdf_obj, $num_cols, $style=''){
       if(self::$table_counter){
          error_log('Please use the end_table method to terminate the last table');
@@ -744,6 +754,7 @@ INPUT:
       $this->header_row=array();
    }
 
+
 /***********************************************************************
 function rowStyle($style)                                        
 -------------------------------------------------------------           
@@ -758,6 +769,7 @@ INPUT:
       $this->row_style=$this->set_style($style, 'R');
    }
 
+    
 /***********************************************************************
 function easyCell($data, $style='')
 ------------------------------------------------------------------------
@@ -765,9 +777,10 @@ DESCRIPTION:
         Makes a cell in the table
 INPUT:
         $data         Mix, the data for the respective cell
-        $style        String, the style for this particular cell 
+        $style        String (optional), the style for this particular cell 
                       (see documentation)
-***********************************************************************/   
+***********************************************************************/
+   
    public function easyCell($data, $style=''){
       if($this->col_counter<$this->col_num){
          $this->col_counter++;
@@ -841,7 +854,7 @@ INPUT:
                         Remark: the table attribute split-row should set
                         as true. 
 ***********************************************************************/
-  
+   
    public function printRow($setAsHeader=false){
       $this->col_counter=0;
       $row_number=count($this->rows);
@@ -913,8 +926,7 @@ INPUT:
                $this->row_heights=&$this->header_row['row_heights'];
                $this->row_data=&$this->header_row['row_data'];
                $this->rows=&$this->header_row['rows'];
-               $y=$this->printing_loop();
-               $this->pdf_obj->SetXY($this->baseX, $y);
+               $this->printing_loop();
                $this->header_row['row_data']=$tmp['header_data'];
                unset($this->row_heights, $this->row_data, $this->rows);
                $this->row_heights=$tmp['row_heights'];
@@ -922,8 +934,7 @@ INPUT:
                $this->rows=$tmp['rows'];
             }
          }
-         $y=$this->printing_loop();
-         $this->pdf_obj->SetXY($this->baseX, $y);
+         $this->printing_loop();
          $this->grid=array();
          $this->row_data=array();
          $this->rows=array();
@@ -941,7 +952,8 @@ DESCRIPTION:
 INPUT:
         $bottomMargin   Integer, number of blank lines bellow the bottom 
                         of the table and 
-***********************************************************************/   
+***********************************************************************/
+    
    public function endTable($bottomMargin=2){
       self::$table_counter=false;
       if($this->table_style['border-color']!=false){

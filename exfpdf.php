@@ -39,6 +39,12 @@
          return $this->tMargin;
       }
    }
+
+/***********************************************************************
+*
+* Based on FPDF method SetFont
+*
+************************************************************************/
    public function FontData($family, $style, $size){
       if($family=='')
       $family = $this->FontFamily;
@@ -69,6 +75,11 @@
       return $result;
    }
 
+/***********************************************************************
+*
+* Based on FPDF method MultiCell
+*
+************************************************************************/
    public function extMultiCell($font_family, $font_style, $font_size, $w, $txt){
       $result=array();
       $font=$this->FontData($font_family, $font_style, $font_size);
@@ -128,7 +139,12 @@
       }
       return $result;
    }
-   
+
+/***********************************************************************
+*
+* Based on FPDF method Cell
+*
+************************************************************************/   
    public function CellBlock($w, $h, &$array_txt, $align='J',$link=''){
       if(!isset($this->CurrentFont))
       $this->Error('No font has been set');

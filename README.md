@@ -3,30 +3,32 @@
 It is a PHP class that provides an easy way to make tables for PDF documents that are generate with the 
 [FPDF library](http://www.fpdf.org).
 
-Making tables for PDF document with this class is as easy and flexible as
-making HTML tables.
+Making tables for PDF documents with this class is as easy and flexible as
+making HTML tables. And using CSS-style strings we can customize the look of 
+the tables in the same fashion HTML tables are styling with CSS. 
 
-No messy code with confusing arrays of attributes and texts
+No messy code with confusing arrays of attributes and texts.
 
 No complicated configuration files.
 
+Building and styling a table with easyTable is simple, clean and fast.
 
 ```
- $table=new Table($pdf, 3, 'width:100; align:C;);
+ $table=new easyTable($pdf, 3, 'width:100;');
  
- $table->cell('Cell 1', 'rowspan:2; valign:T'); 
- $table->cell('Cell 2', 'bgcolor:#b3ccff; rowspan:2');
- $table->cell('Cell 3');
- $table->print_row();
+ $table->easyCell('Text 1', 'rowspan:2; valign:T'); 
+ $table->easyCell('Text 2', 'bgcolor:#b3ccff; rowspan:2');
+ $table->easyCell('Text 3');
+ $table->printRow();
  
- $table->set_row_style('min-height:20');
- $table->cell('Cell 4', 'bgcolor:#3377ff; rowspan:2');
- $table->print_row();
+ $table->rowStyle('min-height:20');
+ $table->easyCell('Text 4', 'bgcolor:#3377ff; rowspan:2');
+ $table->printRow();
 
- $table->cell('Cell 5', 'bgcolor:#99bbff;colspan:2');
- $table->print_row();
+ $table->easyCell('Text 5', 'bgcolor:#99bbff;colspan:2');
+ $table->printRow();
  
- $table->end_table();
+ $table->endTable();
 ```
  
 # Features
@@ -72,6 +74,7 @@ No complicated configuration files.
 
 Download the class and put the contents in a directory in your project structure.
 Be sure you are using [FPDF 1.81](http://www.fpdf.org).
+
 
 # Documentation
 
