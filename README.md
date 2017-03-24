@@ -103,40 +103,158 @@ Be sure you are using [FPDF 1.81](http://www.fpdf.org).
 
 # Documentation
 
-The constructor of the easyTable class has three parameters
+**function __construct( FPDF-object $fpdf_obj, Mix $num_cols[, string $style = '' ])**
 
-  **$pdf_obj** the FPDF object in which the document is been written.
+*Description:*
 
-  **$num_cols** the number of columns for the table
-  
-  **$style**  an optional semicolon-separated string of properties/values 
+   Constructs an easyTable object
 
-The parameter $num_cols is a mixed type and can be one of the the following case
+*Parameters:*
 
-   I) a positive integer, the number of columns for the table. The width
+fpdf_obj
+
+    the current FPDF object (constructed with the FPDF library)  
+    that is being used to write the current PDF document
+
+num_cols
+
+    this parameter can be a positive integer (the number of columns)
+    or a string of the following form
+   
+    I) a positive integer, the number of columns for the table. The width
       of every column will be equal to the width of the table (given by the width property)
       divided by the number of columns ($num_cols)
 
-   II) a string of the form '{c1, c2, c3,... cN}'. In this case every 
-      element in the curly brackets is a positive numeric value that represent 
-      the width of a column. Thus, the n-th numeric value is the width 
-      of the n-th colum. If the sum of all the width of the columns is bigger than
-      the width of the table but less than the width of the document, the table 
-      will stretch to the sum of the columns width. However, if the sum of the 
-      columns is bigger than the width of the document, the width of every column
-      will be reduce proportionally to make the total sum equal to the width of the document. 
+    II) a string of the form '{c1, c2, c3,... cN}'. In this case every 
+       element in the curly brackets is a positive numeric value that represent 
+       the width of a column. Thus, the n-th numeric value is the width 
+       of the n-th colum. If the sum of all the width of the columns is bigger than
+       the width of the table but less than the width of the document, the table 
+       will stretch to the sum of the columns width. However, if the sum of the 
+       columns is bigger than the width of the document, the width of every column
+       will be reduce proportionally to make the total sum equal to the width of the document. 
 
    III) a string of the form '%{c1, c2, c3,... cN}'. Similar to the previous case, but
         this time every element represents a percentage of the width of the table.
         In this case it the sum of this percentages is bigger than 100, the execution will
         be terminated.
 
-Examples:
+style
 
+    the global style for the table (see documentation)
+    a semicolon-separated string of attribute values that defines the 
+    default layout of the table and all the cells and their contents
+    (see Documentation section in README.md)
+
+*Examples:*
+```
     $table= new easyTable($fpdf, 3);
     $table= new easyTable($fpdf, '{35, 45, 55}', 'width:135;');
     $table= new easyTable($fpdf, '%{35, 45, 55}', 'width:190;');
+```   
+   
+*Return value:*
 
+   An easyTable object    
+
+
+**function rowStyle( string $style )**
+
+*Description:*
+
+   Set or overwrite the style for all the cells in current.
+
+*Parameters:*
+
+style
+   
+   a semicolon-separated string of attribute values that defines the 
+   layout of all the cells and its content in the current row 
+   (see Documentation section in README.md)
+
+*Return values*
+
+   Void
+   
+*Notes:*
+
+   This function should be called before the first cell of the current row
+
+
+**function easyCell( string $data [, string $style = '' ])**
+
+*Description:*
+
+    Makes a cell in the table
+
+*Parameters:*
+
+data   
+    the content of the respective cell
+
+style (optional)
+    a semicolon-separated string of attribute values that defines the 
+    layout of the cell and its content (see Documentation section in README.md)
+
+*Return value*
+
+    void
+   
+
+
+**function printRow ( [ bool $setAsHeader = false ] )**
+
+*Description:*
+
+   This function indicates the end of the current row. 
+
+*Parameters:*
+
+setAsHeader (optional)
+
+    Optional. When it is set as true, and it mark the current row as the header
+    of the table; it will be printed on the pages that the table split
+    Remark: 1. In order to work, the table attribute split-row should set as true. 
+            2. Just the first row where this parameter is set as true will be
+              used as header any other will printed as a normal row.
+
+*Return values*
+
+   Void
+
+*Note:*
+
+   This function will print the current row as far as the following holds:
+```   
+      total_rowspan=0
+```
+   where total_rowspan is set as 
+```   
+      total_rowspan=max(total_rowspan, max(rowspan of cell in the current row))-1;
+```             
+
+**function endTable( [ int $bottomMargin = 2 ])**
+
+*Description:*
+
+   Unset all the data members of the easyTable object
+
+*Parameters:*
+
+bottomMargin (optional)
+
+   Optional. Specify the number of white lines left after 
+   the last row of the table. Default 2.
+   
+   If it is negative, the vertical position will be set before
+   the end of the table.   
+
+*Return values*
+
+   Void
+
+
+**Style String**
 
 In the same fashion as in-line CSS style, Easy Table uses 
 strings of semicolon-separated pairs of properties/values to
