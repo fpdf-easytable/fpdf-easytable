@@ -75,6 +75,32 @@ Building and styling a table with easyTable is simple, clean and fast.
 Download the class and put the contents in a directory in your project structure.
 Be sure you are using [FPDF 1.81](http://www.fpdf.org).
 
+# Quick Start
+
+- create a fpdf object with exfpdf class (extension of fpdf class)
+- create a easyTable object
+
+    
+    $table=new easyTable($pdf, 3, 'border:1');
+    
+- add some rows
+
+    $table->easyCell('Text 1', 'valign:T'); 
+    $table->easyCell('Text 2', 'bgcolor:#b3ccff;');
+    $table->easyCell('Text 3');
+    $table->printRow();
+
+    $table->rowStyle('min-height:20; align:{C}');   // let's adjust the height of this row
+    $table->easyCell('Text 4', 'colspan:3');
+    $table->printRow();
+
+- when it is done, do not forget to terminate the table
+
+    $table->endTable(4);
+
+  [Basic example](https://github.com/fpdf-easytable/fpdf-easytable/blob/master/basic_example.pdf)
+  * [Code](https://github.com/fpdf-easytable/fpdf-easytable/blob/master/basic_example.php)
+
 
 # Documentation
 
