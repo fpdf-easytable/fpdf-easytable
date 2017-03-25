@@ -1,13 +1,13 @@
  <?php
-/*********************************************************************
-* FPDF easyTable                                                       *
-*                                                                    *
-* Version: 1                                                         *
-* Date:    17-03-2017                                                *
-* Author:  Dan Machado                                               *
-* Require  FPDF v1.81                                                *
-**********************************************************************/
- 
+ /*********************************************************************
+ * FPDF easyTable                                                     *
+ *                                                                    *
+ * Version: 1                                                         *
+ * Date:    17-03-2017                                                *
+ * Author:  Dan Machado                                               *
+ * Require  FPDF v1.81                                                *
+ **********************************************************************/
+  
  class easyTable{
     const LP=0.4;
     const XPadding=0.5;
@@ -35,6 +35,7 @@
     private $blocks;
     private $overflow;
     private $header_row;
+    private $new_table;
 
     private function get_available(){
        static $k=0;
@@ -179,6 +180,7 @@
       return $result;
    }
    
+
    private function set_style($str, $c, $pos=''){
       $sty=$this->get_style($str, $c);
       if($c=='T'){
@@ -274,30 +276,23 @@
       else{
          $sty['border']=$border;
       }
-      if($sty['bgcolor']===false || !($this->is_hex($sty['bgcolor']) || $this->is_rgb($sty['bgcolor']))){
-         if($c=='C'){
-            $sty['bgcolor']=$this->row_style['bgcolor'];
-         }
-         elseif($c=='R'){
-            $sty['bgcolor']=$this->table_style['bgcolor'];
-         }
-      }
-      else{
-         $sty['bgcolor']=$this->set_color($sty['bgcolor']);
-      }
-      if($sty['font-color']===false || !($this->is_hex($sty['font-color']) || $this->is_rgb($sty['font-color']))){
-         if($c=='C'){
-            $sty['font-color']=$this->row_style['font-color'];
-         }
-         elseif($c=='R'){
-            $sty['font-color']=$this->table_style['font-color'];
+      
+      $color_settings=array('bgcolor', 'font-color');
+      foreach($color_settings as $setting){
+         if($sty[$setting]===false || !($this->is_hex($sty[$setting]) || $this->is_rgb($sty[$setting]))){
+            if($c=='C'){
+               $sty[$setting]=$this->row_style[$setting];
+            }
+            elseif($c=='R'){
+               $sty[$setting]=$this->table_style[$setting];
+            }
+            elseif($setting=='font-color'){
+               $sty[$setting]=$this->document_style[$setting];
+            }
          }
          else{
-            $sty['font-color']=$this->document_style['font-color'];
+            $sty[$setting]=$this->set_color($sty[$setting]);
          }
-      }
-      else{
-         $sty['font-color']=$this->set_color($sty['font-color']);
       }
       $font_settings=array('font-family', 'font-style', 'font-size');
       foreach($font_settings as $setting){
@@ -417,7 +412,7 @@
       }
       return $sty;
    }
- 
+
    private function row_content_loop($counter, $f){
       $t=0;
       if($counter>0){
@@ -427,6 +422,7 @@
          $f($index);
       }
    }
+
    private function mk_border($i, $y, $split){
       $w=$this->row_data[$i][2];
       $h=$this->row_data[$i][5];
@@ -493,6 +489,7 @@
       }
    }
    
+
    private function mk_bg($i, $T, $split){
       $h=$this->row_data[$i][5];
       if($split){
@@ -505,7 +502,8 @@
       }
    }
 
-   private function printing_loop(){
+   private function printing_loop($swap=false){
+      $this->swap_data($swap);
       $y=$this->pdf_obj->GetY();
       $tmp=array();
       $rw=array();
@@ -518,6 +516,7 @@
          for($j=0; $j<count($this->rows); $j++){
             $T=$y+$h;
             if($T<$this->pdf_obj->PageBreak()){
+
                   $this->row_content_loop($j, function($index)use($T, $tmp){
                   if(!isset($tmp[$index])){
                      $split_cell=$this->scan_for_breaks($index,$T, false);
@@ -543,6 +542,7 @@
          for($j=0; $j<$a; $j++){
             $T=$y+$h;
             if($T<$this->pdf_obj->PageBreak()){
+
                   $this->row_content_loop($j, function($index)use($T, &$tmp, &$ztmp){
                   if(!isset($tmp[$index])){
                      $split_cell=$this->scan_for_breaks($index,$T);
@@ -585,6 +585,7 @@
          }
       }
       $this->pdf_obj->SetXY($this->baseX, $y);
+      $this->swap_data($swap);
    }
 
    private function imgbreak($i, $y){
@@ -640,66 +641,68 @@
       return $print_cell;
    }
 
+   private function swap_data($swap){
+      if($swap==false){
+         return;
+      }
+      static $data=array();
+      if(count($data)==0){
+         $data=array('header_data'=>$this->header_row['row_data'], 'row_heights'=>&$this->row_heights, 'row_data'=>&$this->row_data, 'rows'=>&$this->rows);
+         unset($this->row_heights, $this->row_data, $this->rows);
+         $this->row_heights=&$this->header_row['row_heights'];
+         $this->row_data=&$this->header_row['row_data'];
+         $this->rows=&$this->header_row['rows'];
+      }
+      else{
+         $this->header_row['row_data']=$data['header_data'];
+         unset($this->row_heights, $this->row_data, $this->rows);
+         $this->row_heights=$data['row_heights'];
+         $this->row_data=$data['row_data'];
+         $this->rows=$data['rows'];
+         $data=array();
+      }
+   }
+   /********************************************************************
 
-/***********************************************************************
-
-function __construct( FPDF-object $fpdf_obj, Mix $num_cols[, string $style = '' ])                                        
------------------------------------------------------         
-
-Description:                                                            
-
+   function __construct( FPDF-object $fpdf_obj, Mix $num_cols[, string $style = '' ])
+   -----------------------------------------------------
+   Description:
    Constructs an easyTable object
-
-Parameters:                                                                  
-
-fpdf_obj
-
-    the current FPDF object (constructed with the FPDF library)  
-    that is being used to write the current PDF document
-
-num_cols
-
+   Parameters:
+   fpdf_obj
+   the current FPDF object (constructed with the FPDF library)
+   that is being used to write the current PDF document
+   num_cols
    this parameter can be a positive integer (the number of columns)
    or a string of the following form
-   
    I) a positive integer, the number of columns for the table. The width
-      of every column will be equal to the width of the table (given by the width property)
-      divided by the number of columns ($num_cols)
-
-   II) a string of the form '{c1, c2, c3,... cN}'. In this case every 
-      element in the curly brackets is a positive numeric value that represent 
-      the width of a column. Thus, the n-th numeric value is the width 
-      of the n-th colum. If the sum of all the width of the columns is bigger than
-      the width of the table but less than the width of the document, the table 
-      will stretch to the sum of the columns width. However, if the sum of the 
-      columns is bigger than the width of the document, the width of every column
-      will be reduce proportionally to make the total sum equal to the width of the document. 
-
+   of every column will be equal to the width of the table (given by the width property)
+   divided by the number of columns ($num_cols)
+   II) a string of the form '{c1, c2, c3,... cN}'. In this case every
+   element in the curly brackets is a positive numeric value that represent
+   the width of a column. Thus, the n-th numeric value is the width
+   of the n-th colum. If the sum of all the width of the columns is bigger than
+   the width of the table but less than the width of the document, the table
+   will stretch to the sum of the columns width. However, if the sum of the
+   columns is bigger than the width of the document, the width of every column
+   will be reduce proportionally to make the total sum equal to the width of the document.
    III) a string of the form '%{c1, c2, c3,... cN}'. Similar to the previous case, but
-        this time every element represents a percentage of the width of the table.
-        In this case it the sum of this percentages is bigger than 100, the execution will
-        be terminated.
-
-style
-
+   this time every element represents a percentage of the width of the table.
+   In this case it the sum of this percentages is bigger than 100, the execution will
+   be terminated.
+   style
    the global style for the table (see documentation)
-   a semicolon-separated string of attribute values that defines the 
+   a semicolon-separated string of attribute values that defines the
    default layout of the table and all the cells and their contents
-   (see documentation)
+   (see Documentation section in README.md)
+   Examples:
+   $table= new easyTable($fpdf, 3);
+   $table= new easyTable($fpdf, '{35, 45, 55}', 'width:135;');
+   $table= new easyTable($fpdf, '%{35, 45, 55}', 'width:190;');
+   Return value:
+   An easyTable object
+   ***********************************************************************/
 
-Examples:
-
-    $table= new easyTable($fpdf, 3);
-    $table= new easyTable($fpdf, '{35, 45, 55}', 'width:135;');
-    $table= new easyTable($fpdf, '%{35, 45, 55}', 'width:190;');
-   
-   
-Return value:
-
-   An easyTable object    
-
-***********************************************************************/
-   
    public function __construct($fpdf_obj, $num_cols, $style=''){
       if(self::$table_counter){
          error_log('Please use the end_table method to terminate the last table');
@@ -799,63 +802,47 @@ Return value:
          $this->resetColor($this->table_style['border-color'], 'D');
       }
       $this->header_row=array();
+      $this->new_table=true;
    }
+   
+   /***********************************************************************
 
-
-/***********************************************************************
-
-function rowStyle( string $style )                                        
--------------------------------------------------------------           
-
-Description:                                                            
-
+   function rowStyle( string $style )
+   -------------------------------------------------------------
+   Description:
    Set or overwrite the style for all the cells in current.
-
-Parameters:                                                                  
-
-style
-   
-   a semicolon-separated string of attribute values that defines the 
-   layout of all the cells and its content in the current row (see documentation)
-
-Return values
-
+   Parameters:
+   style
+   a semicolon-separated string of attribute values that defines the
+   layout of all the cells and its content in the current row
+   (see Documentation section in README.md)
+   Return values
    Void
-   
-Notes:
+   Notes:
 
    This function should be called before the first cell of the current row
-   
-***********************************************************************/
-   
+   ***********************************************************************/
+
    public function rowStyle($style){
       $this->row_style=$this->set_style($style, 'R');
    }
+   
+   /***********************************************************************
 
-/***********************************************************************
-
-function easyCell( string $data [, string $style = '' ])
-------------------------------------------------------------------------
-
-Description:
-
+   function easyCell( string $data [, string $style = '' ])
+   ------------------------------------------------------------------------
+   Description:
    Makes a cell in the table
-
-Parameters:
-
-data   
+   Parameters:
+   data
    the content of the respective cell
-
-style (optional)
-   a semicolon-separated string of attribute values that defines the 
-   layout of the cell and its content (see documentation)
-
-Return value
-
+   style (optional)
+   a semicolon-separated string of attribute values that defines the
+   layout of the cell and its content (see Documentation section in README.md)
+   Return value
    void
-   
-***********************************************************************/
-   
+   ***********************************************************************/
+
    public function easyCell($data, $style=''){
       if($this->col_counter<$this->col_num){
          $this->col_counter++;
@@ -916,48 +903,37 @@ Return value
          
       }
    }
+   
+   /***********************************************************************
 
-/***********************************************************************
+   function printRow ( [ bool $setAsHeader = false ] )
+   ------------------------------------------------------------------------
+   Description:
 
-function printRow ( [ bool $setAsHeader = false ] )
-------------------------------------------------------------------------
-
-Description:
-
-   This function indicates the end of the current row. 
-
-Parameters:
-
-setAsHeader (optional)
-
+   This function indicates the end of the current row.
+   Parameters:
+   setAsHeader (optional)
    Optional. When it is set as true, and it mark the current row as the header
    of the table; it will be printed on the pages that the table split
-   Remark: 1. In order to work, the table attribute split-row should set as true. 
-           2. Just the first row where this parameter is set as true will be
-              used as header any other will printed as a normal row.
-
-Return values
-
+   Remark: 1. In order to work, the table attribute split-row should set as true.
+   2. Just the first row where this parameter is set as true will be
+   used as header any other will printed as a normal row.
+   Return values
    Void
-
-Note:
+   Note:
 
    This function will print the current row as far as the following holds:
-   
-      total_rowspan=0
+   total_rowspan=0
+   where total_rowspan is set as
+   total_rowspan=max(total_rowspan, max(rowspan of cell in the current row))-1;
+   ***********************************************************************/
 
-   where total_rowspan is set as 
-   
-      total_rowspan=max(total_rowspan, max(rowspan of cell in the current row))-1;
-             
-
-***********************************************************************/
-   
    public function printRow($setAsHeader=false){
       $this->col_counter=0;
       $row_number=count($this->rows);
       $this->rows[$row_number]=count($this->row_data);
       $mx=$this->row_style['min-height'];
+
          $this->row_content_loop($row_number, function($index)use(&$mx){
          if($this->row_data[$index][1]['rowspan']==0){
             $mx=max($mx, $this->row_data[$index][3]+2*$this->row_data[$index][1]['paddingY']);
@@ -992,10 +968,10 @@ Note:
                $this->row_data[$j][5]=$h;
             }
          }
-         $this->overflow=0;
-         $y=$this->pdf_obj->GetY();
+         $block_height=0;
          for($j=0; $j<$row_number; $j++){
-               $this->row_content_loop($j, function($index)use($j, $y){
+
+               $this->row_content_loop($j, function($index)use($j, $block_height){
                if($this->row_data[$index][1]['rowspan']==0){
                   $this->row_data[$index][5]=$this->row_heights[$j];
                }
@@ -1007,10 +983,10 @@ Note:
                   $this->row_data[$index][1]['padding-y']=$this->row_data[$index][5]-($this->row_data[$index][3]+$this->row_data[$index][1]['paddingY']);
                }
             });
-            $y+=$this->row_heights[$j];
+            $block_height+=$this->row_heights[$j];
          }
-         if($setAsHeader==true){
-            if(count($this->header_row)==0 && count($this->row_heights)==1){
+         if($setAsHeader===true){
+            if(count($this->header_row)==0){
                $this->header_row['row_heights']=$this->row_heights;
                $this->header_row['row_data']=$this->row_data;
                $this->header_row['rows']=$this->rows;
@@ -1019,17 +995,7 @@ Note:
          if($this->table_style['split-row']==false && $this->pdf_obj->PageBreak()<$this->pdf_obj->GetY()+$this->row_heights[0]){
             $this->pdf_obj->addPage();
             if(count($this->header_row)>0){
-               $tmp=array('header_data'=>$this->header_row['row_data'], 'row_heights'=>&$this->row_heights, 'row_data'=>&$this->row_data, 'rows'=>&$this->rows);
-               unset($this->row_heights, $this->row_data, $this->rows);
-               $this->row_heights=&$this->header_row['row_heights'];
-               $this->row_data=&$this->header_row['row_data'];
-               $this->rows=&$this->header_row['rows'];
-               $this->printing_loop();
-               $this->header_row['row_data']=$tmp['header_data'];
-               unset($this->row_heights, $this->row_data, $this->rows);
-               $this->row_heights=$tmp['row_heights'];
-               $this->row_data=$tmp['row_data'];
-               $this->rows=$tmp['rows'];
+               $this->printing_loop(true);
             }
          }
          $this->printing_loop();
@@ -1038,34 +1004,28 @@ Note:
          $this->rows=array();
          $this->row_heights=array();
          $this->blocks=array();
+         $this->overflow=0;
+         $this->new_table=false;
       }
       $this->row_style=$this->row_style_def;
    }
-
-/***********************************************************************
-
-function endTable( [int $bottomMargin=2])
-------------------------------------------
-Description:
-
-   Unset all the data members of the easyTable object
-
-Parameters:
-
-bottomMargin (optional)
-
-   Optional. Specify the number of white lines left after 
-   the last row of the table. Default 2.
    
+   /***********************************************************************
+
+   function endTable( [int $bottomMargin=2])
+   ------------------------------------------
+   Description:
+   Unset all the data members of the easyTable object
+   Parameters:
+   bottomMargin (optional)
+   Optional. Specify the number of white lines left after
+   the last row of the table. Default 2.
    If it is negative, the vertical position will be set before
-   the end of the table.   
-
-Return values
-
+   the end of the table.
+   Return values
    Void
+   ***********************************************************************/
 
-***********************************************************************/
-    
    public function endTable($bottomMargin=2){
       self::$table_counter=false;
       if($this->table_style['border-color']!=false){
@@ -1091,5 +1051,6 @@ Return values
       unset($this->overflow);
       unset($this->header_row);
    }
+
 }
 ?>

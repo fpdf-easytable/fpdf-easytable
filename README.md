@@ -325,6 +325,10 @@ Example:
 
 Default value: the current drawn colour set in the document
 
+Note: because the borders of the cells overlap each other, 
+      it does not make sense to set the define different colors 
+      for every cell
+
 **split-row** [T]
 
 This property indicate if a row that is at the bottom of the page should be split or not
