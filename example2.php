@@ -28,12 +28,19 @@ imperdiet orci pretium vel. Donec vehicula tellus nisl, nec commodo diam posuere
  $pdf->SetFont('helvetica','',10);
 
  $table=new easyTable($pdf, '{20, 30, 45, 45, 30}', 'width:170; border-color:#ffff00; font-size:10; border:1; paddingY:2;');
-    
- $table->rowStyle('align:C{LRCC}; bgcolor:#00ace6;font-style:B');
- $table->easyCell("Header 1");
+
+ $table->rowStyle('align:{LRCC}; bgcolor:#00ace6;font-style:B');
+ $table->easyCell("Header 1", 'rowspan:2');
  $table->easyCell("Header 2");
  $table->easyCell("Header 3", 'colspan:2');
  $table->easyCell("Header 4");
+ $table->printRow();
+
+ $table->rowStyle('align:{RCC}; bgcolor:#00ace6;font-style:B');
+ $table->easyCell("Header 5");
+ $table->easyCell("Header 6");
+ $table->easyCell("Header 7");
+ $table->easyCell("Header 8");
  $table->printRow(true);
 
  $table->rowStyle('align:C; valign:M');

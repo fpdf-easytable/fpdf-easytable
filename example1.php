@@ -292,6 +292,7 @@
  This is not a bug but an expected behaviour (compare with HTML tables). This happens because, the second row does not contain a cell that span to just one row. Despite the cell has a height given by its content, the second row has height zero", 'font-size:12;');
  $write->printRow();
  $write->endTable(5);
+ 
  $write=new easyTable($pdf, 1, 'font-family:times;');
  $write->easyCell('Without the min-height attribute', 'font-style:B;');
  $write->printRow();
@@ -346,6 +347,31 @@ imperdiet orci pretium vel. Donec vehicula tellus nisl, nec commodo diam posuere
 
  $table4->endTable();
  
+//#################################################
+
+ $pdf->AddPage(); 
+  
+ $write=new easyTable($pdf, 1, 'font-family:times;');
+ $write->easyCell('What about to leave a gap between to rows?', 'font-style:B; font-size:15;');
+ $write->printRow();
+ $write->endTable(5);
+ 
+
+ $table=new easyTable($pdf, 2, 'width:100; align:Ld; border:1; fbgcolor:#ffffff; font-color:#f3a2a3; paddingY:4;');
+
+ $table->easyCell("Cell 0 A\n", 'bgcolor:#29526D; font-size:8');
+ $table->easyCell("Cell 1 A\n B\n C\n", 'bgcolor:#ff1a75; font-size:12');
+ $table->printRow();
+ 
+ $pdf->Ln(2);
+
+ $table->easyCell("Cell 2 A\n B\n C\n", 'font-size:14; bgcolor:#99ff66 ');
+ $table->easyCell("Cell 3 A\n B\n", 'font-size:10; bgcolor:#85adad ');
+ $table->printRow();
+
+ $table->endTable();
+
+
 
  $pdf->Output(); 
 

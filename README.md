@@ -216,7 +216,10 @@ setAsHeader (optional)
     of the table; it will be printed on the pages that the table split
     Remark: 1. In order to work, the table attribute split-row should set as true. 
             2. Just the first row where this parameter is set as true will be
-              used as header any other will printed as a normal row.
+               used as header any other will printed as a normal row.
+            3. For row headers with cells that spans to multiple rows, 
+               the last the parameter should be set in the last row 
+               of the group. See [example 2](https://github.com/fpdf-easytable/fpdf-easytable/blob/master/example-2.pdf)
 
 *Return values*
 
@@ -595,15 +598,30 @@ Default value: empty.
 
 # License
 
-This program is free software; you can redistribute it and/or modify
-it under the terms of the [GNU General Public License](http://www.gnu.org/licenses/gpl.txt) 
-as published by the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
- 
-This program is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-General Public License for more details.
+This is free and unencumbered software released into the public domain.
+
+Anyone is free to copy, modify, publish, use, compile, sell, or
+distribute this software, either in source code form or as a compiled
+binary, for any purpose, commercial or non-commercial, and by any
+means.
+
+In jurisdictions that recognize copyright laws, the author or authors
+of this software dedicate any and all copyright interest in the
+software to the public domain. We make this dedication for the benefit
+of the public at large and to the detriment of our heirs and
+successors. We intend this dedication to be an overt act of
+relinquishment in perpetuity of all present and future rights to this
+software under copyright law.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+
+For more information, please refer to <http://unlicense.org/>
 
 
 
