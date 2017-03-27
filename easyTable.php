@@ -179,6 +179,18 @@
       }
       return $result;
    }
+
+   private function inherating(&$sty, $setting, $c){
+      if($c=='C'){
+         $sty[$setting]=$this->row_style[$setting];
+      }
+      elseif($c=='R'){
+         $sty[$setting]=$this->table_style[$setting];
+      }
+      else{
+         $sty[$setting]=$this->document_style[$setting];
+      }
+   }
    
 
    private function set_style($str, $c, $pos=''){
@@ -224,11 +236,8 @@
          }
       }
       if(!is_numeric($sty['paddingX'])){
-         if($c=='C'){
-            $sty['paddingX']=$this->row_style['paddingX'];
-         }
-         elseif($c=='R'){
-            $sty['paddingX']=$this->table_style['paddingX'];
+         if($c=='C' || $c=='R'){
+            $this->inherating($sty, 'paddingX', $c);
          }
          else{
             $sty['paddingX']=self::XPadding;
@@ -236,55 +245,35 @@
       }
       $sty['paddingX']=abs($sty['paddingX']);
       if(!is_numeric($sty['paddingY'])){
-         if($c=='C'){
-            $sty['paddingY']=$this->row_style['paddingY'];
-         }
-         elseif($c=='R'){
-            $sty['paddingY']=$this->table_style['paddingY'];
+         if($c=='C' || $c=='R'){
+            $this->inherating($sty, 'paddingY', $c);
          }
          else{
             $sty['paddingY']=self::YPadding;
          }
       }
       $sty['paddingY']=abs($sty['paddingY']);
-      $border=array('T'=>0, 'R'=>0, 'B'=>0, 'L'=>0);
-      if(is_numeric($sty['border']) && $sty['border']==1){
-         $border=array('T'=>1, 'R'=>1, 'B'=>1, 'L'=>1);
-      }
-      else{
-         if(strpos($sty['border'], 'T')!==false){
-            $border['T']=1;
-         }
-         if(strpos($sty['border'], 'R')!==false){
-            $border['R']=1;
-         }
-         if(strpos($sty['border'], 'B')!==false){
-            $border['B']=1;
-         }
-         if(strpos($sty['border'], 'L')!==false){
-            $border['L']=1;
-         }
-      }
       if($sty['border']===false && ($c=='C' || $c=='R')){
-         if($c=='C'){
-            $sty['border']=$this->row_style['border'];
-         }
-         else{
-            $sty['border']=$this->table_style['border'];
-         }
+         $this->inherating($sty, 'border', $c);
       }
       else{
+         $border=array('T'=>1, 'R'=>1, 'B'=>1, 'L'=>1);
+         if(!(is_numeric($sty['border']) && $sty['border']==1)){
+            foreach($border as $k=>$v){
+               $border[$k]=0;
+               if(strpos($sty['border'], $k)!==false){
+                  $border[$k]=1;
+               }
+            }
+         }
          $sty['border']=$border;
       }
       
       $color_settings=array('bgcolor', 'font-color');
       foreach($color_settings as $setting){
          if($sty[$setting]===false || !($this->is_hex($sty[$setting]) || $this->is_rgb($sty[$setting]))){
-            if($c=='C'){
-               $sty[$setting]=$this->row_style[$setting];
-            }
-            elseif($c=='R'){
-               $sty[$setting]=$this->table_style[$setting];
+            if($c=='C' || $c=='R'){
+               $this->inherating($sty, $setting, $c);
             }
             elseif($setting=='font-color'){
                $sty[$setting]=$this->document_style[$setting];
@@ -297,15 +286,7 @@
       $font_settings=array('font-family', 'font-style', 'font-size');
       foreach($font_settings as $setting){
          if($sty[$setting]===false){
-            if($c=='C'){
-               $sty[$setting]=$this->row_style[$setting];
-            }
-            elseif($c=='R'){
-               $sty[$setting]=$this->table_style[$setting];
-            }
-            else{
-               $sty[$setting]=$this->document_style[$setting];
-            }
+            $this->inherating($sty, $setting, $c);
          }
       }
       if($c=='C'){
@@ -400,11 +381,8 @@
          $sty['align']='C';
       }
       if($sty['valign']!='T' && $sty['valign']!='M' && $sty['valign']!='B'){
-         if($c=='C'){
-            $sty['valign']=$this->row_style['valign'];
-         }
-         elseif($c=='R'){
-            $sty['valign']=$this->table_style['valign'];
+         if($c=='C' || $c=='R'){
+            $this->inherating($sty, 'valign', $c);
          }
          else{
             $sty['valign']='T';
@@ -804,7 +782,6 @@
       $this->header_row=array();
       $this->new_table=true;
    }
-   
    /***********************************************************************
 
    function rowStyle( string $style )
@@ -826,7 +803,6 @@
    public function rowStyle($style){
       $this->row_style=$this->set_style($style, 'R');
    }
-   
    /***********************************************************************
 
    function easyCell( string $data [, string $style = '' ])
@@ -903,7 +879,6 @@
          
       }
    }
-   
    /***********************************************************************
 
    function printRow ( [ bool $setAsHeader = false ] )
@@ -1009,7 +984,6 @@
       }
       $this->row_style=$this->row_style_def;
    }
-   
    /***********************************************************************
 
    function endTable( [int $bottomMargin=2])
@@ -1051,6 +1025,5 @@
       unset($this->overflow);
       unset($this->header_row);
    }
-
 }
 ?>
