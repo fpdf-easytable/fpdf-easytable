@@ -54,6 +54,40 @@ Building and styling a table with easyTable is simple, clean and fast.
 
 - Text can be added on top or below an image in a cell
 
+# Comparisons
+
+**easyTable vs kind-of-HTML-to-PDF**
+To use HTML code to make tables for PDF documents is a kind of sloppy hack. To begin with
+to convert HTML code into a kind of FPDF you need a parcer meaning there is a penalty in performace.
+and second the results are very poor. 
+
+*HTML code*
+
+    <table align:"right" style="border-collapse:collapse">
+      <tr>
+        <td rowspan="2" style="width:30%; background:#ffb3ec;">Text 1</td>
+        <td colspan="2" style="background:#FF66AA;">Text 2</td>
+      </tr>
+      <tr>
+        <td style="width:35%; background:#33ffff;">Text 3 </td>
+        <td style="width:35%; background:#ffff33;">Text 4 </td>
+      </tr>
+    </table>
+
+*easyTable code*
+
+    $table=new easyTable($pdf, '%{30, 35, 35}', 'align:R; border:1');
+      $table->easyCell('Text 1', 'rowspan:2; bgcolor:#ffb3ec');
+      $table->easyCell('Text 2', 'colspan:2; bgcolor:#FF66AA');
+      $table->printRow();
+
+      $table->easyCell('Text 3', 'bgcolor:#33ffff');
+      $table->easyCell('Text 4', 'bgcolor:#ffff33');
+      $table->printRow();
+    $table->endTable(5);
+
+
+
 # Examples
 
 - [Evolution of a table](https://github.com/fpdf-easytable/fpdf-easytable/blob/master/example-1.pdf)
@@ -121,30 +155,15 @@ num_cols
     this parameter can be a positive integer (the number of columns)
     or a string of the following form
    
-    I) a positive integer, the number of columns for the table. The width
-      of every column will be equal to the width of the table (given by the width property)
-      divided by the number of columns ($num_cols)
+    I) a positive integer, the number of columns for the table. The width of every column will be equal to the width of the table (given by the width property) divided by the number of columns ($num_cols)
 
-    II) a string of the form '{c1, c2, c3,... cN}'. In this case every 
-       element in the curly brackets is a positive numeric value that represent 
-       the width of a column. Thus, the n-th numeric value is the width 
-       of the n-th colum. If the sum of all the width of the columns is bigger than
-       the width of the table but less than the width of the document, the table 
-       will stretch to the sum of the columns width. However, if the sum of the 
-       columns is bigger than the width of the document, the width of every column
-       will be reduce proportionally to make the total sum equal to the width of the document. 
+    II) a string of the form '{c1, c2, c3,... cN}'. In this case every element in the curly brackets is a positive numeric value that represent the width of a column. Thus, the n-th numeric value is the width of the n-th colum. If the sum of all the width of the columns is bigger than the width of the table but less than the width of the document, the table will stretch to the sum of the columns width. However, if the sum of the columns is bigger than the width of the document, the width of every column will be reduce proportionally to make the total sum equal to the width of the document. 
 
-   III) a string of the form '%{c1, c2, c3,... cN}'. Similar to the previous case, but
-        this time every element represents a percentage of the width of the table.
-        In this case it the sum of this percentages is bigger than 100, the execution will
-        be terminated.
+    III) a string of the form '%{c1, c2, c3,... cN}'. Similar to the previous case, but this time every element represents a percentage of the width of the table. In this case it the sum of this percentages is bigger than 100, the execution will be terminated.
 
 style
 
-    the global style for the table (see documentation)
-    a semicolon-separated string of attribute values that defines the 
-    default layout of the table and all the cells and their contents
-    (see Documentation section in README.md)
+    the global style for the table (see documentation) a semicolon-separated string of attribute values that defines the default layout of the table and all the cells and their contents (see Documentation section in README.md)
 
 *Examples:*
 ```
@@ -594,6 +613,8 @@ the one that is not specified is calculated proportionally.
 Default value: empty.
 
 # Donations
+
+[![Donate](https://www.paypalobjects.com/en_US/GB/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JALWQVBS2KGQC)
 
 
 # License
