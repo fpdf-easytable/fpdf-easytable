@@ -57,8 +57,9 @@ Building and styling a table with easyTable is simple, clean and fast.
 # Comparisons
 
 **easyTable vs kind-of-HTML-to-PDF**
+
 To use HTML code to make tables for PDF documents is a kind of sloppy hack. To begin with
-to convert HTML code into a kind of FPDF you need a parcer meaning there is a penalty in performace.
+to convert HTML code into a kind of FPDF you need a parcer meaning there is a penalty in performace;
 and second the results are very poor. 
 
 *HTML code*
@@ -613,6 +614,8 @@ the one that is not specified is calculated proportionally.
 Default value: empty.
 
 # Donations
+
+If you like this class maybe you would like to get me a coffee in exchange :-)
 
 [![Donate](https://www.paypalobjects.com/en_US/GB/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JALWQVBS2KGQC)
 
