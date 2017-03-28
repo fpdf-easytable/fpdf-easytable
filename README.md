@@ -615,7 +615,7 @@ Default value: empty.
 
 # Donations
 
-If you like this class maybe you would like to get me a coffee in exchange :-)
+If you like this class maybe you would like to help me with cup coffee in exchange :-)
 
 [![Donate](https://www.paypalobjects.com/en_US/GB/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JALWQVBS2KGQC)
 
