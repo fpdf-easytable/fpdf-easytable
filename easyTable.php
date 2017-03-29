@@ -19,6 +19,7 @@
     'font-family'=>false, 'font-style'=>false,'font-size'=>false, 'font-color'=>false,
     'paddingX'=>false, 'paddingY'=>false);
     private $pdf_obj;
+    private $orientation;
     private $document_style;
     private $table_style;
     private $col_num;
@@ -556,7 +557,7 @@
             }
             $this->overflow=0;
             $ztmp=array();
-            $this->pdf_obj->addPage();
+            $this->pdf_obj->addPage($this->orientation);
          }
          else{
             $y+=$h;
@@ -688,6 +689,7 @@
       }
       self::$table_counter=true;
       $this->pdf_obj=&$fpdf_obj;
+      $this->orientation=$this->pdf_obj->get_orrientation();
       $this->document_style['bgcolor']=$this->getColor($this->pdf_obj->get_color('fill'));
       $this->document_style['font-family']=$this->pdf_obj->current_font('family');
       $this->document_style['font-style']=$this->pdf_obj->current_font('style');
@@ -766,7 +768,7 @@
             $this->baseX=$this->pdf_obj->get_margin('l')+($this->document_style['document_width']-$this->table_style['width'])/2;
          }
       }
-      $this->row_style_def=$this->set_style($style, 'R');
+      $this->row_style_def=$this->set_style('', 'R');
       $this->row_style=$this->row_style_def;
       $this->row_heights=array();
       $this->row_data=array();
@@ -968,7 +970,7 @@
             }
          }
          if($this->table_style['split-row']==false && $this->pdf_obj->PageBreak()<$this->pdf_obj->GetY()+$this->row_heights[0]){
-            $this->pdf_obj->addPage();
+            $this->pdf_obj->addPage($this->orientation);
             if(count($this->header_row)>0){
                $this->printing_loop(true);
             }
@@ -1008,6 +1010,7 @@
       $this->pdf_obj->SetX($this->pdf_obj->get_margin('l'));
       $this->pdf_obj->Ln($bottomMargin);
       unset($this->pdf_obj);
+      unset($this->orientation);
       unset($this->document_style);
       unset($this->table_style);
       unset($this->col_num);

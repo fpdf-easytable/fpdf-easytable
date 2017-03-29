@@ -1,11 +1,20 @@
  <?php
-  
+ /*********************************************************************
+ * FPDF tabular                                                       *
+ *                                                                    *
+ * Version: 1                                                         *
+ * Date:    17-03-2017                                                *
+ * Author:  Dan Machado                                               *
+ * Require  FPDF v1.81                                                *
+ **********************************************************************/
  include 'fpdf.php';
+
  class exFPDF extends FPDF{
-    
+
    public function PageBreak(){
       return $this->PageBreakTrigger;
    }
+
    public function current_font($c){
       if($c=='family'){
          return $this->FontFamily;
@@ -17,6 +26,7 @@
          return $this->FontSizePt;
       }
    }
+
    public function get_color($c){
       if($c=='fill'){
          return $this->FillColor;
@@ -25,9 +35,11 @@
          return $this->TextColor;
       }
    }
+
    public function get_page_width(){
       return $this->w;
    }
+
    public function get_margin($c){
       if($c=='l'){
          return $this->lMargin;
@@ -40,11 +52,16 @@
       }
    }
 
-/***********************************************************************
-*
-* Based on FPDF method SetFont
-*
-************************************************************************/
+   public function get_orrientation(){
+      return $this->CurOrientation;
+   }
+   
+   /***********************************************************************
+   *
+   * Based on FPDF method SetFont
+   *
+   ************************************************************************/
+
    public function FontData($family, $style, $size){
       if($family=='')
       $family = $this->FontFamily;
@@ -74,12 +91,15 @@
       $result['CurrentFont']=&$this->fonts[$fontkey];
       return $result;
    }
+   
+   
+   
+   /***********************************************************************
+   *
+   * Based on FPDF method MultiCell
+   *
+   ************************************************************************/
 
-/***********************************************************************
-*
-* Based on FPDF method MultiCell
-*
-************************************************************************/
    public function extMultiCell($font_family, $font_style, $font_size, $w, $txt){
       $result=array();
       $font=$this->FontData($font_family, $font_style, $font_size);
@@ -139,12 +159,13 @@
       }
       return $result;
    }
+   /***********************************************************************
+   *
+   * Based on FPDF method Cell
+   *
+   ************************************************************************/
+   
 
-/***********************************************************************
-*
-* Based on FPDF method Cell
-*
-************************************************************************/   
    public function CellBlock($w, $h, &$array_txt, $align='J',$link=''){
       if(!isset($this->CurrentFont))
       $this->Error('No font has been set');
