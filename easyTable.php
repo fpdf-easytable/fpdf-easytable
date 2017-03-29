@@ -14,6 +14,8 @@
     const YPadding=1;
     const IMGPadding=0.5;
     static private $table_counter=false;
+    static private $hex=array('0'=>0,'1'=>1,'2'=>2,'3'=>3,'4'=>4,'5'=>5,'6'=>6,'7'=>7,'8'=>8,'9'=>9,
+    'A'=>10,'B'=>11,'C'=>12,'D'=>13,'E'=>14,'F'=>15);
     static private $style=array('width'=>false, 'border'=>false, 'border-color'=>false,
     'align'=>'', 'valign'=>'', 'bgcolor'=>false, 'split-row'=>false, 'l-margin'=>false,
     'font-family'=>false, 'font-style'=>false,'font-size'=>false, 'font-color'=>false,
@@ -73,10 +75,11 @@
 
    private function is_hex($str){
       $a=true;
+      $str=strtoupper($str);
       $n=strlen($str);
-      if($n==7){
-         for($i=0; $i<$n; $i++){
-            if(preg_match("/[A-Fa-f0-9#]/", $str[$i])==0){
+      if($n==7 && $str[0]=='#'){
+         for($i=1; $i<$n; $i++){
+            if(!isset(self::$hex[$str[$i]])){
                $a=false;
                break;
             }
@@ -90,14 +93,9 @@
 
    private function hextodec($str){
       $result=array();
-      $str=substr($str,1);
-      $str=strtoupper($str);
-      $hex=array('0'=>0,'1'=>1,'2'=>2,'3'=>3,'4'=>4,'5'=>5,'6'=>6,'7'=>7,'8'=>8,'9'=>9,
-      'A'=>10,'B'=>11,'C'=>12,'D'=>13,'E'=>14,'F'=>15);
+      $str=strtoupper(substr($str,1));
       for($i=0; $i<3; $i++){
-         if(isset($hex[$str[2*$i]]) && isset($hex[$str[2*$i+1]])){
-            $result[$i]=$hex[$str[2*$i]]*16+$hex[$str[2*$i+1]];
-         }
+         $result[$i]=self::$hex[$str[2*$i]]*16+self::$hex[$str[2*$i+1]];
       }
       return $result;
    }
@@ -689,7 +687,7 @@
       }
       self::$table_counter=true;
       $this->pdf_obj=&$fpdf_obj;
-      $this->orientation=$this->pdf_obj->get_orrientation();
+      $this->orientation=$this->pdf_obj->get_orientation();
       $this->document_style['bgcolor']=$this->getColor($this->pdf_obj->get_color('fill'));
       $this->document_style['font-family']=$this->pdf_obj->current_font('family');
       $this->document_style['font-style']=$this->pdf_obj->current_font('style');
@@ -974,6 +972,14 @@
             if(count($this->header_row)>0){
                $this->printing_loop(true);
             }
+         }
+         if($this->new_table){
+            
+            if(count($this->header_row)>0 &&
+            $this->pdf_obj->PageBreak()<$this->pdf_obj->GetY()+$block_height+$this->row_heights[0]){
+               $this->pdf_obj->addPage($this->orientation);
+            }
+            $this->new_table=false;
          }
          $this->printing_loop();
          $this->grid=array();

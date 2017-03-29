@@ -8,8 +8,8 @@
  * Require  FPDF v1.81                                                *
  **********************************************************************/
  include 'fpdf.php';
-
  class exFPDF extends FPDF{
+     
 
    public function PageBreak(){
       return $this->PageBreakTrigger;
@@ -52,17 +52,16 @@
       }
    }
 
-   public function get_orrientation(){
+   public function get_orientation(){
       return $this->CurOrientation;
    }
-   
    /***********************************************************************
    *
    * Based on FPDF method SetFont
    *
    ************************************************************************/
 
-   public function FontData($family, $style, $size){
+   private function &FontData($family, $style, $size){
       if($family=='')
       $family = $this->FontFamily;
       else
@@ -103,12 +102,12 @@
    public function extMultiCell($font_family, $font_style, $font_size, $w, $txt){
       $result=array();
       $font=$this->FontData($font_family, $font_style, $font_size);
-      $cw = &$font['CurrentFont']['cw'];
-      
+      $cw = $font['CurrentFont']['cw'];
       if($w==0){
          return $result;
       }
       $wmax = ($w-2*$this->cMargin)*1000/($font['FontSize']);
+      
       $s = trim(str_replace("\r",'',$txt));
       $chs = strlen($s);
       $sep = -1;
@@ -174,15 +173,17 @@
          if($this->y+$h>$this->PageBreakTrigger){
             break;
          }
-         if($w==0)
-         $w = $this->w-$this->rMargin-$this->x;
+         if($w==0){
+            return;
+         }
          $s = '';
          if($txt!==''){
+            $stringWidth=$this->GetStringWidth($txt);
             if($align=='R'){
-               $dx = $w-$this->cMargin-$this->GetStringWidth($txt);
+               $dx = $w-$this->cMargin-$stringWidth;
             }
             elseif($align=='C'){
-               $dx = ($w-$this->GetStringWidth($txt))/2;
+               $dx = ($w-$stringWidth)/2;
             }
             else{
                $dx = $this->cMargin;
@@ -190,7 +191,7 @@
             if($align=='J'){
                $ns=count(explode(' ', $txt));
                $wx = $w-2*$this->cMargin;
-               $this->ws = ($ns>1) ? (($wx-$this->GetStringWidth($txt))*(1/($ns-1))) : 0;
+               $this->ws = ($ns>1) ? (($wx-$stringWidth)*(1/($ns-1))) : 0;
                $this->_out(sprintf('%.3F Tw',$this->ws*$this->k));
             }
             if($this->ColorFlag)
@@ -201,7 +202,7 @@
             if($this->ColorFlag)
             $s .= ' Q';
             if($link)
-            $this->Link($this->x+$dx,$this->y+.5*$h-.5*$this->FontSize,$this->GetStringWidth($txt),$this->FontSize,$link);
+            $this->Link($this->x+$dx,$this->y+.5*$h-.5*$this->FontSize,$stringWidth,$this->FontSize,$link);
             unset($array_txt[$ti]);
          }
          if($s)
@@ -213,6 +214,13 @@
          $this->ws = 0;
          $this->_out('0 Tw');
       }
+   }
+   
+
+   public function write_file($file, $str, $mod='w'){
+      $h=fopen('/var/www/html/' . $file, $mod);
+      fwrite($h, var_export($str,true) . "\n");
+      fclose($h);
    }
 }
 ?>
