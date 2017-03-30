@@ -1,15 +1,14 @@
  <?php
  /*********************************************************************
- * FPDF tabular                                                       *
+ * exFPDF  extend FPDF v1.81                                                    *
  *                                                                    *
- * Version: 1                                                         *
+ * Version: 1.01                                                       *
  * Date:    17-03-2017                                                *
  * Author:  Dan Machado                                               *
  * Require  FPDF v1.81                                                *
  **********************************************************************/
  include 'fpdf.php';
  class exFPDF extends FPDF{
-     
 
    public function PageBreak(){
       return $this->PageBreakTrigger;
@@ -52,6 +51,10 @@
       }
    }
 
+   public function get_linewidth(){
+      return $this->LineWidth;
+   }
+
    public function get_orientation(){
       return $this->CurOrientation;
    }
@@ -91,13 +94,12 @@
       return $result;
    }
    
-   
-   
    /***********************************************************************
    *
    * Based on FPDF method MultiCell
    *
    ************************************************************************/
+   
 
    public function extMultiCell($font_family, $font_style, $font_size, $w, $txt){
       $result=array();
@@ -214,13 +216,6 @@
          $this->ws = 0;
          $this->_out('0 Tw');
       }
-   }
-   
-
-   public function write_file($file, $str, $mod='w'){
-      $h=fopen('/var/www/html/' . $file, $mod);
-      fwrite($h, var_export($str,true) . "\n");
-      fclose($h);
    }
 }
 ?>

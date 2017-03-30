@@ -352,6 +352,23 @@ Note: because the borders of the cells overlap each other,
       it does not make sense to set the define different colors 
       for every cell
 
+
+
+**border-width** [T]
+
+The border-width property is used to set the width of the lines the border is made of.
+
+Syntax:
+
+    border-width:0.5;
+
+Default value: the current drawing line width of the document.
+
+Note: beware that if the border-width is set to thick, the border might overlap the content
+      of the cells. In that case you will have to set appropriate paddingX and paddingY on the cells.
+      (See paddingX and paddingY properties below).
+
+
 **split-row** [T]
 
 This property indicate if a row that is at the bottom of the page should be split or not

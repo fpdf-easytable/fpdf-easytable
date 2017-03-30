@@ -2,10 +2,10 @@
  /*********************************************************************
  * FPDF easyTable                                                     *
  *                                                                    *
- * Version: 1                                                         *
+ * Version: 1.01                                                         *
  * Date:    17-03-2017                                                *
  * Author:  Dan Machado                                               *
- * Require  FPDF v1.81                                                *
+ * Require  exFPDF v1.01                                           *
  **********************************************************************/
   
  class easyTable{
@@ -16,12 +16,11 @@
     static private $table_counter=false;
     static private $hex=array('0'=>0,'1'=>1,'2'=>2,'3'=>3,'4'=>4,'5'=>5,'6'=>6,'7'=>7,'8'=>8,'9'=>9,
     'A'=>10,'B'=>11,'C'=>12,'D'=>13,'E'=>14,'F'=>15);
-    static private $style=array('width'=>false, 'border'=>false, 'border-color'=>false,
+    static private $style=array('width'=>false, 'border'=>false, 'border-color'=>false, 'border-width'=>false,
     'align'=>'', 'valign'=>'', 'bgcolor'=>false, 'split-row'=>false, 'l-margin'=>false,
     'font-family'=>false, 'font-style'=>false,'font-size'=>false, 'font-color'=>false,
     'paddingX'=>false, 'paddingY'=>false);
     private $pdf_obj;
-    private $orientation;
     private $document_style;
     private $table_style;
     private $col_num;
@@ -42,23 +41,13 @@
 
     private function get_available(){
        static $k=0;
-       $t=count($this->grid);
-       if($t>0){
-          sort($this->grid);
-          if($this->grid[$t-1]!=$t-1){
-             for($i=$k; $i<$t; $i++){
-                if($i!=$this->grid[$i]){
-                   $t=$i;
-                   $k=$i;
-                   break;
-               }
-            }
-         }
+       if(count($this->grid)==0){
+          $k=0;
       }
-      else{
-         $k=0;
+      while(isset($this->grid[$k])){
+         $k++;
       }
-      return $t;
+      return $k;
    }
 
    private function is_rgb($str){
@@ -151,6 +140,7 @@
       if($c=='C' || $c=='R'){
          unset($result['width']);
          unset($result['border-color']);
+         unset($result['border-width']);
          unset($result['split-row']);
          unset($result['l-margin']);
       }
@@ -225,6 +215,10 @@
          if($sty['border-color']!==false && ($this->is_hex($sty['border-color']) || $this->is_rgb($sty['border-color']))){
             $sty['border-color']=$this->set_color($sty['border-color']);
          }
+         if(!is_numeric($sty['border-width'])){
+            $sty['border-width']=$this->document_style['line-width'];
+         }
+         $sty['border-width']=abs($sty['border-width']);
          if($sty['split-row']!=false){
             $sty['split-row']=true;
          }
@@ -555,7 +549,7 @@
             }
             $this->overflow=0;
             $ztmp=array();
-            $this->pdf_obj->addPage($this->orientation);
+            $this->pdf_obj->addPage($this->document_style['orientation']);
          }
          else{
             $y+=$h;
@@ -687,13 +681,14 @@
       }
       self::$table_counter=true;
       $this->pdf_obj=&$fpdf_obj;
-      $this->orientation=$this->pdf_obj->get_orientation();
       $this->document_style['bgcolor']=$this->getColor($this->pdf_obj->get_color('fill'));
       $this->document_style['font-family']=$this->pdf_obj->current_font('family');
       $this->document_style['font-style']=$this->pdf_obj->current_font('style');
       $this->document_style['font-size']=$this->pdf_obj->current_font('size');
       $this->document_style['font-color']=$this->getColor($this->pdf_obj->get_color('text'));
       $this->document_style['document_width']=$this->pdf_obj->GetPageWidth()-$this->pdf_obj->get_margin('l')-$this->pdf_obj->get_margin('r');
+      $this->document_style['orientation']=$this->pdf_obj->get_orientation();
+      $this->document_style['line-width']=$this->pdf_obj->get_linewidth();
       $this->table_style=$this->set_style($style, 'T');
       $this->col_num=false;
       $this->col_width=array();
@@ -779,6 +774,9 @@
       if($this->table_style['border-color']!=false){
          $this->resetColor($this->table_style['border-color'], 'D');
       }
+      if($this->table_style['border-width']!=$this->document_style['line-width']){
+         $this->pdf_obj->SetLineWidth($this->table_style['border-width']);
+      }
       $this->header_row=array();
       $this->new_table=true;
    }
@@ -825,22 +823,11 @@
          $row_number=count($this->rows);
          $cell_index=count($this->row_data);
          $cell_pos=$this->get_available();
-         $this->grid[]=$cell_pos;
          $colm=$cell_pos %$this->col_num;
          $sty=$this->set_style($style, 'C', $colm);
-         if($sty['colspan'] || $sty['rowspan']){
-            $a=array($cell_pos);
-            for($i=0;$i<$sty['colspan']; $i++){
-               $a[]=$cell_pos+$i+1;
-            }
-            $b=$a;
-            for($j=0; $j<$sty['rowspan'];$j++){
-               foreach($b as $c){
-                  $a[]=$c+($j+1)*$this->col_num;
-               }
-            }
-            for($i=1; $i<count($a); $i++){
-               $this->grid[]=$a[$i];
+         for($i=0; $i<=$sty['colspan']; $i++){
+            for($j=0; $j<=$sty['rowspan']; $j++){
+               $this->grid[$cell_pos+$i+$j*$this->col_num]=true;
             }
          }
          if($sty['rowspan']){
@@ -968,7 +955,7 @@
             }
          }
          if($this->table_style['split-row']==false && $this->pdf_obj->PageBreak()<$this->pdf_obj->GetY()+$this->row_heights[0]){
-            $this->pdf_obj->addPage($this->orientation);
+            $this->pdf_obj->addPage($this->document_style['orientation']);
             if(count($this->header_row)>0){
                $this->printing_loop(true);
             }
@@ -977,7 +964,7 @@
             
             if(count($this->header_row)>0 &&
             $this->pdf_obj->PageBreak()<$this->pdf_obj->GetY()+$block_height+$this->row_heights[0]){
-               $this->pdf_obj->addPage($this->orientation);
+               $this->pdf_obj->addPage($this->document_style['orientation']);
             }
             $this->new_table=false;
          }
@@ -1013,10 +1000,12 @@
       if($this->table_style['border-color']!=false){
          $this->resetColor($this->document_style['bgcolor'], 'D');
       }
+      if($this->table_style['border-width']!=$this->document_style['line-width']){
+         $this->pdf_obj->SetLineWidth($this->document_style['line-width']);
+      }
       $this->pdf_obj->SetX($this->pdf_obj->get_margin('l'));
       $this->pdf_obj->Ln($bottomMargin);
       unset($this->pdf_obj);
-      unset($this->orientation);
       unset($this->document_style);
       unset($this->table_style);
       unset($this->col_num);
