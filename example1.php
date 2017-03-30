@@ -369,8 +369,127 @@ imperdiet orci pretium vel. Donec vehicula tellus nisl, nec commodo diam posuere
  $table->easyCell("Cell 3 A\n B\n", 'font-size:10; bgcolor:#85adad ');
  $table->printRow();
 
- $table->endTable();
+ $table->endTable(10);
 
+
+
+//###############################################
+
+ $write=new easyTable($pdf, 1, 'font-family:times;');
+ $write->easyCell('Two ways to do the same layout', 'font-style:B; font-size:15;');
+ $write->printRow();
+ $write->easyCell('In this case using two tables side by side (not recommended)', 'font-style:B; font-size:10;');
+ $write->printRow();
+ $write->endTable(5);
+
+ $text='Sed euismod est eu laoreet blandit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec eget enim egestas, pulvinar nulla non, mollis risus. In id ipsum ex. Morbi laoreet dui feugiat enim dapibus rhoncus. Curabitur mollis velit accumsan ex suscipit fringilla. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Curabitur quis fermentum nibh. Aenean eget tellus eu ligula hendrerit dapibus vitae at leo. Vivamus at ligula non purus iaculis eleifend. Integer eget risus non dui scelerisque consectetur. Quisque et leo ut ex lacinia malesuada dictum vitae diam. Integer eleifend in nibh in mattis. Aenean eu justo quis mauris tempus eleifend. Praesent malesuada turpis ut justo semper tempor. Integer varius, nisi non elementum molestie, leo arcu euismod velit, eu tempor ligula diam convallis sem. Sed ultrices hendrerit suscipit. Pellentesque volutpat a urna nec placerat. Etiam auctor dapibus leo nec ullamcorper. Nullam id placerat elit. Vivamus ut quam a metus tincidunt laoreet sit amet a ligula. Sed rutrum felis ipsum, sit amet finibus magna tincidunt id. Suspendisse vel urna interdum lacus luctus ornare. Curabitur ultricies nunc est, eget rhoncus orci vestibulum eleifend. In in consequat mi. Curabitur sodales magna at consequat molestie. Aliquam vulputate, neque varius maximus imperdiet, nisi orci accumsan risus, sit amet placerat augue ipsum eget elit. Quisque sodales orci non est tincidunt tincidunt. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. In ut diam in dolor ultricies accumsan sit amet eu ex. Pellentesque aliquet scelerisque ullamcorper. Aenean porta enim eget nisl viverra euismod sed non eros. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque at imperdiet sem, non volutpat metus. Phasellus sed velit sed orci iaculis venenatis ac id risus.';
+
+ $y=$pdf->GetY(); 
+ $table=new easyTable($pdf, 1, 'width:100; align:L');
+ $table->easyCell($text);
+ $table->printRow();
+ $table->endTable(2);
+ $final_vposition=$pdf->GetY(); 
+
+ $pdf->SetY($y); 
+ $table=new easyTable($pdf, 3, 'width:90; align:R; border:1;');
+ for($i=0; $i<20; $i++)
+ { 
+    $table->easyCell('text 1');
+    $table->easyCell('text 2');
+    $table->easyCell('text 3');
+    $table->printRow();
+ }
+ $table->endTable(10);
+ $pdf->SetY(max($final_vposition, $pdf->GetY())); 
+
+ //----------------------------------------------
+
+ $write=new easyTable($pdf, 1, 'font-family:times;');
+ $write->easyCell('The right way', 'font-style:B; font-size:10;');
+ $write->printRow();
+ $write->endTable(5);
+ 
+ $rows=20;  
+ $table=new easyTable($pdf, '{100, 30,30,30}', 'align:L; border:1');
+ $table->easyCell($text, "rowspan:$rows; border:0;");
+ $table->easyCell('text 1', 'bgcolor:#000; font-color:#fff');
+ $table->easyCell('text 2', 'bgcolor:#000; font-color:#fff');
+ $table->easyCell('text 3', 'bgcolor:#000; font-color:#fff');
+ $table->printRow();
+ for($i=0; $i<$rows-1; $i++)
+ { 
+    
+    $table->easyCell('text 1 ' . $i);
+    $table->easyCell('text 2 ' . $i);
+    $table->easyCell('text 3 ' . $i);
+    $table->printRow();
+ }
+ $table->endTable(10);
+ 
+ 
+
+//###############################################
+
+ $write=new easyTable($pdf, 1, 'font-family:times;');
+ $write->easyCell('More examples', 'font-style:B; font-size:15;');
+ $write->printRow();
+ $write->endTable(5);
+ 
+ $y=$pdf->GetY();
+ $pdf->Rect(65,$y-5, 80,95,'F');
+ 
+ $pdf->SetY($y);
+ $table=new easyTable($pdf, '%{40, 30,30}', 'width:70; align:{RCC};bgcolor:#fff; border-width:0.001; border:1; border-color:#fff;');
+ $table->easyCell('Change Plan', 'colspan:3; font-color:#bfbfbf; font-size:25; font-style:B;align:L');
+ $table->printRow();
+
+ $table->easyCell('123-123-1234: Plan name', 'colspan:3; font-color:#bfbfbf; font-size:16;align:L');
+ $table->printRow();
+
+ $table->easyCell('Use the table below to help you select a new plan. Additional plan features can also be configured.', 'colspan:3; font-size:10;align:L');
+ $table->printRow();
+
+ $table->rowStyle('bgcolor:#f39; font-style:B; dfont-size:11;font-color:#fff;');
+ $table->easyCell('');
+ $table->easyCell('Current');
+ $table->easyCell('Plan1');
+ $table->printRow(); 
+
+ $table->rowStyle('bgcolor:#f2f2f2; paddingY:2;');
+ $table->easyCell('Data');
+ $table->easyCell('500MB');
+ $table->easyCell('2.5GB');
+ $table->printRow();  
+ 
+ $table->rowStyle('paddingY:2;');
+ $table->easyCell("Mobile Hotspot\n Capable - $10");
+ $table->easyCell('');
+ $table->easyCell('', 'img:tick.png, w3;');
+ $table->printRow();
+ 
+ $table->rowStyle('bgcolor:#f2f2f2; paddingY:2;font-style:B;');
+ $table->easyCell('');
+ $table->easyCell('$50');
+ $table->easyCell('$60');
+ $table->printRow(); 
+ 
+// $table->rowStyle('min-height:0.5;paddingY:0.02;');
+ //$table->easyCell('', 'colspan:3; bgcolor:#ff5;');
+ //$table->printRow();
+ 
+ $table->rowStyle('paddingY:2;');
+ $table->easyCell("International\nCalling\n$20");
+ $table->easyCell('');
+ $table->easyCell('', 'img:tick.png, w3;');
+ $table->printRow();
+ 
+ $table->endTable(5);
+
+  
+
+//###############################################
+//###############################################
 
 
  $pdf->Output(); 
