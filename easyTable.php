@@ -66,7 +66,7 @@
       $a=true;
       $str=strtoupper($str);
       $n=strlen($str);
-      if($n==7 && $str[0]=='#'){
+      if(($n==7 || $n==4) && $str[0]=='#'){
          for($i=1; $i<$n; $i++){
             if(!isset(self::$hex[$str[$i]])){
                $a=false;
@@ -83,8 +83,14 @@
    private function hextodec($str){
       $result=array();
       $str=strtoupper(substr($str,1));
+      $n=strlen($str);
       for($i=0; $i<3; $i++){
-         $result[$i]=self::$hex[$str[2*$i]]*16+self::$hex[$str[2*$i+1]];
+         if($n==6){
+            $result[$i]=self::$hex[$str[2*$i]]*16+self::$hex[$str[2*$i+1]];
+         }
+         else{
+            $result[$i]=self::$hex[$str[$i]]*16+self::$hex[$str[$i]];
+         }
       }
       return $result;
    }
@@ -909,7 +915,6 @@
       else{
          $row_number=count($this->rows);
          if(count($this->blocks)>0){
-            
             foreach($this->blocks as $bk_id=>$block){
                $h=0;
                for($i=$block[1]; $i<=$block[1]+$block[2]; $i++){

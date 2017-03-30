@@ -344,6 +344,7 @@ Syntax:
 Example:
 
     border-color:#ABCABC;
+    border-color:#ABC;
     border-color:79,140, 200;
 
 Default value: the current drawn colour set in the document
@@ -499,6 +500,7 @@ Syntax:
 Example:
 
     bgcolor:#ABCABC;
+    bgcolor:#ABC;    
     bgcolor:79,140, 200;
 
 Default: the current fill color set in the document
@@ -563,6 +565,7 @@ Syntax:
 Example:
 
     font-color:#ABCABC;
+    font-color:#ABC;    
     font-color:79,140, 200;
 
 Default value: the current font color set in the document
