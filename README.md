@@ -100,6 +100,10 @@ and second the results are very poor.
 - [Simple invoice](https://github.com/fpdf-easytable/fpdf-easytable/blob/master/example-3.pdf)
   * [Code](https://github.com/fpdf-easytable/fpdf-easytable/blob/master/example3.php)
 
+- [More examples](https://github.com/fpdf-easytable/fpdf-easytable/blob/master/example-4.pdf)
+  * [Code](https://github.com/fpdf-easytable/fpdf-easytable/blob/master/example4.php)
+ 
+
 # Requirements
 
 - [FPDF 1.81](http://www.fpdf.org).
@@ -332,7 +336,7 @@ or a string containing some or all of the following characters (in any order):
 Default value: 0. 
 
 
-**border-color** [T]
+**border-color** [C/R/T]
 
 The border-color property is used to set the colour of the border to be drawn 
 around the cells. The value can be: Hex color code or RGB color code.
@@ -349,10 +353,9 @@ Example:
 
 Default value: the current drawn colour set in the document
 
-Note: because the borders of the cells overlap each other, 
-      it does not make sense to set the define different colors 
-      for every cell
-
+Note: beware that when set this attribute at the cell level, because the borders of the cells 
+      overlap each other, the results might not be as expected on adjacent cell with different
+      border color.
 
 
 **border-width** [T]
@@ -570,6 +573,19 @@ Example:
 
 Default value: the current font color set in the document
 
+**line-height** [C/R/T]
+
+The line-height property specifies the line height.
+
+Syntax:
+
+    line-height:number;
+
+Example:
+
+    line-height:1.2;
+
+Default value: 1.
 
 **paddingX** [C/R/T] 
 

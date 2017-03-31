@@ -73,7 +73,7 @@
 
 //########################################################
 
- $tableB=new easyTable($pdf, 5, 'width:100; align:C{LC}; border:RL;');
+ $tableB=new easyTable($pdf, 5, 'width:100; align:C{LC}; border:RL; border-color:#f3c; border-width:0.7');
 
  $tableB->easyCell("Cell 1A A\n B\n C\n D\n E\n F\n", 'rowspan:5;');
  $tableB->easyCell("Cell 1BC BB", 'rowspan:2; colspan:2; valign:B');
@@ -132,7 +132,7 @@
 //########################################################
  $pdf->AddPage();
  
- $tableB=new easyTable($pdf, 5, 'width:100; align:L{LC}; border-color:#1a66ff; ');
+ $tableB=new easyTable($pdf, 5, 'width:100; align:L{LC}; border-color:#1a66ff; border-width:0.6; ');
 
  $tableB->easyCell("Cell 1A A\n B\n C\n D\n E\n F\n", 'rowspan:5; border:1');
  $tableB->easyCell("Cell 1BC BB", 'rowspan:2; colspan:2; valign:B;border:T');
@@ -140,7 +140,7 @@
  $tableB->easyCell("Cell 1D 1", 'border:TR');
  $tableB->printRow();
     
- $tableB->easyCell("Cell 2D 1\n 2\n 3\n", 'border:1');
+ $tableB->easyCell("Cell 2D 1\n 2\n 3\n", 'border:1; border-color:#ff4d4d;');
  $tableB->easyCell("Cell 2D 1\n 2\n 3\n", 'rowspan:3;border:R');
  $tableB->printRow();
     
@@ -429,66 +429,6 @@ imperdiet orci pretium vel. Donec vehicula tellus nisl, nec commodo diam posuere
  
  
 
-//###############################################
-
- $write=new easyTable($pdf, 1, 'font-family:times;');
- $write->easyCell('More examples', 'font-style:B; font-size:15;');
- $write->printRow();
- $write->endTable(5);
- 
- $y=$pdf->GetY();
- $pdf->Rect(65,$y-5, 80,95,'F');
- 
- $pdf->SetY($y);
- $table=new easyTable($pdf, '%{40, 30,30}', 'width:70; align:{RCC};bgcolor:#fff; border-width:0.001; border:1; border-color:#fff;');
- $table->easyCell('Change Plan', 'colspan:3; font-color:#bfbfbf; font-size:25; font-style:B;align:L');
- $table->printRow();
-
- $table->easyCell('123-123-1234: Plan name', 'colspan:3; font-color:#bfbfbf; font-size:16;align:L');
- $table->printRow();
-
- $table->easyCell('Use the table below to help you select a new plan. Additional plan features can also be configured.', 'colspan:3; font-size:10;align:L');
- $table->printRow();
-
- $table->rowStyle('bgcolor:#f39; font-style:B; dfont-size:11;font-color:#fff;');
- $table->easyCell('');
- $table->easyCell('Current');
- $table->easyCell('Plan1');
- $table->printRow(); 
-
- $table->rowStyle('bgcolor:#f2f2f2; paddingY:2;');
- $table->easyCell('Data');
- $table->easyCell('500MB');
- $table->easyCell('2.5GB');
- $table->printRow();  
- 
- $table->rowStyle('paddingY:2;');
- $table->easyCell("Mobile Hotspot\n Capable - $10");
- $table->easyCell('');
- $table->easyCell('', 'img:tick.png, w3;');
- $table->printRow();
- 
- $table->rowStyle('bgcolor:#f2f2f2; paddingY:2;font-style:B;');
- $table->easyCell('');
- $table->easyCell('$50');
- $table->easyCell('$60');
- $table->printRow(); 
- 
-// $table->rowStyle('min-height:0.5;paddingY:0.02;');
- //$table->easyCell('', 'colspan:3; bgcolor:#ff5;');
- //$table->printRow();
- 
- $table->rowStyle('paddingY:2;');
- $table->easyCell("International\nCalling\n$20");
- $table->easyCell('');
- $table->easyCell('', 'img:tick.png, w3;');
- $table->printRow();
- 
- $table->endTable(5);
-
-  
-
-//###############################################
 //###############################################
 
 

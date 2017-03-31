@@ -84,7 +84,6 @@ imperdiet orci pretium vel. Donec vehicula tellus nisl, nec commodo diam posuere
 
  $table->endTable();
 
-// set another table with column lines and but not row lines
 
  $pdf->Output(); 
 

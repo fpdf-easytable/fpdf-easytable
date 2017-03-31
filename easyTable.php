@@ -2,7 +2,7 @@
  /*********************************************************************
  * FPDF easyTable                                                     *
  *                                                                    *
- * Version: 1.01                                                         *
+ * Version: 1.02                                                         *
  * Date:    17-03-2017                                                *
  * Author:  Dan Machado                                               *
  * Require  exFPDF v1.01                                           *
@@ -16,7 +16,8 @@
     static private $table_counter=false;
     static private $hex=array('0'=>0,'1'=>1,'2'=>2,'3'=>3,'4'=>4,'5'=>5,'6'=>6,'7'=>7,'8'=>8,'9'=>9,
     'A'=>10,'B'=>11,'C'=>12,'D'=>13,'E'=>14,'F'=>15);
-    static private $style=array('width'=>false, 'border'=>false, 'border-color'=>false, 'border-width'=>false,
+    static private $style=array('width'=>false, 'border'=>false, 'border-color'=>false,
+    'border-width'=>false, 'line-height'=>false,
     'align'=>'', 'valign'=>'', 'bgcolor'=>false, 'split-row'=>false, 'l-margin'=>false,
     'font-family'=>false, 'font-style'=>false,'font-size'=>false, 'font-color'=>false,
     'paddingX'=>false, 'paddingY'=>false);
@@ -145,7 +146,6 @@
       }
       if($c=='C' || $c=='R'){
          unset($result['width']);
-         unset($result['border-color']);
          unset($result['border-width']);
          unset($result['split-row']);
          unset($result['l-margin']);
@@ -218,13 +218,12 @@
          else{
             $sty['l-margin']=abs($sty['l-margin']);
          }
-         if($sty['border-color']!==false && ($this->is_hex($sty['border-color']) || $this->is_rgb($sty['border-color']))){
-            $sty['border-color']=$this->set_color($sty['border-color']);
+         if(is_numeric($sty['border-width'])){
+            $sty['border-width']=abs($sty['border-width']);
          }
-         if(!is_numeric($sty['border-width'])){
-            $sty['border-width']=$this->document_style['line-width'];
+         else{
+            $sty['border-width']=false;
          }
-         $sty['border-width']=abs($sty['border-width']);
          if($sty['split-row']!=false){
             $sty['split-row']=true;
          }
@@ -267,8 +266,7 @@
          }
          $sty['border']=$border;
       }
-      
-      $color_settings=array('bgcolor', 'font-color');
+      $color_settings=array('bgcolor', 'font-color', 'border-color');
       foreach($color_settings as $setting){
          if($sty[$setting]===false || !($this->is_hex($sty[$setting]) || $this->is_rgb($sty[$setting]))){
             if($c=='C' || $c=='R'){
@@ -286,6 +284,17 @@
       foreach($font_settings as $setting){
          if($sty[$setting]===false){
             $this->inherating($sty, $setting, $c);
+         }
+      }
+      if(is_numeric($sty['line-height'])){
+         $sty['line-height']=self::LP*abs($sty['line-height']);
+      }
+      else{
+         if($c=='C' || $c=='R'){
+            $this->inherating($sty,'line-height', $c);
+         }
+         else{
+            $sty['line-height']=self::LP;
          }
       }
       if($c=='C'){
@@ -406,6 +415,9 @@
       if($split){
          $h=$this->pdf_obj->PageBreak()-$y;
       }
+      if($this->row_data[$i][1]['border-color']!=false){
+         $this->resetColor($this->row_data[$i][1]['border-color'], 'D');
+      }
       if($this->row_data[$i][1]['border']['T']){
          $this->pdf_obj->Line($this->row_data[$i][6], $y, $this->row_data[$i][6]+$w, $y);
       }
@@ -417,6 +429,9 @@
       }
       if($this->row_data[$i][1]['border']['L']){
          $this->pdf_obj->Line($this->row_data[$i][6], $y, $this->row_data[$i][6], $y+$h);
+      }
+      if($this->row_data[$i][1]['border-color']!=false){
+         $this->resetColor($this->document_style['bgcolor'], 'D');
       }
       if($split){
          $this->row_data[$i][1]['border']['T']=0;
@@ -435,11 +450,11 @@
       if(count($this->row_data[$i][0])){
          $x=$this->row_data[$i][6]+$this->row_data[$i][1]['paddingX'];
          $xpadding=2*$this->row_data[$i][1]['paddingX'];
-         $l=count($this->row_data[$i][0])* self::LP*$this->row_data[$i][1]['font-size'];
+         $l=count($this->row_data[$i][0])* $this->row_data[$i][1]['line-height']*$this->row_data[$i][1]['font-size'];
          $this->pdf_obj->SetXY($x, $y+$k);
          $this->resetColor($this->row_data[$i][1]['font-color'], 'T');
          $this->pdf_obj->SetFont($this->row_data[$i][1]['font-family'], $this->row_data[$i][1]['font-style'], $this->row_data[$i][1]['font-size']);
-         $this->pdf_obj->CellBlock($this->row_data[$i][2]-$xpadding, self::LP*$this->row_data[$i][1]['font-size'], $this->row_data[$i][0], $this->row_data[$i][1]['align']);
+         $this->pdf_obj->CellBlock($this->row_data[$i][2]-$xpadding, $this->row_data[$i][1]['line-height']*$this->row_data[$i][1]['font-size'], $this->row_data[$i][0], $this->row_data[$i][1]['align']);
          $this->pdf_obj->SetFont($this->document_style['font-family'], $this->document_style['font-style'], $this->document_style['font-size']);
          $this->resetColor($this->document_style['font-color'], 'T');
       }
@@ -598,11 +613,11 @@
                      }
                   }
                }
-               if($mx==0 && $rr<(self::LP*$this->row_data[$index][1]['font-size'])*count($this->row_data[$index][0])){
-                  $rr=$rr/(self::LP*$this->row_data[$index][1]['font-size']);
+               if($mx==0 && $rr<($this->row_data[$index][1]['line-height']*$this->row_data[$index][1]['font-size'])*count($this->row_data[$index][0])){
+                  $rr=$rr/($this->row_data[$index][1]['line-height']*$this->row_data[$index][1]['font-size']);
                   $n=floor($rr);
                   if($n<count($this->row_data[$index][0])){
-                     $mx=(self::LP*$this->row_data[$index][1]['font-size'])*($rr-$n);
+                     $mx=($this->row_data[$index][1]['line-height']*$this->row_data[$index][1]['font-size'])*($rr-$n);
                   }
                }
                $this->overflow=max($this->overflow, $mx);
@@ -777,10 +792,7 @@
       $this->grid=array();
       $this->blocks=array();
       $this->overflow=0;
-      if($this->table_style['border-color']!=false){
-         $this->resetColor($this->table_style['border-color'], 'D');
-      }
-      if($this->table_style['border-width']!=$this->document_style['line-width']){
+      if($this->table_style['border-width']!=false){
          $this->pdf_obj->SetLineWidth($this->table_style['border-width']);
       }
       $this->header_row=array();
@@ -850,7 +862,7 @@
          }
          $w-=2*$sty['paddingX'];
          $data=$this->pdf_obj->extMultiCell($sty['font-family'], $sty['font-style'], $sty['font-size'], $w, $data);
-         $h=count($data) * self::LP*$sty['font-size'];
+         $h=count($data) * $sty['line-height']*$sty['font-size'];
          if($sty['img']){
             if($sty['img']['w']>$w){
                $sty['img']['h']=$w*$sty['img']['h']/$sty['img']['w'];
@@ -915,6 +927,7 @@
       else{
          $row_number=count($this->rows);
          if(count($this->blocks)>0){
+            
             foreach($this->blocks as $bk_id=>$block){
                $h=0;
                for($i=$block[1]; $i<=$block[1]+$block[2]; $i++){
@@ -1002,10 +1015,7 @@
 
    public function endTable($bottomMargin=2){
       self::$table_counter=false;
-      if($this->table_style['border-color']!=false){
-         $this->resetColor($this->document_style['bgcolor'], 'D');
-      }
-      if($this->table_style['border-width']!=$this->document_style['line-width']){
+      if($this->table_style['border-width']!=false){
          $this->pdf_obj->SetLineWidth($this->document_style['line-width']);
       }
       $this->pdf_obj->SetX($this->pdf_obj->get_margin('l'));
