@@ -13,6 +13,7 @@
     const XPadding=0.5;
     const YPadding=1;
     const IMGPadding=0.5;
+    const PBThreshold=30;
     static private $table_counter=false;
     static private $hex=array('0'=>0,'1'=>1,'2'=>2,'3'=>3,'4'=>4,'5'=>5,'6'=>6,'7'=>7,'8'=>8,'9'=>9,
     'A'=>10,'B'=>11,'C'=>12,'D'=>13,'E'=>14,'F'=>15);
@@ -972,17 +973,21 @@
                $this->header_row['rows']=$this->rows;
             }
          }
-         if($this->table_style['split-row']==false && $this->pdf_obj->PageBreak()<$this->pdf_obj->GetY()+$this->row_heights[0]){
-            $this->pdf_obj->addPage($this->document_style['orientation']);
-            if(count($this->header_row)>0){
-               $this->printing_loop(true);
+         if($this->table_style['split-row']==false && $this->pdf_obj->PageBreak()<$this->pdf_obj->GetY()+self::PBThreshold){
+            if($this->pdf_obj->PageBreak()<$this->pdf_obj->GetY()+min(self::PBThreshold-10, $this->row_heights[0])){
+               $this->pdf_obj->addPage($this->document_style['orientation']);
+               if(count($this->header_row)>0){
+                  $this->printing_loop(true);
+               }
             }
          }
+         
          if($this->new_table){
-            
-            if(count($this->header_row)>0 &&
-            $this->pdf_obj->PageBreak()<$this->pdf_obj->GetY()+$block_height+$this->row_heights[0]){
-               $this->pdf_obj->addPage($this->document_style['orientation']);
+            if(count($this->header_row)>0){
+               $r=$this->pdf_obj->PageBreak()-($this->pdf_obj->GetY()+$block_height);
+               if($this->pdf_obj->PageBreak()<$this->pdf_obj->GetY()+$block_height || $r<self::PBThreshold){
+                  $this->pdf_obj->addPage($this->document_style['orientation']);
+               }
             }
             $this->new_table=false;
          }

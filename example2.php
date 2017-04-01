@@ -55,18 +55,18 @@ imperdiet orci pretium vel. Donec vehicula tellus nisl, nec commodo diam posuere
  $table->easyCell($cells[6]);
  $table->printRow();
  
- $table->easyCell('', 'img:fpdflogo.png, w10, h40;');
- $table->easyCell('', 'img:fpdflogo.png');
- $table->easyCell('', 'img:fpdflogo.png, w40, h10;');
- $table->easyCell($cells[0], 'img:fpdflogo.png, w30; align:C; valign:B;font-size:6; font-style:I;');
- $table->easyCell($cells[1], 'img:fpdflogo.png, w30; align:C; valign:T;font-size:6; font-style:I;');
+ $table->easyCell('', 'img:Pics/fpdflogo.png, w10, h40;');
+ $table->easyCell('', 'img:Pics/fpdflogo.png');
+ $table->easyCell('', 'img:Pics/fpdflogo.png, w40, h10;');
+ $table->easyCell($cells[0], 'img:Pics/fpdflogo.png, w30; align:C; valign:B;font-size:6; font-style:I;');
+ $table->easyCell($cells[1], 'img:Pics/fpdflogo.png, w30; align:C; valign:T;font-size:6; font-style:I;');
  $table->printRow();
  
- $table->easyCell('', 'img:fpdflogo.png, w10; align:L');
- $table->easyCell('', 'img:fpdflogo.png, w10;');
- $table->easyCell('', 'img:fpdflogo.png, h10; align:R;');
- $table->easyCell('', 'img:fpdflogo.png, h10; align:R; valign:T');
- $table->easyCell($cells[1], 'img:fpdflogo.png, w30; align:C; valign:T;font-size:6; font-style:I;');
+ $table->easyCell('', 'img:Pics/fpdflogo.png, w10; align:L');
+ $table->easyCell('', 'img:Pics/fpdflogo.png, w10;');
+ $table->easyCell('', 'img:Pics/fpdflogo.png, h10; align:R;');
+ $table->easyCell('', 'img:Pics/fpdflogo.png, h10; align:R; valign:T');
+ $table->easyCell($cells[1], 'img:Pics/fpdflogo.png, w30; align:C; valign:T;font-size:6; font-style:I;');
  $table->printRow();
   
  $table->easyCell($cells[0], 'font-size:6; valign:T');

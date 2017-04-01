@@ -9,7 +9,7 @@
 
  $table1=new easyTable($pdf, 2);
  $table1->easyCell('Sales Invoice', 'font-size:30; font-style:B; font-color:#00bfff;');
- $table1->easyCell('', 'img:fpdf.png, w80; align:R;');
+ $table1->easyCell('', 'img:Pics/fpdf.png, w80; align:R;');
  $table1->printRow();
 
  $table1->rowStyle('font-size:15; font-style:B;');

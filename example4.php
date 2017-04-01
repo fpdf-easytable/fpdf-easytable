@@ -175,7 +175,7 @@
  $table->rowStyle('paddingY:2;');
  $table->easyCell("Mobile Hotspot\n Capable - $10");
  $table->easyCell('');
- $table->easyCell('', 'img:tick.png, w3;');
+ $table->easyCell('', 'img:Pics/tick.png, w3;');
  $table->printRow();
  
  $table->rowStyle('bgcolor:#f2f2f2; paddingY:2;font-style:B;');
@@ -187,12 +187,71 @@
  $table->rowStyle('paddingY:2;');
  $table->easyCell("International\nCalling\n$20");
  $table->easyCell('');
- $table->easyCell('', 'img:tick.png, w3;');
+ $table->easyCell('', 'img:Pics/tick.png, w3;');
  $table->printRow();
  
- $table->endTable(1);
+ $table->endTable(5);
 
 
+//##############################################################  
+//##############################################################  
+
+ $table=new easyTable($pdf, '%{15, 35, 15, 35}', 'width:150; paddingX:3;border:1; border-color:#000; font-color:#fff; bgcolor:#000;');
+
+ $table->rowStyle('dfont-style:B; font-size:13; paddingY:3;');
+ $table->easyCell('Shared Cluster', 'colspan:2;');
+ $table->easyCell('Dedicated', 'colspan:2;');
+ $table->printRow();
+ 
+ $table->rowStyle('font-size:9; line-height:1.3;');
+ $table->easyCell('Light to medium data need? Our shared
+ cluster is simple and cost-effective.', 'colspan:2;');
+ $table->easyCell('Powerful, high-end servers 
+ for your mission critical projects.', 'colspan:2;');
+ $table->printRow();
+
+ $table->rowStyle('min-height:4;');
+ $table->easyCell('', 'colspan:4');
+ $table->printRow();
+
+ $table->easyCell('', 'img:Pics/a.png; rowspan:2;');
+ $table->easyCell('Tau FREE', 'font-style:B; font-size:15; align:J; font-color:#1a53ff;');
+ $table->easyCell('', 'img:Pics/b.png; rowspan:2;');
+ $table->easyCell('Capri $15.00', 'font-style:B; font-size:15; align:J');
+ $table->printRow();
+
+ $table->rowStyle('font-size:8;line-height:1.3');
+ $table->easyCell('500MB storage
+ Fits a blog, personal site or
+ small project wiki');
+ $table->easyCell('1GB storage
+ Great for a small company
+ intranet or staging server');
+ $table->printRow();
+
+ $table->rowStyle('min-height:4;');
+ $table->easyCell('', 'colspan:4');
+ $table->printRow();
+ 
+ $table->easyCell('', 'img:Pics/c.png; rowspan:2;');
+ $table->easyCell('Scorp $30.00', 'font-style:B; font-size:15; align:J');
+ $table->easyCell('', 'img:Pics/d.png; rowspan:2;');
+ $table->easyCell('Leo $50.00', 'font-style:B; font-size:15; align:J');
+ $table->printRow();
+
+ $table->rowStyle('font-size:8;line-height:1.3');
+ $table->easyCell('1.5GB storage
+ Perfect for small biz app.
+ e-commerce site or CMS.');
+ $table->easyCell("10GB storage
+ Superior performance when it's most 
+ critical for your super scale, high traffic apps.");
+ $table->printRow();
+
+ $table->endTable(10);
+
+
+//##############################################################  
 //##############################################################  
   
   
