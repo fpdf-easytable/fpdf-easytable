@@ -146,6 +146,7 @@
  $table->endTable(12);
 
 //##############################################################  
+//##############################################################  
 
  $y=$pdf->GetY();
  $pdf->Rect(65,$y-5, 80,110,'F');
@@ -244,12 +245,120 @@
  Perfect for small biz app.
  e-commerce site or CMS.');
  $table->easyCell("10GB storage
- Superior performance when it's most 
- critical for your super scale, high traffic apps.");
+ Superior performance when it's most critical for your super scale, high traffic apps.");
  $table->printRow();
 
+ $table->endTable(30);
+
+
+//##############################################################  
+//##############################################################  
+
+ $header=array('Employee', 'Salary', 'Bonus', 'Supervisor');
+ $query=array(
+              array('Employee'=>'Michael J. Fox', 'Salary'=>300.50, 'Bonus'=>50, 'Supervisor'=>'Bob'),
+              array('Employee'=>'Robert Smit', 'Salary'=>240, 'Bonus'=>20, 'Supervisor'=>'Michel'),
+              array('Employee'=>'Jessie Roberts', 'Salary'=>205, 'Bonus'=>15, 'Supervisor'=>'Bob'),
+              array('Employee'=>'Roger Brown', 'Salary'=>350, 'Bonus'=>30, 'Supervisor'=>'Antony'),
+              array('Employee'=>'Rosie Taylor', 'Salary'=>270.50, 'Bonus'=>70, 'Supervisor'=>'Mark'),
+              );
+
+ $table=new easyTable($pdf, '%{30, 20, 20, 30}', 'width:120; font-size:12; align:{LRRL}; paddingX:2;font-family:times;border:B; border-color:#ccc;');
+ foreach($header as $h)
+ {
+    $table->easyCell($h, 'font-color:#234fa7;font-style:B;');
+ }
+ $table->printRow(true);
+
+ $table->rowStyle('min-height:0.6;bgcolor:#6678b1;paddingY:0.2;');
+ $table->easyCell('', 'colspan:4');
+ $table->printRow();
+
+ foreach($query as $data)
+ { 
+    $table->rowStyle('font-color:#666699;');
+    $table->easyCell($data['Employee']);
+    $table->easyCell('$' . number_format($data['Salary'],2));
+    $table->easyCell('$' . number_format($data['Bonus'], 2));
+    $table->easyCell($data['Supervisor']);
+    $table->printRow();
+ }
+ $table->endTable(30);
+
+//##############################################################  
+//##############################################################  
+
+ $pdf->AddFont('lato','','Lato-Regular.php');
+ 
+ $table=new easyTable($pdf, 3, 'width:150; align:C{CCC};border-width:0.8; border-color:#ddd;font-family:times; font-color:#66686b;line-height:1.3; font-family:lato');
+
+ $table->rowStyle('font-size:10; min-height:20; valign:M; border:T;');
+ $table->easyCell('ONE LICENSE', 'border:LT');
+ $table->easyCell('THREE LICENSE', 'bgcolor:#e95701; font-color:#fff;');
+ $table->easyCell('FIVE LICENSE', 'border:RT');
+ $table->printRow();
+
+ $table->easyCell("1 Website\n 1 Year Updates\n 1 Year Email Support", 'border:L;'); 
+ $table->easyCell("3 Website\n 1 Year Updates\n 1 Year Email Support", 'bgcolor:#e95701; font-color:#fff;'); 
+ $table->easyCell("5 Website\n 1 Year Updates\n 1 Year Email Support", 'border:R'); 
+ $table->printRow(); 
+
+ $table->rowStyle('font-size:32;paddingY:3;');
+ $table->easyCell("$149", 'border:LB'); 
+ $table->easyCell("$249", 'bgcolor:#e95701; font-color:#fff; border:B; border-color:#ec7229'); 
+ $table->easyCell("$349", 'border:RB'); 
+ $table->printRow(); 
+
+ $table->rowStyle('font-size:11;paddingY:3;');
+ $table->easyCell("BUY NOW", 'border:LB'); 
+ $table->easyCell("BUY NOW", 'bgcolor:#e95701; font-color:#fff;border:B'); 
+ $table->easyCell("BUY NOW", 'border:RB'); 
+ $table->printRow(); 
+ 
  $table->endTable(10);
 
+
+//##############################################################  
+//##############################################################  
+
+ $pdf->addPage();
+
+ $table=new easyTable($pdf, 7, 'width:60;align:C{CCCCCCC}; font-size:6;paddingY:2;');
+ $table->rowStyle('min-height:18; border:1; border-color:#ff5050;');
+ $table->easyCell('18', 'colspan:7;font-style:B; paddingX:3; font-size:40; align:L;valign:B; font-color:#fff;bgcolor:#ff5050;line-height:0.5;');
+ $table->printRow();
+ $table->rowStyle('min-height:12; border:1; border-color:#ff5050;');
+ $table->easyCell('august', 'colspan:7;font-size:20;paddingX:3;font-color:#fff;align:L; valign:T;paddingY:0;bgcolor:#ff5050;');
+ $table->printRow();
+
+ $days=array('MON', 'TUE','WED','THU', 'FRI', 'SAT', 'SUN');
+ $table->rowStyle('font-style:B; font-color:#ff5050;');
+ foreach($days as $day)
+ {
+    $table->easyCell($day);
+ }
+ $table->printRow();
+ $w=0;
+ while($w<5)
+ {
+    for($i=0; $i<35; $i++)
+    {
+       $style='';
+       if($i<3 || $i==34)
+       {
+          $style='font-color:#a1a1a1;';
+       }
+       $j=($i+28)%31+1;
+       $table->easyCell($j, $style);
+       if($i%7==6)
+       {
+          $table->printRow();
+          $w++;
+       }
+    }
+ }
+
+ $table->endTable(10);
 
 //##############################################################  
 //##############################################################  

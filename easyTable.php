@@ -8,43 +8,43 @@
  * Require  exFPDF v1.01                                           *
  **********************************************************************/
   
- class easyTable{
-    const LP=0.4;
-    const XPadding=0.5;
-    const YPadding=1;
-    const IMGPadding=0.5;
-    const PBThreshold=30;
-    static private $table_counter=false;
-    static private $hex=array('0'=>0,'1'=>1,'2'=>2,'3'=>3,'4'=>4,'5'=>5,'6'=>6,'7'=>7,'8'=>8,'9'=>9,
-    'A'=>10,'B'=>11,'C'=>12,'D'=>13,'E'=>14,'F'=>15);
-    static private $style=array('width'=>false, 'border'=>false, 'border-color'=>false,
-    'border-width'=>false, 'line-height'=>false,
-    'align'=>'', 'valign'=>'', 'bgcolor'=>false, 'split-row'=>false, 'l-margin'=>false,
-    'font-family'=>false, 'font-style'=>false,'font-size'=>false, 'font-color'=>false,
-    'paddingX'=>false, 'paddingY'=>false);
-    private $pdf_obj;
-    private $document_style;
-    private $table_style;
-    private $col_num;
-    private $col_width;
-    private $baseX;
-    private $row_style_def;
-    private $row_style;
-    private $row_heights;
-    private $row_data;
-    private $rows;
-    private $total_rowspan;
-    private $col_counter;
-    private $grid;
-    private $blocks;
-    private $overflow;
-    private $header_row;
-    private $new_table;
+class easyTable{
+   const LP=0.4;
+   const XPadding=0.5;
+   const YPadding=1;
+   const IMGPadding=0.5;
+   const PBThreshold=30;
+   static private $table_counter=false;
+   static private $hex=array('0'=>0,'1'=>1,'2'=>2,'3'=>3,'4'=>4,'5'=>5,'6'=>6,'7'=>7,'8'=>8,'9'=>9,
+   'A'=>10,'B'=>11,'C'=>12,'D'=>13,'E'=>14,'F'=>15);
+   static private $style=array('width'=>false, 'border'=>false, 'border-color'=>false,
+   'border-width'=>false, 'line-height'=>false,
+   'align'=>'', 'valign'=>'', 'bgcolor'=>false, 'split-row'=>false, 'l-margin'=>false,
+   'font-family'=>false, 'font-style'=>false,'font-size'=>false, 'font-color'=>false,
+   'paddingX'=>false, 'paddingY'=>false);
+   private $pdf_obj;
+   private $document_style;
+   private $table_style;
+   private $col_num;
+   private $col_width;
+   private $baseX;
+   private $row_style_def;
+   private $row_style;
+   private $row_heights;
+   private $row_data;
+   private $rows;
+   private $total_rowspan;
+   private $col_counter;
+   private $grid;
+   private $blocks;
+   private $overflow;
+   private $header_row;
+   private $new_table;
 
-    private function get_available(){
-       static $k=0;
-       if(count($this->grid)==0){
-          $k=0;
+   private function get_available(){
+      static $k=0;
+      if(count($this->grid)==0){
+         $k=0;
       }
       while(isset($this->grid[$k])){
          $k++;
@@ -301,9 +301,9 @@
       if($c=='C'){
          if($sty['img']){
             $tmp=explode(',', $sty['img']);
-            $sty['img']=array('path'=>'', 'h'=>0, 'w'=>0);
-            $img=@ getimagesize($tmp[0]);
-            if($img){
+            if(file_exists($tmp[0])){
+               $sty['img']=array('path'=>'', 'h'=>0, 'w'=>0);
+               $img=@ getimagesize($tmp[0]);
                $sty['img']['path']=$tmp[0];
                for($i=1; $i<3; $i++){
                   if(isset($tmp[$i])){
@@ -329,7 +329,7 @@
                }
             }
             else{
-               error_log('failed to open stream: file ' . $tmp[0] .' does not exist');
+               $sty['img']='failed to open stream: file ' . $tmp[0] .' does not exist';
             }
          }
          if(is_numeric($sty['colspan']) && $sty['colspan']>0){
@@ -862,6 +862,10 @@
             $r++;
          }
          $w-=2*$sty['paddingX'];
+         if($sty['img']!==false && is_string($sty['img'])){
+            $data=$sty['img'];
+            $sty['img']=false;
+         }
          $data=$this->pdf_obj->extMultiCell($sty['font-family'], $sty['font-style'], $sty['font-size'], $w, $data);
          $h=count($data) * $sty['line-height']*$sty['font-size'];
          if($sty['img']){
@@ -985,7 +989,7 @@
          if($this->new_table){
             if(count($this->header_row)>0){
                $r=$this->pdf_obj->PageBreak()-($this->pdf_obj->GetY()+$block_height);
-               if($this->pdf_obj->PageBreak()<$this->pdf_obj->GetY()+$block_height || $r<self::PBThreshold){
+               if($r<0 || $r<self::PBThreshold){
                   $this->pdf_obj->addPage($this->document_style['orientation']);
                }
             }
