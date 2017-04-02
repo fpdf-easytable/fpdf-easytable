@@ -849,6 +849,9 @@ class easyTable{
                $this->grid[$cell_pos+$i+$j*$this->col_num]=true;
             }
          }
+         if($sty['img']!=false && $data!='' && $sty['valign']=='M'){
+            $sty['valign']=$this->row_style['valign'];
+         }
          if($sty['rowspan']){
             $this->total_rowspan=max($this->total_rowspan, $sty['rowspan']);
             $this->blocks[$cell_index]=array($cell_index, $row_number, $sty['rowspan']);

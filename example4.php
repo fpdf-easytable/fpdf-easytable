@@ -358,7 +358,36 @@
     }
  }
 
- $table->endTable(10);
+ $table->endTable(30);
+
+//##############################################################  
+//##############################################################  
+
+
+ $data=array('temperature.png'=>'Monthly average temperature',
+ 'temperaturexaltitude.png'=>'Atmosphere temperature by altitude', 
+ 'julytemperatures.png'=>'July temperatures',
+ 'monthtemperature.png'=>'Monthly average temperature', 
+ 'wind.png'=>'Wind speed during two days', 
+ 'snow.png'=>'Snow depth at Vikjafjellet Norway');
+ $table=new easyTable($pdf, 2, 'width:160; valign:B; line-height:2; bgcolor:#eee;paddingX:4;paddingY:4; border-width:3;border:1;border-color:#fff;font-color:#3a3a4f;');
+
+ $table->easyCell('Temperature, wind and snow', 'colspan:2; font-style:B; font-color:#a9a5bf; font-size:12; bgcolor:#3a3a4f; align:C;line-height:1.2');
+ $table->printRow();
+
+ $i=0;
+ foreach($data as $key=>$value)
+ {
+    $table->easyCell($value, "img:Pics/$key"); 
+    if($i%2==1)
+    {
+       $table->printRow();
+    }
+    $i++;
+ }
+
+ $table->endTable(10); 
+
 
 //##############################################################  
 //##############################################################  

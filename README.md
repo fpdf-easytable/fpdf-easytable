@@ -635,7 +635,7 @@ Syntax:
 Default 1
 
 **img** [C]
-The img attribute defines the image its dimensions to be set in the cell.
+The img attribute defines the image and its dimensions to be set in the cell.
 
 Syntax:
 
