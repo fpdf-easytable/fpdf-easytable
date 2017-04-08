@@ -2,7 +2,7 @@
  /*********************************************************************
  * FPDF easyTable                                                     *
  *                                                                    *
- * Version: 1.02                                                         *
+ * Version: 1.03                                                         *
  * Date:    17-03-2017                                                *
  * Author:  Dan Machado                                               *
  * Require  exFPDF v1.01                                           *
@@ -41,13 +41,18 @@ class easyTable{
    private $header_row;
    private $new_table;
 
-   private function get_available(){
+   private function get_available($colspan, $rowspan){
       static $k=0;
       if(count($this->grid)==0){
          $k=0;
       }
       while(isset($this->grid[$k])){
          $k++;
+      }
+      for($i=0; $i<=$colspan; $i++){
+         for($j=0; $j<=$rowspan; $j++){
+            $this->grid[$k+$i+$j*$this->col_num]=true;
+         }
       }
       return $k;
    }
@@ -419,18 +424,21 @@ class easyTable{
       if($this->row_data[$i][1]['border-color']!=false){
          $this->resetColor($this->row_data[$i][1]['border-color'], 'D');
       }
-      if($this->row_data[$i][1]['border']['T']){
-         $this->pdf_obj->Line($this->row_data[$i][6], $y, $this->row_data[$i][6]+$w, $y);
+      $a=array(1, 1, 1, 0);
+      $borders=array('L'=>3, 'T'=>0, 'R'=>1, 'B'=>2);
+      foreach($borders as $border=>$j){
+         if($this->row_data[$i][1]['border'][$border]){
+            if($border=='B'){
+               if($split==0){
+                  $this->pdf_obj->Line($this->row_data[$i][6]+(1+$a[($j+2)%4])%2*$w, $y+(1+$a[($j+1)%4])%2 * $h, $this->row_data[$i][6]+$a[$j%4]*$w, $y+($a[($j+3)%4])%2 *$h);
+               }
+            }
+            else{
+               $this->pdf_obj->Line($this->row_data[$i][6]+(1+$a[($j+2)%4])%2*$w, $y+(1+$a[($j+1)%4])%2 * $h, $this->row_data[$i][6]+$a[$j%4]*$w, $y+($a[($j+3)%4])%2 *$h);
+            }
+         }
       }
-      if($this->row_data[$i][1]['border']['R']){
-         $this->pdf_obj->Line($this->row_data[$i][6]+$w, $y, $this->row_data[$i][6]+$w, $y+$h);
-      }
-      if($split==0 && $this->row_data[$i][1]['border']['B']){
-         $this->pdf_obj->Line($this->row_data[$i][6], $y+$h, $this->row_data[$i][6]+$w, $y+$h);
-      }
-      if($this->row_data[$i][1]['border']['L']){
-         $this->pdf_obj->Line($this->row_data[$i][6], $y, $this->row_data[$i][6], $y+$h);
-      }
+      
       if($this->row_data[$i][1]['border-color']!=false){
          $this->resetColor($this->document_style['bgcolor'], 'D');
       }
@@ -838,17 +846,12 @@ class easyTable{
 
    public function easyCell($data, $style=''){
       if($this->col_counter<$this->col_num){
+         $sty=$this->set_style($style, 'C', $this->col_counter);
          $this->col_counter++;
          $row_number=count($this->rows);
          $cell_index=count($this->row_data);
-         $cell_pos=$this->get_available();
+         $cell_pos=$this->get_available($sty['colspan'], $sty['rowspan']);
          $colm=$cell_pos %$this->col_num;
-         $sty=$this->set_style($style, 'C', $colm);
-         for($i=0; $i<=$sty['colspan']; $i++){
-            for($j=0; $j<=$sty['rowspan']; $j++){
-               $this->grid[$cell_pos+$i+$j*$this->col_num]=true;
-            }
-         }
          if($sty['img']!=false && $data!='' && $sty['valign']=='M'){
             $sty['valign']=$this->row_style['valign'];
          }
