@@ -649,6 +649,10 @@ If one out of the two dimensions (width or height) is specified but not the othe
 the one that is not specified is calculated proportionally.
 Default value: empty.
 
+# Get In Touch
+
+Your comments and questions are welcome: easytable@yandex.com
+
 # Donations
 
 If you like this class maybe you would like to help me with cup coffee in exchange :-)
