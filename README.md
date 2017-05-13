@@ -656,13 +656,13 @@ Default value: empty.
 
 2. Using the script makefont.php part of FPDF library (in the makefont directory)
 
-    me@laptop:/path/to/FPDF/makefont$ php makefont.php /path/to/Fonts/My_font.ttf ENCODE
+       me@laptop:/path/to/FPDF/makefont$ php makefont.php /path/to/Fonts/My_font.ttf ENCODE
 
 	where ENCODE by default is cp1252. Use the right encode in order to 
 	utf-8 symbols, for example to display the Polish currency symbol zł,
 	use	ISO-8859-2 encode and in your script do: 
 	
-    $Table->easyCell('This is the Polish currency symbol: ' . iconv("UTF-8", "ISO-8859-2", "zł")); 
+       $Table->easyCell('This is the Polish currency symbol: ' . iconv("UTF-8", "ISO-8859-2", "zł")); 
 	
 	or:
 	
