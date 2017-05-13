@@ -685,7 +685,7 @@ Default value: empty.
    we get a ttf font file (my_font.ttf) that support the language and symbols we want to use.
    For this example we are using Russian. The encode that we are using for Russian is KOI8-R
 
-       php makefont.php /path/to/font_ttf/my_font.ttf ISO-8859-2
+       php makefont.php /path/to/font_ttf/my_font.ttf KOI8-R
    
    then we copy the resulting files to the font directory of FPDF library. 
    
@@ -699,7 +699,7 @@ Default value: empty.
 
        $table=new easyTable($pdf, ...);
 	
-       $Table->easyCell(iconv("UTF-8", "KOI8-R", "дебет дефинитионес цу")); 
+       $Table->easyCell(iconv("UTF-8", "KOI8-R", "дебет дефинитионес цу")); // Notice the encode KOI8-R
 
    or
    
