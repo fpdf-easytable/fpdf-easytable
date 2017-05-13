@@ -670,7 +670,7 @@ Default value: empty.
    the directory /path/to/FPDF/makefont move those file to the directory 
    /path/to/FPDF/font
    
-4. You are deady to use your fonts in your script:
+4. You are ready to use your fonts in your script:
 
        $pdf = new PDF();
        $pdf->AddFont('Cool-font','','My_font.php');  // Define the new font to use in the PDF object
