@@ -290,7 +290,7 @@
 
  $pdf->AddFont('lato','','Lato-Regular.php');
  
- $table=new easyTable($pdf, 3, 'width:150; align:C{CCC};border-width:0.8; border-color:#ddd;font-family:times; font-color:#66686b;line-height:1.3; font-family:lato');
+ $table=new easyTable($pdf, 3, 'width:150; align:C{CCC};border-width:0.8; border-color:#ddd;font-color:#66686b;line-height:1.3; font-family:lato');
 
  $table->rowStyle('font-size:10; min-height:20; valign:M; border:T;');
  $table->easyCell('ONE LICENSE', 'border:LT');

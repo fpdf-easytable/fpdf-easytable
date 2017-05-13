@@ -649,9 +649,48 @@ If one out of the two dimensions (width or height) is specified but not the othe
 the one that is not specified is calculated proportionally.
 Default value: empty.
 
+# Fonts And UTF-8 Support
+
+1. Get the ttf files for the font you want to use and save then in a directory
+   Fonts
+
+2. Using the script makefont.php part of FPDF library (in the makefont directory)
+
+    me@laptop:/path/to/FPDF/makefont$ php makefont.php /path/to/Fonts/My_font.ttf ENCODE
+
+	where ENCODE by default is cp1252. Use the right encode in order to 
+	utf-8 symbols, for example to display the Polish currency symbol zł,
+	use	ISO-8859-2 encode and in your script do: 
+	
+    $Table->easyCell('This is the Polish currency symbol: ' . iconv("UTF-8", "ISO-8859-2", "zł")); 
+	
+	or:
+	
+    $Table->easyCell(iconv("UTF-8", "ISO-8859-2", "This is the Polish currency symbol: zł")); 
+
+   NOTE: For more about the right encode visit: http://www.fpdf.org/en/tutorial/tuto7.htm
+   and http://php.net/manual/en/function.iconv.php
+
+3. The last command will create the files My_font.php and My_font.z in 
+   the directory /path/to/FPDF/makefont move those file to the directory 
+   /path/to/FPDF/font
+   
+4. You are deady to use your fonts in your script:
+
+    $pdf = new PDF();
+    $pdf->AddFont('Cool-font','','My_font.php');  // Define the new font in the PDF object
+    .
+    .
+    .
+    $table=new easyTable($pdf, ...);
+    $table->easyCell('Hello World', 'font-color:#66686b;font-family:Cool-font');
+    .
+    .
+    .
+
 # Get In Touch
 
-Your comments and questions are welcome: easytable@yandex.com
+Your comments and questions are welcome: easytable@yandex.com (with the subject: EasyTable)
 
 # Donations
 
