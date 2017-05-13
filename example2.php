@@ -26,6 +26,7 @@ imperdiet orci pretium vel. Donec vehicula tellus nisl, nec commodo diam posuere
  $pdf=new exFPDF();
  $pdf->AddPage(); 
  $pdf->SetFont('helvetica','',10);
+ $pdf->AddFont('FontUTF8','','Arimo-Regular.php'); 
 
  $table=new easyTable($pdf, '{20, 30, 45, 45, 30}', 'width:170; border-color:#ffff00; font-size:10; border:1; paddingY:2;');
 
@@ -45,7 +46,8 @@ imperdiet orci pretium vel. Donec vehicula tellus nisl, nec commodo diam posuere
 
  $table->rowStyle('align:C; valign:M');
  $table->easyCell($cells[0], 'font-size:8');
- $table->easyCell($cells[5], 'colspan:4; font-family:times; font-size:12; font-style:I;');
+ $table->easyCell(iconv("UTF-8", 'KOI8-R', 'Вери порро номинати вел ех, еум те лаореет импедит, ест но ферри ириуре. Ет вис реяуе хомеро. Перфецто сцрипсерит вис еу, нам ин ассум пробатус. Фиерент импердиет аппеллантур меи но, граеце яуодси пертинациа вел ад, не при лудус оратио тациматес. Хис дебет дефинитионес цу.'), 'colspan:4; font-family:FontUTF8; font-size:12;');
+
  $table->printRow();
 
  $table->easyCell($cells[0], 'font-size:6; valign:T');
