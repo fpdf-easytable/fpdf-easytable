@@ -678,10 +678,12 @@ Default value: empty.
        // more code
        
        $table=new easyTable($pdf, ...);
-       $table->easyCell('Hello World', 'font-color:#66686b;font-family:Cool-font');
+       $table->easyCell(iconv("UTF-8", "ENCODE",'Hello World'), 'font-color:#66686b;font-family:Cool-font');
        //etc...
 
-5. Example: we get a ttf font file (my_font.ttf) with Polish characters, so we use ISO-8859-2 encode.
+5. [Example](https://github.com/fpdf-easytable/fpdf-easytable/blob/master/basic_example.pdf): 
+   we get a ttf font file (my_font.ttf) that support the language and symbols we want to use.
+   For this example we are using Russian. The encode for Russian is KOI8-R
 
        php makefont.php /path/to/font_ttf/my_font.ttf ISO-8859-2
    
@@ -698,7 +700,7 @@ Default value: empty.
        $table=new easyTable($pdf, ...);
 	
        $Table->easyCell('This is the Polish currency symbol: ' . iconv("UTF-8", "ISO-8859-2", "zł"));        
-       $Table->easyCell(iconv("UTF-8", "ISO-8859-2", "This is the Polish currency symbol: zł")); 
+       $Table->easyCell(iconv("UTF-8", "KOI8-R", "дебет дефинитионес цу")); 
 
    or
    
@@ -711,7 +713,7 @@ Default value: empty.
        $table=new easyTable($pdf, 5, 'font-family:FontUTF8;...');
 	
        $Table->easyCell('This is the Polish currency symbol: ' . iconv("UTF-8", "ISO-8859-2", "zł"));        
-       $Table->easyCell(iconv("UTF-8", "ISO-8859-2", "This is the Polish currency symbol: zł")); 
+       $Table->easyCell(iconv("UTF-8", "KOI8-R", "дебет дефинитионес цу")); 
 
 
    NOTE: For more about the right encode visit [FPDF: Tutorial 7](http://www.fpdf.org/en/tutorial/tuto7.htm)

@@ -15,6 +15,8 @@
  
  $pdf->Ln(10);
 
+ $pdf->AddFont('FontUTF8','','Arimo-Regular.php'); 
+ 
  $table=new easyTable($pdf, 3, 'border:1;');
  
     $table->easyCell('Text 1', 'valign:T'); 
@@ -22,8 +24,9 @@
     $table->easyCell('Text 3');
     $table->printRow();
 
-    $table->rowStyle('min-height:20; align:{C}');   // let's adjust the height of this row
-    $table->easyCell('Text 4', 'colspan:3');
+    $table->rowStyle('min-height:60; align:{C}');   // let's adjust the height of this row
+    $table->easyCell(iconv("UTF-8", 'KOI8-R', 'What about Russian? Вери порро номинати вел ех, еум те лаореет импедит, ест но ферри ириуре. Ет вис реяуе хомеро. Перфецто сцрипсерит вис еу, нам ин ассум пробатус. Фиерент импердиет аппеллантур меи но, граеце яуодси пертинациа вел ад, не при лудус оратио тациматес. Хис дебет дефинитионес цу.'), 'colspan:3; font-family:FontUTF8');
+
     $table->printRow();
 
  $table->endTable(4);
