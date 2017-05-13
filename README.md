@@ -54,6 +54,8 @@ Building and styling a table with easyTable is simple, clean and fast.
 
 - Text can be added on top or below an image in a cell
 
+- [UTF-8 Support](#Fonts-And-UTF-8-Support)
+
 # Comparisons
 
 **easyTable vs kind-of-HTML-to-PDF**
@@ -654,6 +656,8 @@ Default value: empty.
 1. Get the ttf files for the font you want to use and save then in a directory
    Fonts
 
+   **NOTE:** the font must contain the characters you want to use
+   
 2. Using the script makefont.php part of FPDF library (in the makefont directory)
 
        me@laptop:/path/to/FPDF/makefont$ php makefont.php /path/to/Fonts/My_font.ttf ENCODE
@@ -671,6 +675,8 @@ Default value: empty.
    NOTE: For more about the right encode visit [FPDF: Tutorial 7](http://www.fpdf.org/en/tutorial/tuto7.htm)
    and [php inconv](http://php.net/manual/en/function.iconv.php)
    
+   **NOTE:** the font must contain the characters corresponding to the selected encoding.  
+   
 3. The last command will create the files My_font.php and My_font.z in 
    the directory /path/to/FPDF/makefont move those file to the directory 
    /path/to/FPDF/font
@@ -685,6 +691,7 @@ Default value: empty.
        $table=new easyTable($pdf, ...);
        $table->easyCell('Hello World', 'font-color:#66686b;font-family:Cool-font');
        //etc...
+
 
 # Get In Touch
 
