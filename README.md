@@ -651,7 +651,7 @@ If one out of the two dimensions (width or height) is specified but not the othe
 the one that is not specified is calculated proportionally.
 Default value: empty.
 
-# Fonts And UTF-8 Support
+### Fonts And UTF-8 Support
 
 1. Get the ttf files for the font you want to use and save then in a directory
    Fonts
