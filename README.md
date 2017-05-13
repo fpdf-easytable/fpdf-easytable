@@ -662,19 +662,8 @@ Default value: empty.
 
        me@laptop:/path/to/FPDF/makefont$ php makefont.php /path/to/Fonts/My_font.ttf ENCODE
 
-	where ENCODE by default is cp1252. Use the right encode in order to 
-	utf-8 symbols, for example to display the Polish currency symbol zł,
-	use	ISO-8859-2 encode and in your script do: 
-	
-       $Table->easyCell('This is the Polish currency symbol: ' . iconv("UTF-8", "ISO-8859-2", "zł")); 
-	
-	or:
-	
-       $Table->easyCell(iconv("UTF-8", "ISO-8859-2", "This is the Polish currency symbol: zł")); 
+	Note: use the right encode in order to use utf-8 symbols [FPDF: Tutorial 7](http://www.fpdf.org/en/tutorial/tuto7.htm).
 
-   NOTE: For more about the right encode visit [FPDF: Tutorial 7](http://www.fpdf.org/en/tutorial/tuto7.htm)
-   and [php inconv](http://php.net/manual/en/function.iconv.php)
-   
    **NOTE:** the font must contain the characters corresponding to the selected encoding.  
    
 3. The last command will create the files My_font.php and My_font.z in 
@@ -684,7 +673,7 @@ Default value: empty.
 4. You are deady to use your fonts in your script:
 
        $pdf = new PDF();
-       $pdf->AddFont('Cool-font','','My_font.php');  // Define the new font in the PDF object
+       $pdf->AddFont('Cool-font','','My_font.php');  // Define the new font to use in the PDF object
        
        // more code
        
@@ -692,6 +681,42 @@ Default value: empty.
        $table->easyCell('Hello World', 'font-color:#66686b;font-family:Cool-font');
        //etc...
 
+5. Example: we get a ttf font file (my_font.ttf) with Polish characters, so we use ISO-8859-2 encode.
+
+       php makefont.php /path/to/font_ttf/my_font.ttf ISO-8859-2
+   
+   then we copy the resulting files to the font directory of FPDF library. 
+   
+   Then, in our script:
+
+       $pdf = new PDF();
+ 
+       $pdf->AddFont('FontUTF8','','my_font.php'); 
+  
+       $pdf->SetFont('FontUTF8','',8);
+
+       $table=new easyTable($pdf, ...);
+	
+       $Table->easyCell('This is the Polish currency symbol: ' . iconv("UTF-8", "ISO-8859-2", "zł"));        
+       $Table->easyCell(iconv("UTF-8", "ISO-8859-2", "This is the Polish currency symbol: zł")); 
+
+   or
+   
+       $pdf = new PDF();
+       $pdf->AddPage();
+       $pdf->SetFont('Arial','B',16);
+       
+       $pdf->AddFont('FontUTF8','','my_font.php'); 
+  
+       $table=new easyTable($pdf, 5, 'font-family:FontUTF8;...');
+	
+       $Table->easyCell('This is the Polish currency symbol: ' . iconv("UTF-8", "ISO-8859-2", "zł"));        
+       $Table->easyCell(iconv("UTF-8", "ISO-8859-2", "This is the Polish currency symbol: zł")); 
+
+
+   NOTE: For more about the right encode visit [FPDF: Tutorial 7](http://www.fpdf.org/en/tutorial/tuto7.htm)
+   and [php inconv](http://php.net/manual/en/function.iconv.php)
+   
 
 # Get In Touch
 
