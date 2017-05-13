@@ -666,27 +666,25 @@ Default value: empty.
 	
 	or:
 	
-    $Table->easyCell(iconv("UTF-8", "ISO-8859-2", "This is the Polish currency symbol: zł")); 
+       $Table->easyCell(iconv("UTF-8", "ISO-8859-2", "This is the Polish currency symbol: zł")); 
 
-   NOTE: For more about the right encode visit: http://www.fpdf.org/en/tutorial/tuto7.htm
-   and http://php.net/manual/en/function.iconv.php
-
+   NOTE: For more about the right encode visit [FPDF: Tutorial 7](http://www.fpdf.org/en/tutorial/tuto7.htm)
+   and [php inconv](http://php.net/manual/en/function.iconv.php)
+   
 3. The last command will create the files My_font.php and My_font.z in 
    the directory /path/to/FPDF/makefont move those file to the directory 
    /path/to/FPDF/font
    
 4. You are deady to use your fonts in your script:
 
-    $pdf = new PDF();
-    $pdf->AddFont('Cool-font','','My_font.php');  // Define the new font in the PDF object
-    .
-    .
-    .
-    $table=new easyTable($pdf, ...);
-    $table->easyCell('Hello World', 'font-color:#66686b;font-family:Cool-font');
-    .
-    .
-    .
+       $pdf = new PDF();
+       $pdf->AddFont('Cool-font','','My_font.php');  // Define the new font in the PDF object
+       
+       // more code
+       
+       $table=new easyTable($pdf, ...);
+       $table->easyCell('Hello World', 'font-color:#66686b;font-family:Cool-font');
+       //etc...
 
 # Get In Touch
 
