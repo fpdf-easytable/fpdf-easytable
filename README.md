@@ -54,7 +54,7 @@ Building and styling a table with easyTable is simple, clean and fast.
 
 - Text can be added on top or below an image in a cell
 
-- [UTF8 Support](#Fonts-And-UTF8-Support)
+- [UTF8 Support](#fonts-and-utf8-support)
 
 # Comparisons
 
@@ -651,7 +651,7 @@ If one out of the two dimensions (width or height) is specified but not the othe
 the one that is not specified is calculated proportionally.
 Default value: empty.
 
-### Fonts And UTF8 Support
+# Fonts And UTF8 Support
 
 1. Get the ttf files for the font you want to use and save then in a directory
    Fonts
