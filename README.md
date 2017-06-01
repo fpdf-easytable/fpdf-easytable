@@ -30,7 +30,22 @@ Building and styling a table with easyTable is simple, clean and fast.
  
  $table->endTable();
 ```
+
+# Content
  
+- [Features](#features)
+- [Comparisons](#comparisons)
+- [Examples](#examples)
+- [Requirements](#requirements)
+- [Manual Install](#manual-install)
+- [Quick Start](#quick-start)
+- [Documentation](#documentation)
+- [Fonts And UTF8 Support](#fonts-and-utf8-support)
+- [Using with FPDI](#using-with-fpdi)
+- [Get In Touch](#get-in-touch)
+- [Donations](#donations)
+- [License](#license)
+
 # Features
 
 - Table and columns width can be defined in mm or percentage
@@ -162,15 +177,27 @@ num_cols
     this parameter can be a positive integer (the number of columns)
     or a string of the following form
    
-    I) a positive integer, the number of columns for the table. The width of every column will be equal to the width of the table (given by the width property) divided by the number of columns ($num_cols)
+    I) a positive integer, the number of columns for the table. The width of every 
+    column will be equal to the width of the table (given by the width property) divided by 
+    the number of columns ($num_cols)
 
-    II) a string of the form '{c1, c2, c3,... cN}'. In this case every element in the curly brackets is a positive numeric value that represent the width of a column. Thus, the n-th numeric value is the width of the n-th colum. If the sum of all the width of the columns is bigger than the width of the table but less than the width of the document, the table will stretch to the sum of the columns width. However, if the sum of the columns is bigger than the width of the document, the width of every column will be reduce proportionally to make the total sum equal to the width of the document. 
+    II) a string of the form '{c1, c2, c3,... cN}'. In this case every element in the curly 
+    brackets is a positive numeric value that represent the width of a column. Thus, 
+    the n-th numeric value is the width of the n-th colum. If the sum of all the width of 
+    the columns is bigger than the width of the table but less than the width of the document, 
+    the table will stretch to the sum of the columns width. However, if the sum of the columns 
+    is bigger than the width of the document, the width of every column will be reduce proportionally 
+    to make the total sum equal to the width of the document. 
 
-    III) a string of the form '%{c1, c2, c3,... cN}'. Similar to the previous case, but this time every element represents a percentage of the width of the table. In this case it the sum of this percentages is bigger than 100, the execution will be terminated.
+    III) a string of the form '%{c1, c2, c3,... cN}'. Similar to the previous case, but this time 
+    every element represents a percentage of the width of the table. In this case it the sum of 
+    this percentages is bigger than 100, the execution will be terminated.
 
 style
 
-    the global style for the table (see documentation) a semicolon-separated string of attribute values that defines the default layout of the table and all the cells and their contents (see Documentation section in README.md)
+    the global style for the table (see documentation) a semicolon-separated string of attribute 
+    values that defines the default layout of the table and all the cells and their contents 
+    (see Documentation section in README.md)
 
 *Examples:*
 ```
@@ -716,6 +743,54 @@ Default value: empty.
    NOTE: For more about the right encode visit [FPDF: Tutorial 7](http://www.fpdf.org/en/tutorial/tuto7.htm)
    and [php inconv](http://php.net/manual/en/function.iconv.php)
    
+# Using with FPDI
+
+If your project requieres easyTable and [FPDI](https://www.setasign.com/products/fpdi/about/), this is
+how you should do it. Assuming that fpdf.php, easyTable.php, exfpdf.php, fpdi.php and any 
+other files from this libraries are in the same directory. 
+
+The class exfpdf should extends the class fpdi instead of the class fpdf. So in exfpdf.php:
+
+    <?php
+    // include 'fpdf.php'; <-- no needed here
+    include 'fpdi.php';
+
+    class exFPDF extends FPDI
+    {
+    etc
+    etc
+
+And in your project:
+
+    <?php
+    include 'fpdf.php';
+    //include 'fpdi.php'; no needed because exfpdf is extending fpdi class
+    include 'exfpdf.php';
+    include 'easyTable.php';
+
+    //$pdf = new FPDI(); remember exfpdf is extending the fpdi class
+    $pdf=new exFPDF(); // so we initiate exFPDF instead of FPDI
+
+    // add a page
+    $pdf->AddPage();
+    // set the source file
+    $pdf->setSourceFile("example-2.pdf");
+    // import page 1
+    $tplIdx = $pdf->importPage(1);
+    // use the imported page and place it at point 10,10 with a width of 100 mm
+    $pdf->useTemplate($tplIdx, 10, 10, 100);
+
+    //add another page
+    $pdf->AddPage();
+    $pdf->SetFont('helvetica','',10);
+
+    $table1=new easyTable($pdf, 2);
+    $table1->easyCell('Sales Invoice', 'font-size:30; font-style:B; font-color:#00bfff;');
+    $table1->easyCell('', 'img:fpdf.png, w80; align:R;');
+    $table1->printRow();
+    //etc
+    //etc
+    
 
 # Get In Touch
 
