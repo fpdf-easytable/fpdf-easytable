@@ -63,7 +63,8 @@ Building and styling a table with easyTable is simple, clean and fast.
 - Attribute values can be defined globally, at the table level (affect all the cells in the table), 
   at the row level (will affect just the cells in that row), or locally at the cell level
 
-- By default, rows does not splitdoes not break rows
+- Rows can be set to split on page break if it does not fit in the current page or to be printed
+  on the next page
 
 - Images can be added to table cells
 
@@ -798,7 +799,8 @@ Your comments and questions are welcome: easytable@yandex.com (with the subject:
 
 # Donations
 
-If you like this class maybe you would like to help me with cup coffee in exchange :-)
+I like coffee, I mean good quality coffee. So if you like this class maybe you would 
+like to help me with my coffee :-)
 
 [![Donate](https://www.paypalobjects.com/en_US/GB/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JALWQVBS2KGQC)
 
