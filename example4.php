@@ -1,4 +1,5 @@
 <?php
+ include 'fpdf.php';
  include 'exfpdf.php';
  include 'easyTable.php';
 
