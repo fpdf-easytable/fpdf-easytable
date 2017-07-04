@@ -753,8 +753,6 @@ other files from this libraries are in the same directory.
 The class exfpdf should extends the class fpdi instead of the class fpdf. So in exfpdf.php:
 
     <?php
-    // include 'fpdf.php'; <-- no needed here
-    include 'fpdi.php';
 
     class exFPDF extends FPDI
     {
@@ -765,7 +763,7 @@ And in your project:
 
     <?php
     include 'fpdf.php';
-    //include 'fpdi.php'; no needed because exfpdf is extending fpdi class
+    include 'fpdi.php';
     include 'exfpdf.php';
     include 'easyTable.php';
 
