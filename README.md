@@ -124,12 +124,13 @@ and second the results are very poor.
 
 # Requirements
 
+- PHP 5.6 or higher
 - [FPDF 1.81](http://www.fpdf.org).
 - exfpdf.php (included in this project)
 
 # Manual Install
 
-Download the class and put the contents in a directory in your project structure.
+Download the EasyTable class and FPDF class and put the contents in a directory in your project structure along with .
 Be sure you are using [FPDF 1.81](http://www.fpdf.org).
 
 # Quick Start
