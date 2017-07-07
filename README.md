@@ -130,7 +130,7 @@ and second the results are very poor.
 
 # Manual Install
 
-Download the EasyTable class and FPDF class and put the contents in a directory in your project structure along with .
+Download the EasyTable class and FPDF class and put the contents in a directory in your project structure.
 Be sure you are using [FPDF 1.81](http://www.fpdf.org).
 
 # Quick Start
