@@ -217,7 +217,7 @@ style
 
 *Description:*
 
-   Set or overwrite the style for all the cells in current.
+   Set or overwrite the style for all the cells in the current row.
 
 *Parameters:*
 
@@ -266,9 +266,9 @@ style (optional)
 *Parameters:*
 
 setAsHeader (optional)
-
-    Optional. When it is set as true, and it mark the current row as the header
-    of the table; it will be printed on the pages that the table split
+    When it is set as true, it sets the current row as the header
+    for the table; this means that the current row will be printed as the first
+    row of the table (table header) on every page that the table splits on.
     Remark: 1. In order to work, the table attribute split-row should set as true. 
             2. Just the first row where this parameter is set as true will be
                used as header any other will printed as a normal row.
