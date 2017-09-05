@@ -2,10 +2,10 @@
  /*********************************************************************
  * FPDF easyTable                                                     *
  *                                                                    *
- * Version: 1.03                                                         *
+ * Version: 1.02                                                      *
  * Date:    17-03-2017                                                *
  * Author:  Dan Machado                                               *
- * Require  exFPDF v1.01                                           *
+ * Require  exFPDF v1.01                                              *
  **********************************************************************/
   
 class easyTable{
@@ -230,7 +230,10 @@ class easyTable{
          else{
             $sty['border-width']=false;
          }
-         if($sty['split-row']!=false){
+         if($sty['split-row']=='false'){
+            $sty['split-row']=false;
+         }
+         elseif($sty['split-row']!==false){
             $sty['split-row']=true;
          }
       }
@@ -903,12 +906,10 @@ class easyTable{
 
    This function indicates the end of the current row.
    Parameters:
-
    setAsHeader (optional)
-   When it is set as true, it sets the current row as the header
+   Optional. When it is set as true, it sets the current row as the header
    for the table; this means that the current row will be printed as the first
    row of the table (table header) on every page that the table splits on.
-
    Remark: 1. In order to work, the table attribute split-row should set as true.
    2. Just the first row where this parameter is set as true will be
    used as header any other will printed as a normal row.
@@ -986,12 +987,10 @@ class easyTable{
                $this->header_row['rows']=$this->rows;
             }
          }
-         if($this->table_style['split-row']==false && $this->pdf_obj->PageBreak()<$this->pdf_obj->GetY()+self::PBThreshold){
-            if($this->pdf_obj->PageBreak()<$this->pdf_obj->GetY()+min(self::PBThreshold-10, $this->row_heights[0])){
-               $this->pdf_obj->addPage($this->document_style['orientation']);
-               if(count($this->header_row)>0){
-                  $this->printing_loop(true);
-               }
+         if($this->table_style['split-row']==false && $this->pdf_obj->PageBreak()<$this->pdf_obj->GetY()+max($block_height,$this->row_heights[0])){
+            $this->pdf_obj->addPage($this->document_style['orientation']);
+            if(count($this->header_row)>0){
+               $this->printing_loop(true);
             }
          }
          
@@ -1056,5 +1055,6 @@ class easyTable{
       unset($this->overflow);
       unset($this->header_row);
    }
+   
 }
 ?>
