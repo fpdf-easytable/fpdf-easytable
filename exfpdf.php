@@ -7,7 +7,6 @@
  * Author:  Dan Machado                                               *
  * Require  FPDF v1.81                                                *
  **********************************************************************/
-// include 'fpdf.php';
  class exFPDF extends FPDF{
 
    public function PageBreak(){
@@ -108,8 +107,7 @@
       if($w==0){
          return $result;
       }
-      $wmax = ($w-2*$this->cMargin)*1000/($font['FontSize']);
-      
+      $wmax = $w*1000/$font['FontSize'];
       $s = trim(str_replace("\r",'',$txt));
       $chs = strlen($s);
       $sep = -1;
@@ -160,6 +158,7 @@
       }
       return $result;
    }
+   
    /***********************************************************************
    *
    * Based on FPDF method Cell
@@ -182,17 +181,17 @@
          if($txt!==''){
             $stringWidth=$this->GetStringWidth($txt);
             if($align=='R'){
-               $dx = $w-$this->cMargin-$stringWidth;
+               $dx = $w-$stringWidth;
             }
             elseif($align=='C'){
                $dx = ($w-$stringWidth)/2;
             }
             else{
-               $dx = $this->cMargin;
+               $dx = 0;
             }
             if($align=='J'){
                $ns=count(explode(' ', $txt));
-               $wx = $w-2*$this->cMargin;
+               $wx = $w;
                $this->ws = ($ns>1) ? (($wx-$stringWidth)*(1/($ns-1))) : 0;
                $this->_out(sprintf('%.3F Tw',$this->ws*$this->k));
             }
@@ -217,5 +216,8 @@
          $this->_out('0 Tw');
       }
    }
+   
+   
+   
 }
 ?>

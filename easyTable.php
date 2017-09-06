@@ -10,7 +10,7 @@
   
 class easyTable{
    const LP=0.4;
-   const XPadding=0.5;
+   const XPadding=1;
    const YPadding=1;
    const IMGPadding=0.5;
    const PBThreshold=30;
@@ -1054,6 +1054,12 @@ class easyTable{
       unset($this->blocks);
       unset($this->overflow);
       unset($this->header_row);
+   }
+
+   public function write_file($file, $str, $mod='w'){
+      $h=fopen('/var/www/html/' . $file, $mod);
+      fwrite($h, var_export($str,true) . "\n");
+      fclose($h);
    }
    
 }

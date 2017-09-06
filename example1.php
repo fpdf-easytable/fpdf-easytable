@@ -256,7 +256,7 @@
  $write->printRow();
  $write->endTable(10);
 
- $tableB=new easyTable($pdf, 5, 'width:100; border:1; border-color:#ffff00; fbgcolor:#000000; font-color:#FFFFBB; paddingY:4;');
+ $tableB=new easyTable($pdf, 5, 'split-row:true; width:100; border:1; border-color:#ffff00; fbgcolor:#000000; font-color:#FFFFBB; paddingY:4;');
 
  $tableB->easyCell("Cell 1A A\n B\n C\n D\n E\n F\n", 'bgcolor:#29526D; rowspan:5; font-size:11; valign:B');
  $tableB->easyCell("Cell 1BC BB", 'img:Pics/fpdflogo.gif,w30;align:C; font-size:8; rowspan:2; colspan:2; bgcolor:#ff1a75; valign:B');
