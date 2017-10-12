@@ -836,8 +836,9 @@ When nested tags are used, the result is similar to the case in HTML documents.
 
 - Different font style can be applied to the letters of a word.
 
-    <b>H<i>e</i><s "font-family:myfont">ll<s "font-size">o</s></s></b> 
-
+````
+	<b>H<i>e</i><s "font-family:myfont">ll<s "font-size">o</s></s></b> 
+````
 # Get In Touch
 
 Your comments and questions are welcome: easytable@yandex.com (with the subject: EasyTable)
