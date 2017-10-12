@@ -411,7 +411,7 @@ imperdiet orci pretium vel. Donec vehicula tellus nisl, nec commodo diam posuere
  $write->endTable(5);
  
  $rows=20;  
- $table=new easyTable($pdf, '{100, 30,30,30}', 'align:L; border:1');
+ $table=new easyTable($pdf, '{100, 30,30,30}', 'split-row:true; align:L; border:1');
  $table->easyCell($text, "rowspan:$rows; border:0;");
  $table->easyCell('text 1', 'bgcolor:#000; font-color:#fff');
  $table->easyCell('text 2', 'bgcolor:#000; font-color:#fff');

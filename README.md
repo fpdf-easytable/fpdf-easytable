@@ -72,6 +72,8 @@ Building and styling a table with easyTable is simple, clean and fast.
 
 - [UTF8 Support](#fonts-and-utf8-support)
 
+- [Tag based font style](#tag-based-font-style) which allows to mix different font families, font styles, font size and font color in the same cell! **_NEW FEATURE!!_** 
+
 # Comparisons
 
 **easyTable vs kind-of-HTML-to-PDF**
@@ -791,6 +793,54 @@ And in your project:
     //etc
     //etc
     
+# Tag Based Font Style
+
+The new version of FPDF EasyTable can handle tag-based font styles at string level.
+
+    $table->easyCell('Project: EasyTable', 'font-family:lato; font-size:30; font-color:#00bfff;');
+
+now we can do:
+
+    $table->easyCell('<b>Project:</b> <s "font-size:20; font-family:times">EasyTable</s>', 'font-family:lato; font-size:30; font-color:#00bfff;');
+
+The font style set at the string level will over write any other font style set at the cell, row or table level.
+
+Tags
+
+**<s "fontstyle"></s>**
+
+font-style is a semicolon separated string which can include: font-size, font-family, font-style; font-color;
+
+   Note: Remember to define every font your project needs.
+
+    $pdf->AddFont('MyFabFont','','my_font.php');   
+    $pdf->AddFont('MyFabFont','B','my_font_bold.php');   
+    $pdf->AddFont('MyFabFont','I','my_font_italic.php');   
+    $pdf->AddFont('MyFabFont','BI','my_font_bolditalic.php');   
+
+font-color can be Hex color code or RGB color code.
+
+**<b></b>**
+
+Shortcut for 
+    <s "font-style:B"></s>
+
+**<i></i>**
+
+Shortcut for 
+    <s "font-style:I"></s>
+
+**Tags can be nested**
+
+When nested tags are used, the result is similar to the case in HTML documents.
+
+    <b>Helo <i>world</i></b>
+
+     <s "font-style:I; font-color#abc123; font-family:times">Hello  <s "font-style:B; font-family:lato; font-size:20">world</s></s>
+
+- Different font style can be applied to the letters of a word.
+
+    <b>H<i>e</i><s "font-family:myfont">ll<s "font-size">o</s></s></b> 
 
 # Get In Touch
 

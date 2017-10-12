@@ -27,6 +27,9 @@ imperdiet orci pretium vel. Donec vehicula tellus nisl, nec commodo diam posuere
  $pdf->AddPage(); 
  $pdf->SetFont('helvetica','',10);
  $pdf->AddFont('FontUTF8','','Arimo-Regular.php'); 
+ $pdf->AddFont('FontUTF8','B','Arimo-Bold.php');
+ $pdf->AddFont('FontUTF8','I','Arimo-Italic.php');
+ $pdf->AddFont('FontUTF8','BI','Arimo-BoldItalic.php');
 
  $table=new easyTable($pdf, '{20, 30, 45, 45, 30}', 'width:170; border-color:#ffff00; font-size:10; border:1; paddingY:2;');
 
@@ -46,7 +49,7 @@ imperdiet orci pretium vel. Donec vehicula tellus nisl, nec commodo diam posuere
 
  $table->rowStyle('align:C; valign:M');
  $table->easyCell($cells[0], 'font-size:8');
- $table->easyCell(iconv("UTF-8", 'KOI8-R', 'Вери порро номинати вел ех, еум те лаореет импедит, ест но ферри ириуре. Ет вис реяуе хомеро. Перфецто сцрипсерит вис еу, нам ин ассум пробатус. Фиерент импердиет аппеллантур меи но, граеце яуодси пертинациа вел ад, не при лудус оратио тациматес. Хис дебет дефинитионес цу.'), 'colspan:4; font-family:FontUTF8; font-size:12;');
+ $table->easyCell(iconv("UTF-8", 'KOI8-R', '<b>Вери</b> порро <i>номинати</i> вел ех, <b><i>еум</i></b> те лаореет импедит, <s "font-style:B;font-size:18; font-color:#3399ff">ест но ферри ириуре.</s> Ет вис реяуе хомеро. Перфецто сцрипсерит вис еу, нам ин ассум пробатус. Фиерент импердиет аппеллантур меи но, граеце яуодси пертинациа вел ад, не при лудус оратио тациматес. Хис дебет дефинитионес цу.'), 'colspan:4; font-family:FontUTF8; font-size:12;');
 
  $table->printRow();
 

@@ -18,7 +18,7 @@
  $table1->printRow();
  
  $table1->rowStyle('font-size:12;');
- $table1->easyCell("Mr. Rasmus Lerdorf\n123 Some Street\nSome City\nABC 123\nSome Country");
+ $table1->easyCell("<b>Name:</b> Mr. Rasmus Lerdorf\n<b>Address:</b> 123 Some Street\n<b>City:</b> Some City\n<b>Post Code:</b> ABC 123\n<b>Country:</b> Some Country");
  $table1->easyCell("Mr. Olivier PLATHEY\n123 Some other Street\nSome other City\nABC 123\nSome other Country", 'align:R;');
  $table1->printRow(); 
  $table1->endTable(5);

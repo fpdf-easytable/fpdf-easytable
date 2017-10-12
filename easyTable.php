@@ -2,8 +2,8 @@
  /*********************************************************************
  * FPDF easyTable                                                     *
  *                                                                    *
- * Version: 1.02                                                      *
- * Date:    17-03-2017                                                *
+ * Version: 2.0                                                       *
+ * Date:    12-10-2017                                                *
  * Author:  Dan Machado                                               *
  * Require  exFPDF v1.01                                              *
  **********************************************************************/
@@ -15,8 +15,6 @@ class easyTable{
    const IMGPadding=0.5;
    const PBThreshold=30;
    static private $table_counter=false;
-   static private $hex=array('0'=>0,'1'=>1,'2'=>2,'3'=>3,'4'=>4,'5'=>5,'6'=>6,'7'=>7,'8'=>8,'9'=>9,
-   'A'=>10,'B'=>11,'C'=>12,'D'=>13,'E'=>14,'F'=>15);
    static private $style=array('width'=>false, 'border'=>false, 'border-color'=>false,
    'border-width'=>false, 'line-height'=>false,
    'align'=>'', 'valign'=>'', 'bgcolor'=>false, 'split-row'=>false, 'l-margin'=>false,
@@ -55,92 +53,6 @@ class easyTable{
          }
       }
       return $k;
-   }
-
-   private function is_rgb($str){
-      $a=true;
-      $tmp=explode(',', trim($str, ','));
-      foreach($tmp as $color){
-         if(!is_numeric($color) || $color<0 || $color>255){
-            $a=false;
-            break;
-         }
-      }
-      return $a;
-   }
-
-   private function is_hex($str){
-      $a=true;
-      $str=strtoupper($str);
-      $n=strlen($str);
-      if(($n==7 || $n==4) && $str[0]=='#'){
-         for($i=1; $i<$n; $i++){
-            if(!isset(self::$hex[$str[$i]])){
-               $a=false;
-               break;
-            }
-         }
-      }
-      else{
-         $a=false;
-      }
-      return $a;
-   }
-
-   private function hextodec($str){
-      $result=array();
-      $str=strtoupper(substr($str,1));
-      $n=strlen($str);
-      for($i=0; $i<3; $i++){
-         if($n==6){
-            $result[$i]=self::$hex[$str[2*$i]]*16+self::$hex[$str[2*$i+1]];
-         }
-         else{
-            $result[$i]=self::$hex[$str[$i]]*16+self::$hex[$str[$i]];
-         }
-      }
-      return $result;
-   }
-
-   private function set_color($str){
-      $result=array();
-      if($this->is_hex($str)){
-         $result=$this->hextodec($str);
-      }
-      elseif($this->is_rgb($str)){
-         $result=explode(',', trim($str, ','));
-         for($i=0; $i<3; $i++){
-            if(!isset($result[$i])){
-               $result[$i]=0;
-            }
-         }
-      }
-      return $result;
-   }
-
-   private function getColor($str){
-      $result=array(null, null, null);
-      $i=0;
-      $tmp=explode(' ', $str);
-      foreach($tmp as $c){
-         if(is_numeric($c)){
-            $result[$i]=$c*256;
-            $i++;
-         }
-      }
-      return $result;
-   }
-
-   private function resetColor($array, $p='F'){
-      if($p=='T'){
-         $this->pdf_obj->SetTextColor($array[0],$array[1],$array[2]);
-      }
-      elseif($p=='D'){
-         $this->pdf_obj->SetDrawColor($array[0],$array[1], $array[2]);
-      }
-      else{
-         $this->pdf_obj->SetFillColor($array[0],$array[1],$array[2]);
-      }
    }
 
    private function get_style($str, $c){
@@ -277,7 +189,7 @@ class easyTable{
       }
       $color_settings=array('bgcolor', 'font-color', 'border-color');
       foreach($color_settings as $setting){
-         if($sty[$setting]===false || !($this->is_hex($sty[$setting]) || $this->is_rgb($sty[$setting]))){
+         if($sty[$setting]===false || !($this->pdf_obj->is_hex($sty[$setting]) || $this->pdf_obj->is_rgb($sty[$setting]))){
             if($c=='C' || $c=='R'){
                $this->inherating($sty, $setting, $c);
             }
@@ -286,7 +198,7 @@ class easyTable{
             }
          }
          else{
-            $sty[$setting]=$this->set_color($sty[$setting]);
+            $sty[$setting]=$sty[$setting];
          }
       }
       $font_settings=array('font-family', 'font-style', 'font-size');
@@ -425,7 +337,7 @@ class easyTable{
          $h=$this->pdf_obj->PageBreak()-$y;
       }
       if($this->row_data[$i][1]['border-color']!=false){
-         $this->resetColor($this->row_data[$i][1]['border-color'], 'D');
+         $this->pdf_obj->resetColor($this->row_data[$i][1]['border-color'], 'D');
       }
       $a=array(1, 1, 1, 0);
       $borders=array('L'=>3, 'T'=>0, 'R'=>1, 'B'=>2);
@@ -443,10 +355,10 @@ class easyTable{
       }
       
       if($this->row_data[$i][1]['border-color']!=false){
-         $this->resetColor($this->document_style['bgcolor'], 'D');
+         $this->pdf_obj->resetColor($this->document_style['bgcolor'], 'D');
       }
       if($split){
-         $this->row_data[$i][1]['border']['T']=0;
+         $this->pdf_obj->row_data[$i][1]['border']['T']=0;
       }
    }
 
@@ -464,11 +376,9 @@ class easyTable{
          $xpadding=2*$this->row_data[$i][1]['paddingX'];
          $l=count($this->row_data[$i][0])* $this->row_data[$i][1]['line-height']*$this->row_data[$i][1]['font-size'];
          $this->pdf_obj->SetXY($x, $y+$k);
-         $this->resetColor($this->row_data[$i][1]['font-color'], 'T');
-         $this->pdf_obj->SetFont($this->row_data[$i][1]['font-family'], $this->row_data[$i][1]['font-style'], $this->row_data[$i][1]['font-size']);
-         $this->pdf_obj->CellBlock($this->row_data[$i][2]-$xpadding, $this->row_data[$i][1]['line-height']*$this->row_data[$i][1]['font-size'], $this->row_data[$i][0], $this->row_data[$i][1]['align']);
+         $this->pdf_obj->CellBlock($this->row_data[$i][2]-$xpadding, $this->row_data[$i][1]['line-height'], $this->row_data[$i][0], $this->row_data[$i][1]['align']);
          $this->pdf_obj->SetFont($this->document_style['font-family'], $this->document_style['font-style'], $this->document_style['font-size']);
-         $this->resetColor($this->document_style['font-color'], 'T');
+         $this->pdf_obj->resetColor($this->document_style['font-color'], 'T');
       }
       if($this->row_data[$i][1]['img']!==false ){
          $x=$this->row_data[$i][6];
@@ -500,9 +410,9 @@ class easyTable{
          $h=$this->pdf_obj->PageBreak()-$T;
       }
       if($this->row_data[$i][1]['bgcolor']!=false){
-         $this->resetColor($this->row_data[$i][1]['bgcolor']);
+         $this->pdf_obj->resetColor($this->row_data[$i][1]['bgcolor']);
          $this->pdf_obj->Rect($this->row_data[$i][6], $T, $this->row_data[$i][2], $h, 'F');
-         $this->resetColor($this->document_style['bgcolor']);
+         $this->pdf_obj->resetColor($this->document_style['bgcolor']);
       }
    }
 
@@ -625,11 +535,21 @@ class easyTable{
                      }
                   }
                }
-               if($mx==0 && $rr<($this->row_data[$index][1]['line-height']*$this->row_data[$index][1]['font-size'])*count($this->row_data[$index][0])){
-                  $rr=$rr/($this->row_data[$index][1]['line-height']*$this->row_data[$index][1]['font-size']);
-                  $n=floor($rr);
-                  if($n<count($this->row_data[$index][0])){
-                     $mx=($this->row_data[$index][1]['line-height']*$this->row_data[$index][1]['font-size'])*($rr-$n);
+               $nh=0;
+               $keys=array_keys($this->row_data[$index][0]);
+               foreach($keys as $i){
+                  $nh+=$this->row_data[$index][0][$i]['height'];
+               }
+               $nh*=$this->row_data[$index][1]['line-height'];
+               if($mx==0 && $rr<$nh){
+                  $nw=0;
+                  foreach($keys as $i){
+                     $nw+=$this->row_data[$index][0][$i]['height']*$this->row_data[$index][1]['line-height'];
+                     if($nw>$rr){
+                        $nw-=$this->row_data[$index][0][$i]['height']*$this->row_data[$index][1]['line-height'];
+                        $mx=$rr-$nw;
+                        break;
+                     }
                   }
                }
                $this->overflow=max($this->overflow, $mx);
@@ -714,11 +634,11 @@ class easyTable{
       }
       self::$table_counter=true;
       $this->pdf_obj=&$fpdf_obj;
-      $this->document_style['bgcolor']=$this->getColor($this->pdf_obj->get_color('fill'));
+      $this->document_style['bgcolor']=$this->pdf_obj->get_color('fill');
       $this->document_style['font-family']=$this->pdf_obj->current_font('family');
       $this->document_style['font-style']=$this->pdf_obj->current_font('style');
       $this->document_style['font-size']=$this->pdf_obj->current_font('size');
-      $this->document_style['font-color']=$this->getColor($this->pdf_obj->get_color('text'));
+      $this->document_style['font-color']=$this->pdf_obj->get_color('text');
       $this->document_style['document_width']=$this->pdf_obj->GetPageWidth()-$this->pdf_obj->get_margin('l')-$this->pdf_obj->get_margin('r');
       $this->document_style['orientation']=$this->pdf_obj->get_orientation();
       $this->document_style['line-width']=$this->pdf_obj->get_linewidth();
@@ -875,8 +795,12 @@ class easyTable{
             $data=$sty['img'];
             $sty['img']=false;
          }
-         $data=$this->pdf_obj->extMultiCell($sty['font-family'], $sty['font-style'], $sty['font-size'], $w, $data);
-         $h=count($data) * $sty['line-height']*$sty['font-size'];
+         $data=& $this->pdf_obj->extMultiCell($sty['font-family'], $sty['font-style'], $sty['font-size'], $sty['font-color'], $w, $data);
+         $h=0;
+         $rn=count($data);
+         for($ri=0; $ri<$rn; $ri++){
+            $h+=$data[$ri]['height']*$sty['line-height'];
+         }
          if($sty['img']){
             if($sty['img']['w']>$w){
                $sty['img']['h']=$w*$sty['img']['h']/$sty['img']['w'];
@@ -1054,12 +978,6 @@ class easyTable{
       unset($this->blocks);
       unset($this->overflow);
       unset($this->header_row);
-   }
-
-   public function write_file($file, $str, $mod='w'){
-      $h=fopen('/var/www/html/' . $file, $mod);
-      fwrite($h, var_export($str,true) . "\n");
-      fclose($h);
    }
    
 }
