@@ -821,15 +821,9 @@ font-style is a semicolon separated string which can include: font-size, font-fa
 
 font-color can be Hex color code or RGB color code.
 
-**<b></b>**
-
-Shortcut for 
-    <s "font-style:B"></s>
-
-**<i></i>**
-
-Shortcut for 
-    <s "font-style:I"></s>
+**Shortcuts** 
+    <b></b> is equalt to: <s "font-style:B"></s>
+    <i></i> is equalt to: <s "font-style:I"></s>
 
 **Tags can be nested**
 
