@@ -5,7 +5,7 @@
  * Version: 2.0                                                       *
  * Date:    12-10-2017                                                *
  * Author:  Dan Machado                                               *
- * Require  exFPDF v1.01                                              *
+ * Require  exFPDF v2.0                                              *
  **********************************************************************/
   
 class easyTable{
@@ -377,7 +377,7 @@ class easyTable{
          $l=count($this->row_data[$i][0])* $this->row_data[$i][1]['line-height']*$this->row_data[$i][1]['font-size'];
          $this->pdf_obj->SetXY($x, $y+$k);
          $this->pdf_obj->CellBlock($this->row_data[$i][2]-$xpadding, $this->row_data[$i][1]['line-height'], $this->row_data[$i][0], $this->row_data[$i][1]['align']);
-         $this->pdf_obj->SetFont($this->document_style['font-family'], $this->document_style['font-style'], $this->document_style['font-size']);
+         $this->pdf_obj->resetFont($this->document_style['font-family'], $this->document_style['font-style'], $this->document_style['font-size']);
          $this->pdf_obj->resetColor($this->document_style['font-color'], 'T');
       }
       if($this->row_data[$i][1]['img']!==false ){

@@ -5,15 +5,16 @@
  * Version: 2.0                                                       *
  * Date:    12-10-2017                                                *
  * Author:  Dan Machado                                               *
- * Require  FPDF v1.81                                                *
+ * Require  FPDF v1.81, formatedstring v1.0                                                *
  **********************************************************************/
+
  include 'formatedstring.php';
+
  class exFPDF extends FPDF{
     private $current_font;
-     
 
-   public function PageBreak(){
-      return $this->PageBreakTrigger;
+    public function PageBreak(){
+       return $this->PageBreakTrigger;
    }
 
    public function current_font($c){
@@ -109,37 +110,49 @@
    }
 
    public function resetColor($str, $p='F'){
-      $array=array();
-      if($this->is_hex($str)){
-         $array=$this->hextodec($str);
-      }
-      elseif($this->is_rgb($str)){
-         $array=explode(',', trim($str, ','));
-         for($i=0; $i<3; $i++){
-            if(!isset($array[$i])){
-               $array[$i]=0;
+      static $options=array('F'=>'', 'T'=>'', 'D'=>'');
+      if(isset($options[$p]) && $options[$p]!=$str){
+         $options[$p]=$str;
+         $array=array();
+         if($this->is_hex($str)){
+            $array=$this->hextodec($str);
+         }
+         elseif($this->is_rgb($str)){
+            $array=explode(',', trim($str, ','));
+            for($i=0; $i<3; $i++){
+               if(!isset($array[$i])){
+                  $array[$i]=0;
+               }
             }
          }
-      }
-      else{
-         $array=array(null, null, null);
-         $i=0;
-         $tmp=explode(' ', $str);
-         foreach($tmp as $c){
-            if(is_numeric($c)){
-               $array[$i]=$c*256;
-               $i++;
+         else{
+            $array=array(null, null, null);
+            $i=0;
+            $tmp=explode(' ', $str);
+            foreach($tmp as $c){
+               if(is_numeric($c)){
+                  $array[$i]=$c*256;
+                  $i++;
+               }
             }
          }
+         if($p=='T'){
+            $this->SetTextColor($array[0],$array[1],$array[2]);
+         }
+         elseif($p=='D'){
+            $this->SetDrawColor($array[0],$array[1], $array[2]);
+         }
+         elseif($p=='F'){
+            $this->SetFillColor($array[0],$array[1],$array[2]);
+         }
       }
-      if($p=='T'){
-         $this->SetTextColor($array[0],$array[1],$array[2]);
-      }
-      elseif($p=='D'){
-         $this->SetDrawColor($array[0],$array[1], $array[2]);
-      }
-      else{
-         $this->SetFillColor($array[0],$array[1],$array[2]);
+   }
+
+   public function resetFont($font_family, $font_style, $font_size){
+      static $font='';
+      if($font!=$font_family .'-' . $font_style . '-' .$font_size){
+         $font=$font_family .'-' . $font_style . '-' .$font_size;
+         $this->SetFont($font_family, $font_style, $font_size);
       }
    }
    /***********************************************************************
@@ -177,7 +190,7 @@
       $result['CurrentFont']=&$this->fonts[$fontkey];
       return $result;
    }
-   
+    
 
    private function setLines(&$fstring, $p, $q){
       $parced_str=& $fstring->parced_str;
@@ -283,7 +296,7 @@
       return $result;
    }
 
-   function GetMixStringWidth($line){
+   private function GetMixStringWidth($line){
       $w = 0;
       foreach($line['chunks'] as $i=>$chunk){
          $t=0;
@@ -325,21 +338,14 @@
                if($ns>1){
                   $sx=implode('',$tmp);
                   $delta=$this->GetMixStringWidth($line)/($this->k*1000);
-                  
                   $dw=($w-$delta)*(1/($ns-1));
                }
             }
          }
          $xx=$this->x+$dx;
          foreach($line['chunks'] as $tj=>$txt){
-            if($ftmp!=$line['style'][$tj]['font-family'] . $line['style'][$tj]['style'] . $line['style'][$tj]['font-size']){
-               $ftmp=$line['style'][$tj]['font-family'] . $line['style'][$tj]['style'] . $line['style'][$tj]['font-size'];
-               $this->SetFont($line['style'][$tj]['font-family'], $line['style'][$tj]['style'], $line['style'][$tj]['font-size']);
-            }
-            if($ctmp!=$line['style'][$tj]['font-color']){
-               $ctmp=$line['style'][$tj]['font-color'];
-               $this->resetColor($line['style'][$tj]['font-color'], 'T');
-            }
+            $this->resetFont($line['style'][$tj]['font-family'], $line['style'][$tj]['style'], $line['style'][$tj]['font-size']);
+            $this->resetColor($line['style'][$tj]['font-color'], 'T');
             if($dw){
                $tmp=explode(' ', $txt);
                foreach($tmp as $e=>$tt){
@@ -364,7 +370,6 @@
          $this->y += $lh*$line['height'];
       }
    }
-   
    /***********************************************************************
    *
    * Based on FPDF method MultiCell NOT ANY MORE!!!
@@ -408,139 +413,6 @@
          $result[$i]['width']=$fstring->linesmap[$i][2];
       }
       return $result;
-   }
-   /***********************************************************************
-   *
-   * Based on FPDF method Cell
-   *
-   ************************************************************************/
-   
-
-   public function CellBlock2($w, $h, &$lines, $align='J',$link=''){
-      if($w==0){
-         return;
-      }
-      if(!isset($this->CurrentFont)){
-         $this->Error('No font has been set');
-      }
-      $cfs=$this->FontStyle;
-      $ftmp='';
-      foreach($lines as $i=>$line){
-         $k = $this->k;
-         if($this->y+$h>$this->PageBreakTrigger){
-            break;
-         }
-         $s='';
-         
-         $dx=0;
-         $dw=0;
-         if($line['width']!=0){
-            if($align=='R'){
-               $dx = $w-$line['width']*$this->FontSize/1000;
-            }
-            elseif($align=='C'){
-               $dx = ($w-$line['width']*$this->FontSize/1000)/2;
-            }
-            if($align=='J'){
-               $tmp=explode(' ', implode('',$line['chunks']));
-               $ns=count($tmp);
-               if($ns>1){
-                  $sx=implode('',$tmp);
-                  $delta=$this->GetStringWidth($sx);
-                  
-                  $dw=($w-$delta)*(1/($ns-1));
-               }
-            }
-         }
-         $xx=$this->x+$dx;
-         foreach($line['chunks'] as $tj=>$txt){
-            if($ftmp!=$this->FontFamily . $line['style'][$tj]){
-               $ftmp=$this->FontFamily . $line['style'][$tj];
-               $this->SetFont($this->FontFamily,$line['style'][$tj]);
-            }
-            if($dw){
-               $tmp=explode(' ', $txt);
-               foreach($tmp as $e=>$tt){
-                  if($e>0){
-                     $xx+=$dw;
-                     if($tt==''){
-                        continue;
-                     }
-                  }
-                  $s='';
-                  $s= 'q '.$this->TextColor.' ';
-                  $s .= sprintf('BT %.2F %.2F Td (%s) Tj ET',$xx*$k,($this->h-($this->y+.5*$h+.3*$this->FontSize))*$k,$this->_escape($tt));
-                  $this->_out($s);
-                  $xx+=$this->GetStringWidth($tt);
-               }
-            }
-            else{
-               $s='';
-               $s .= 'q '.$this->TextColor.' ';
-               $s .= sprintf('BT %.2F %.2F Td (%s) Tj ET',$xx*$k,($this->h-($this->y+.5*$h+.3*$this->FontSize))*$k,$this->_escape($txt));
-               $this->_out($s);
-               $xx+=$this->GetStringWidth($txt);
-            }
-         }
-         unset($lines[$i]);
-         $this->lasth = $h;
-         $this->y += $h;
-      }
-      if($this->ws>0){
-         $this->ws = 0;
-         $this->_out('0 Tw');
-      }
-   }
-
-      public function CellBlock3($w, $h, &$array_txt, $align='J',$link=''){
-      if(!isset($this->CurrentFont))
-      $this->Error('No font has been set');
-         foreach($array_txt as $ti=>$txt){
-         $k = $this->k;
-            if($this->y+$h>$this->PageBreakTrigger){
-            break;
-         }
-            if($w==0){
-            return;
-         }
-         $s = '';
-            if($txt!==''){
-            $stringWidth=$this->GetStringWidth($txt);
-               if($align=='R'){
-               $dx = $w-$stringWidth;
-            }
-               elseif($align=='C'){
-               $dx = ($w-$stringWidth)/2;
-            }
-               else{
-               $dx = 0;
-            }
-               if($align=='J'){
-               $ns=count(explode(' ', $txt));
-               $wx = $w;
-               $this->ws = ($ns>1) ? (($wx-$stringWidth)*(1/($ns-1))) : 0;
-               $this->_out(sprintf('%.3F Tw',$this->ws*$this->k));
-            }
-            if($this->ColorFlag)
-            $s .= 'q '.$this->TextColor.' ';
-            $s .= sprintf('BT %.2F %.2F Td (%s) Tj ET',($this->x+$dx)*$k,($this->h-($this->y+.5*$h+.3*$this->FontSize))*$k,$this->_escape($txt));
-            if($this->underline)
-            $s .= ' '.$this->_dounderline($this->x+$dx,$this->y+.5*$h+.3*$this->FontSize,$txt);
-            if($this->ColorFlag)
-            $s .= ' Q';
-            if($link)
-            $this->Link($this->x+$dx,$this->y+.5*$h-.5*$this->FontSize,$stringWidth,$this->FontSize,$link);
-            unset($array_txt[$ti]);
-         }
-         if($s)
-         $this->_out($s);
-         $this->lasth = $h;
-         $this->y += $h;
-      }
-         if($this->ws>0){
-         $this->ws = 0;
-         $this->_out('0 Tw');
-      }
    }
    
 }

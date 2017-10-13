@@ -806,6 +806,9 @@ now we can do:
 
 The font style set at the string level will over write any other font style set at the cell, row or table level.
 
+Please see the [example](https://github.com/fpdf-easytable/fpdf-easytable/blob/master/basic_example.pdf)
+  * [Code](https://github.com/fpdf-easytable/fpdf-easytable/blob/master/basic_example.php)
+
 Tags
 
 **<s "fontstyle"></s>**
