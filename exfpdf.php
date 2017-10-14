@@ -7,11 +7,9 @@
  * Author:  Dan Machado                                               *
  * Require  FPDF v1.81, formatedstring v1.0                                                *
  **********************************************************************/
-
  include 'formatedstring.php';
 
  class exFPDF extends FPDF{
-    private $current_font;
 
     public function PageBreak(){
        return $this->PageBreakTrigger;
@@ -61,6 +59,7 @@
    public function get_orientation(){
       return $this->CurOrientation;
    }
+
    static private $hex=array('0'=>0,'1'=>1,'2'=>2,'3'=>3,'4'=>4,'5'=>5,'6'=>6,'7'=>7,'8'=>8,'9'=>9,
    'A'=>10,'B'=>11,'C'=>12,'D'=>13,'E'=>14,'F'=>15);
 
@@ -109,10 +108,11 @@
       return $result;
    }
 
+   static private $options=array('F'=>'', 'T'=>'', 'D'=>'');
+
    public function resetColor($str, $p='F'){
-      static $options=array('F'=>'', 'T'=>'', 'D'=>'');
-      if(isset($options[$p]) && $options[$p]!=$str){
-         $options[$p]=$str;
+      if(isset(self::$options[$p]) && self::$options[$p]!=$str){
+         self::$options[$p]=$str;
          $array=array();
          if($this->is_hex($str)){
             $array=$this->hextodec($str);
@@ -148,12 +148,18 @@
       }
    }
 
+   static private $font_def='';
+
    public function resetFont($font_family, $font_style, $font_size){
-      static $font='';
-      if($font!=$font_family .'-' . $font_style . '-' .$font_size){
-         $font=$font_family .'-' . $font_style . '-' .$font_size;
+      if(self::$font_def!=$font_family .'-' . $font_style . '-' .$font_size){
+         self::$font_def=$font_family .'-' . $font_style . '-' .$font_size;
          $this->SetFont($font_family, $font_style, $font_size);
       }
+   }
+
+   public function resetStaticData(){
+      self::$font_def='';
+      self::$options=array('F'=>'', 'T'=>'', 'D'=>'');
    }
    /***********************************************************************
    *

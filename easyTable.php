@@ -961,6 +961,7 @@ class easyTable{
       }
       $this->pdf_obj->SetX($this->pdf_obj->get_margin('l'));
       $this->pdf_obj->Ln($bottomMargin);
+      $this->pdf_obj->resetStaticData();
       unset($this->pdf_obj);
       unset($this->document_style);
       unset($this->table_style);
