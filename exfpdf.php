@@ -8,7 +8,6 @@
  * Require  FPDF v1.81, formatedstring v1.0                                                *
  **********************************************************************/
  include 'formatedstring.php';
-
  class exFPDF extends FPDF{
 
     public function PageBreak(){
@@ -161,6 +160,7 @@
       self::$font_def='';
       self::$options=array('F'=>'', 'T'=>'', 'D'=>'');
    }
+ 
    /***********************************************************************
    *
    * Based on FPDF method SetFont
@@ -352,6 +352,7 @@
          foreach($line['chunks'] as $tj=>$txt){
             $this->resetFont($line['style'][$tj]['font-family'], $line['style'][$tj]['style'], $line['style'][$tj]['font-size']);
             $this->resetColor($line['style'][$tj]['font-color'], 'T');
+            $y=$this->y+0.5*$lh*$line['height'] +0.3*$line['height']/$this->k;
             if($dw){
                $tmp=explode(' ', $txt);
                foreach($tmp as $e=>$tt){
@@ -361,13 +362,11 @@
                         continue;
                      }
                   }
-                  $y=$this->y+0.5*$lh*$line['height'] +0.3*$line['height']/$this->k;
                   $this->Text($xx, $y, $tt);
                   $xx+=$this->GetStringWidth($tt);
                }
             }
             else{
-               $y=$this->y+0.5*$lh*$line['height'] +0.3*$line['height']/$this->k;
                $this->Text($xx, $y, $txt);
                $xx+=$this->GetStringWidth($txt);
             }
@@ -375,50 +374,6 @@
          unset($lines[$i]);
          $this->y += $lh*$line['height'];
       }
-   }
-   /***********************************************************************
-   *
-   * Based on FPDF method MultiCell NOT ANY MORE!!!
-   *
-   ************************************************************************/
-   
-
-   public function &extMultiCell2($font_family, $font_style, $font_size, $w, $txt){
-      $result=array();
-      if($w==0){
-         return $result;
-      }
-      $this->current_font=array('font-family'=>$font_family, 'font-style'=>$font_style, 'font-size'=>$font_size);
-      $fstring=new formatedString($txt, $w, $this->current_font);
-      $word='';
-      $p=0;
-      $i=0;
-      $n=strlen($fstring->parced_str);
-      while($i<$n){
-         $word.=$fstring->parced_str[$i];
-         if($fstring->parced_str[$i]=="\n" || $fstring->parced_str[$i]==' ' || $i==$n-1){
-            $word=trim($word);
-            $this->setLines($fstring, $p, strlen($word));
-            $p=$i+1;
-            $word='';
-            if($fstring->parced_str[$i]=="\n" && $i<$n-1){
-               $z=0;
-               $j=count($fstring->lines);
-               $fstring->lines[$j]='';
-               $fstring->linesmap[$j]=array();
-            }
-         }
-         $i++;
-      }
-      if($n==0){
-         return $result;
-      }
-      $n=count($fstring->lines);
-         for($i=0; $i<$n; $i++){
-         $result[$i]=$fstring->break_by_style($fstring->linesmap[$i][0], $fstring->linesmap[$i][1]);
-         $result[$i]['width']=$fstring->linesmap[$i][2];
-      }
-      return $result;
    }
    
 }
