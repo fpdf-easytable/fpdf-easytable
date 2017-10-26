@@ -1,6 +1,6 @@
 # FPDF EasyTable
 
-It is a PHP class that provides an easy way to make tables for PDF documents that are generate with the 
+It is a PHP class that provides an easy way to make tables for PDF documents that are generated with the 
 [FPDF library](http://www.fpdf.org).
 
 Making tables for PDF documents with this class is as easy and flexible as
