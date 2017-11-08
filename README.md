@@ -687,7 +687,10 @@ Default value: empty.
 # Fonts And UTF8 Support
 
 1. Get the ttf files for the font you want to use and save them in a directory
-   Fonts
+   Fonts. 
+   
+   **NOTE:** If you want to use bold, italic or bold-italic font styles you need 
+   the respective font files too.
 
    **NOTE:** the font must contain the characters you want to use
    
