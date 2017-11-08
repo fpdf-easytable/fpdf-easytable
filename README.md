@@ -43,6 +43,7 @@ Building and styling a table with easyTable is simple, clean and fast.
 - [Fonts And UTF8 Support](#fonts-and-utf8-support)
 - [Using with FPDI](#using-with-fpdi)
 - [Tag based font style](#tag-based-font-style) **_NEW FEATURE!!_**
+- [Common Errors] (#common-errors)
 - [Get In Touch](#get-in-touch)
 - [Donations](#donations)
 - [License](#license)
@@ -685,7 +686,7 @@ Default value: empty.
 
 # Fonts And UTF8 Support
 
-1. Get the ttf files for the font you want to use and save then in a directory
+1. Get the ttf files for the font you want to use and save them in a directory
    Fonts
 
    **NOTE:** the font must contain the characters you want to use
@@ -842,6 +843,30 @@ When nested tags are used, the result is similar to the case in HTML documents.
 ````
 	<b>H<i>e</i><s "font-family:myfont">ll<s "font-size">o</s></s></b> 
 ````
+
+# Common Errors
+
+One very common error is to forget to add the fonts and its different style (I, B, IB) used in the document. 
+Let's suppose that in your document you use "my_favourite_font" you need to add 
+
+    $pdf->AddFont('MyFabFont','','my_favourite_font.php'); 
+    
+if you are using the bold version of it, then you must include:      
+
+    $pdf->AddFont('MyFabFont','B','my_favourite_font_bold.php');   
+
+if you are using the italic version, then you need to add:
+
+    $pdf->AddFont('MyFabFont','I','my_favourite_font_italic.php');   
+
+if you are using the bold-italic, then
+
+    $pdf->AddFont('MyFabFont','BI','my_favourite_font_bolditalic.php');
+
+You need to generate each of the font files that need to be added 
+(my_favourite_font_bold.php, my_favourite_font_italic.php, my_favourite_font_bolditalic.php),
+refer to your font documentation and see (#fonts-and-utf8-support).
+
 # Get In Touch
 
 Your comments and questions are welcome: easytable@yandex.com (with the subject: EasyTable)
