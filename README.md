@@ -863,7 +863,7 @@ if you are using the bold-italic, then
 
     $pdf->AddFont('MyFabFont','BI','my_favourite_font_bolditalic.php');
 
-You need to generate each of the font files that need to be added 
+You need to generate each of the font files that needs to be added in your project
 ('my_favourite_font_bold.php', 'my_favourite_font_italic.php', 'my_favourite_font_bolditalic.php'),
 refer to your font documentation and see [Fonts And UTF8 Support](https://github.com/fpdf-easytable/fpdf-easytable#fonts-and-utf8-support).
 
