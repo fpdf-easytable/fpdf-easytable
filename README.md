@@ -844,14 +844,14 @@ When nested tags are used, the result is similar to the case in HTML documents.
 	<b>H<i>e</i><s "font-family:myfont">ll<s "font-size">o</s></s></b> 
 ````
 
-# Common Errors
+# Common Error
 
 One very common error is to forget to add the fonts and its different style (I, B, IB) used in the document. 
-Let's suppose that in your document you use "my_favourite_font" you need to add 
+Let's suppose that in your document you use "my_favourite_font". Then you need to add 
 
     $pdf->AddFont('MyFabFont','','my_favourite_font.php'); 
     
-if you are using the bold version of it, then you must include:      
+if you are using the bold version of it, then you must add:      
 
     $pdf->AddFont('MyFabFont','B','my_favourite_font_bold.php');   
 
@@ -864,8 +864,8 @@ if you are using the bold-italic, then
     $pdf->AddFont('MyFabFont','BI','my_favourite_font_bolditalic.php');
 
 You need to generate each of the font files that need to be added 
-(my_favourite_font_bold.php, my_favourite_font_italic.php, my_favourite_font_bolditalic.php),
-refer to your font documentation and see (#fonts-and-utf8-support).
+('my_favourite_font_bold.php', 'my_favourite_font_italic.php', 'my_favourite_font_bolditalic.php'),
+refer to your font documentation and see [Fonts And UTF8 Support](https://github.com/fpdf-easytable/fpdf-easytable#fonts-and-utf8-support).
 
 # Get In Touch
 
