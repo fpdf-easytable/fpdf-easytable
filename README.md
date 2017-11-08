@@ -43,7 +43,7 @@ Building and styling a table with easyTable is simple, clean and fast.
 - [Fonts And UTF8 Support](#fonts-and-utf8-support)
 - [Using with FPDI](#using-with-fpdi)
 - [Tag based font style](#tag-based-font-style) **_NEW FEATURE!!_**
-- [Common Errors] (#common-errors)
+- [Common errors](#common-errors)
 - [Get In Touch](#get-in-touch)
 - [Donations](#donations)
 - [License](#license)
