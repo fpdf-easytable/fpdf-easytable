@@ -32,7 +32,11 @@
     $table->rowStyle('min-height:60; align:{C};font-size:18;');   // let's adjust the height of this row
     $table->easyCell(iconv("UTF-8", 'KOI8-R', '<b>Вери</b> порро <i>номинати</i> вел ех, <b><i>еум</i></b> те лаореет импедит, <s "font-style:B;font-size:18; font-color:#3399ff">ест но ферри ириуре.</s> Ет вис реяуе хомеро. Перфецто сцрипсерит вис еу, нам ин ассум пробатус. Фиерент импердиет аппеллантур меи но, граеце яуодси пертинациа вел ад, не при лудус оратио тациматес. Хис дебет дефинитионес цу.
     
-    <s "font-family:times;font-size:20;">Set different font-families <s "font-family:lato;font-size:25;">in the same cell</s></s>  '), 'colspan:4; font-family:FontUTF8; font-size:12;');
+    <s "font-family:times;font-size:20;">Set different font-families <s "font-family:lato;font-size:25;">in the same cell</s></s>  
+    
+    <s "font-family:times;font-size:18;">This is a link <s "font-family:lato;font-size:20;font-color:#0099ff; href:http://www.fpdf.org/">FPDF</s></s>  
+    
+    '), 'colspan:4; font-family:FontUTF8; font-size:12;');
 
     $table->printRow();
 

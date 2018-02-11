@@ -7,7 +7,7 @@
  * Author:  Dan Machado                                               *
  * Require  FPDF v1.81, formatedstring v1.0                           *
  **********************************************************************/
- include 'formated_string.php';
+ include 'formatedstring.php';
  class exFPDF extends FPDF{
 
     public function PageBreak(){
