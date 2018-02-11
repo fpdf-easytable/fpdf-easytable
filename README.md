@@ -76,6 +76,11 @@ Building and styling a table with easyTable is simple, clean and fast.
 
 - [Tag based font style](#tag-based-font-style) which allows to mix different font families, font styles, font size and font color in the same cell! **_NEW FEATURE!!_** 
 
+- [Links](#tag-based-font-style) **_NEW FEATURE!!_** 
+
+
+
+
 # Comparisons
 
 **easyTable vs kind-of-HTML-to-PDF**
@@ -817,7 +822,7 @@ Tags
 
 **<s "fontstyle"></s>**
 
-font-style is a semicolon separated string which can include: font-size, font-family, font-style; font-color;
+font-style is a semicolon separated string which can include: font-size, font-family, font-style, font-color, href;
 
    Note: Remember to define every font your project needs.
 
@@ -846,6 +851,12 @@ When nested tags are used, the result is similar to the case in HTML documents.
 ````
 	<b>H<i>e</i><s "font-family:myfont">ll<s "font-size">o</s></s></b> 
 ````
+
+**Links**
+
+Use the property 'href' to set links
+
+    <b>Helo <s "font-family:my_fab_font; font-color:#AABBCC; href:http://www.example.com">world</s></b>
 
 # Common Error
 

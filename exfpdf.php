@@ -1,13 +1,13 @@
  <?php
  /*********************************************************************
- * exFPDF  extend FPDF v1.81                                                    *
+ * exFPDF  extend FPDF v1.81                                          *
  *                                                                    *
- * Version: 2.0                                                       *
+ * Version: 2.2                                                       *
  * Date:    12-10-2017                                                *
  * Author:  Dan Machado                                               *
- * Require  FPDF v1.81, formatedstring v1.0                                                *
+ * Require  FPDF v1.81, formatedstring v1.0                           *
  **********************************************************************/
- include 'formatedstring.php';
+ include 'formated_string.php';
  class exFPDF extends FPDF{
 
     public function PageBreak(){
@@ -58,7 +58,6 @@
    public function get_orientation(){
       return $this->CurOrientation;
    }
-
    static private $hex=array('0'=>0,'1'=>1,'2'=>2,'3'=>3,'4'=>4,'5'=>5,'6'=>6,'7'=>7,'8'=>8,'9'=>9,
    'A'=>10,'B'=>11,'C'=>12,'D'=>13,'E'=>14,'F'=>15);
 
@@ -106,7 +105,6 @@
       }
       return $result;
    }
-
    static private $options=array('F'=>'', 'T'=>'', 'D'=>'');
 
    public function resetColor($str, $p='F'){
@@ -146,7 +144,6 @@
          }
       }
    }
-
    static private $font_def='';
 
    public function resetFont($font_family, $font_style, $font_size){
@@ -160,7 +157,6 @@
       self::$font_def='';
       self::$options=array('F'=>'', 'T'=>'', 'D'=>'');
    }
- 
    /***********************************************************************
    *
    * Based on FPDF method SetFont
@@ -296,8 +292,7 @@
       }
       $n=count($fstring->lines);
          for($i=0; $i<$n; $i++){
-         $result[$i]=$fstring->break_by_style($fstring->linesmap[$i][0], $fstring->linesmap[$i][1]);
-         $result[$i]['width']=$fstring->linesmap[$i][2];
+         $result[$i]=$fstring->break_by_style($i);
       }
       return $result;
    }
@@ -318,7 +313,7 @@
       return $w;
    }
 
-   public function CellBlock($w, $lh, &$lines, $align='J',$link=''){
+   public function CellBlock($w, $lh, &$lines, $align='J'){
       if($w==0){
          return;
       }
@@ -363,11 +358,19 @@
                      }
                   }
                   $this->Text($xx, $y, $tt);
+                     if($line['style'][$tj]['href']){
+                     $yr=$this->y+0.5*($lh*$line['height']-$line['height']/$this->k);
+                     $this->Link($xx, $yr, $this->GetStringWidth($txt),$line['height']/$this->k, $line['style'][$tj]['href']);
+                  }
                   $xx+=$this->GetStringWidth($tt);
                }
             }
             else{
                $this->Text($xx, $y, $txt);
+                  if($line['style'][$tj]['href']){
+                  $yr=$this->y+0.5*($lh*$line['height']-$line['height']/$this->k);
+                  $this->Link($xx, $yr, $this->GetStringWidth($txt),$line['height']/$this->k, $line['style'][$tj]['href']);
+               }
                $xx+=$this->GetStringWidth($txt);
             }
          }
