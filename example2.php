@@ -48,7 +48,7 @@ imperdiet orci pretium vel. Donec vehicula tellus nisl, nec commodo diam posuere
  $table->printRow(true);
 
  $table->rowStyle('align:C; valign:M');
- $table->easyCell($cells[0], 'font-size:8');
+ $table->easyCell('<s "font-style:U">'.$cells[0] .'</s>', 'font-size:8');
  $table->easyCell(iconv("UTF-8", 'KOI8-R', '<b>Вери</b> порро <i>номинати</i> вел ех, <b><i>еум</i></b> те лаореет импедит, <s "font-style:B;font-size:18; font-color:#3399ff">ест но ферри ириуре.</s> Ет вис реяуе хомеро. Перфецто сцрипсерит вис еу, нам ин ассум пробатус. Фиерент импердиет аппеллантур меи но, граеце яуодси пертинациа вел ад, не при лудус оратио тациматес. Хис дебет дефинитионес цу.'), 'colspan:4; font-family:FontUTF8; font-size:12;');
 
  $table->printRow();

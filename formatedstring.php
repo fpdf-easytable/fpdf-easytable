@@ -29,15 +29,15 @@
              $r[1]=trim($r[1]);
              if(isset($style[$r[0]]) || $r[0]=='style'){
                 if($r[0]=='style' || $r[0]=='font-style'){
-                   if($r[1]=='B'){
+                   $r[1]=strtoupper($r[1]);
+                   if(strpos($r[1], 'B')!==false){
                       $style['font-weight']='B';
                   }
-                  elseif($r[1]=='I'){
+                  if(strpos($r[1], 'I')!==false){
                      $style['font-style']='I';
                   }
-                  elseif($r[1]=='IB' || $r[1]=='BI'){
-                     $style['font-weight']='B';
-                     $style['font-style']='I';
+                  if(strpos($r[1], 'U')!==false){
+                     $style['font-style'].='U';
                   }
                }
                elseif($r[1]){

@@ -1,11 +1,11 @@
  <?php
  /*********************************************************************
- * exFPDF  extend FPDF v1.81                                          *
+ * exFPDF  extend FPDF v1.81                                                    *
  *                                                                    *
  * Version: 2.2                                                       *
  * Date:    12-10-2017                                                *
  * Author:  Dan Machado                                               *
- * Require  FPDF v1.81, formatedstring v1.0                           *
+ * Require  FPDF v1.81, formatedstring v1.0                                                *
  **********************************************************************/
  include 'formatedstring.php';
  class exFPDF extends FPDF{
@@ -170,6 +170,7 @@
       $family = strtolower($family);
       $style = strtoupper($style);
       if(strpos($style,'U')!==false){
+         $this->underline = true;
          $style = str_replace('U','',$style);
       }
       if($style=='IB')
