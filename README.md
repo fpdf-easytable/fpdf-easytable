@@ -278,7 +278,7 @@ setAsHeader (optional)
     When it is set as true, it sets the current row as the header
     for the table; this means that the current row will be printed as the first
     row of the table (table header) on every page that the table splits on.
-    Remark: 1. In order to work, the table attribute split-row should set as true. 
+    Remark: 1. In order to work, the table attribute split-row should set as false. 
             2. Just the first row where this parameter is set as true will be
                used as header any other will printed as a normal row.
             3. For row headers with cells that spans to multiple rows, 
