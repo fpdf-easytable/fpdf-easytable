@@ -861,7 +861,7 @@ Use the property 'href' to set links
 
 **Escape sequence**
 
-The sequence '\<s' is parced as '<s'
+The sequence '\\<s' is parced as '<s'
 
     <b>Helo <s "font-family:my_fab_font;">\<sammy@example.com></s></b>
 
