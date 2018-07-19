@@ -84,6 +84,10 @@
       $rt="</s>";
       $j=strpos($str, $lt, 0);
       while($j!==false){
+            if($j>0 && ord($str[$j-1])==92){
+            $j=strpos($str, $lt, $j+1);
+            continue;
+         }
          $k=strpos($str, '>',$j+1);
          $open[$j]=substr($str, $j+2, $k-($j+2));
          $total[]=$j;
@@ -95,6 +99,7 @@
          $j=strpos($str, $rt, $j+1);
       }
       sort($total);
+      
       $cs='';
       foreach($font_data as $k=>$v){
          $cs.=$k . ':'. $v . '; ';
@@ -126,7 +131,7 @@
       }
       $n=count($blocks);
       for($i=0; $i<$n; $i++){
-         $this->parced_str.=$blocks[$i];
+         $this->parced_str.=strtr($blocks[$i], array('\<s'=>'<s'));
          if(strlen($blocks[$i])>0){
             $blockstyle[$i]['style']=$blockstyle[$i]['font-weight'] . $blockstyle[$i]['font-style'];
             unset($blockstyle[$i]['font-weight']);

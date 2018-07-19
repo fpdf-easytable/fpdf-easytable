@@ -858,6 +858,13 @@ Use the property 'href' to set links
 
     <b>Helo <s "font-family:my_fab_font; font-color:#AABBCC; href:http://www.example.com">world</s></b>
 
+
+**Escape sequence**
+
+The sequence '\<s' is parced as '<s'
+
+    <b>Helo <s "font-family:my_fab_font;">\<sammy@example.com></s></b>
+
 # Common Error
 
 One very common error is to forget to add the fonts and its different style (I, B, IB) used in the document. 
