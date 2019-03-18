@@ -892,7 +892,10 @@ refer to your font documentation and see [Fonts And UTF8 Support](https://github
 
 Your comments and questions are welcome: easytable@yandex.com (with the subject: EasyTable)
 
+# Other projects
 
+- [Simple Unit Test](https://github.com/fpdf-easytable/simple_unit_test) PHP unit test as it should be.
+- [SimpleCharts.js](https://github.com/fpdf-easytable/simpleCharts.js)
 
 # Donations
 
