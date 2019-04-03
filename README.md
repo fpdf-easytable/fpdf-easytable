@@ -899,15 +899,12 @@ Your comments and questions are welcome: easytable@yandex.com (with the subject:
 
 # Donations
 
-I like coffee, I mean good quality coffee. So if you like this class maybe you would 
-like to help me with my coffee :-)
-
-Holly Molly people, you are so tight! :-D
+Any monetary contribution would be appreciated :-)
 
 If you are using this for the company you work for, they are getting the money, you are getting 
 the medals and I am getting nothing! Is that fair?
 
-Or at least put some stars to the project.
+It does cost NOTHING to push the freaky star button!!
 
 [![Donate](https://www.paypalobjects.com/en_US/GB/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JALWQVBS2KGQC)
 
