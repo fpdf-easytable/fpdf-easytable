@@ -867,6 +867,16 @@ The sequence '\\<s' is parced as '<s'
 
 # Common Error
 
+A very typical situation is: *"EasyTable works in my localhost but it does not
+work in remote server"*... Seriously, what on earth it has to do with EasyTable?... And the error
+reported is 
+    Fatal error: Uncaught exception 'Exception' with message 'FPDF error: Some data has 
+    already been output, can't send PDF file... etc etc...
+
+It is because when the server hit the script to output a PDF document, it already set 
+the headers as PDF document, however somewhere/how (trigger by an configuration error of your server) 
+is outputting html/txt data.
+ 
 One very common error is to forget to add the fonts and its different style (I, B, IB) used in the document. 
 Let's suppose that in your document you use "my_favourite_font". Then you need to add 
 
