@@ -906,7 +906,7 @@ Your comments and questions are welcome: easytable@yandex.com (with the subject:
 
 - [Simple Unit Test](https://github.com/fpdf-easytable/simple_unit_test) PHP unit test as it should be.
 - [SimpleCharts.js](https://github.com/fpdf-easytable/simpleCharts.js)
-- [Ajax Server Response Hander](https://github.com/fpdf-easytable/ajax_server_response_hander)
+- [Ajax Server Response Hander](https://github.com/fpdf-easytable/ajax_server_response_hander) Simplify server response from ajax calls
 - [Crypt](https://github.com/fpdf-easytable/Crypt)
 
 # Donations
