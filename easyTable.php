@@ -399,6 +399,7 @@ class easyTable{
                }
             }
             $this->pdf_obj->Image($this->row_data[$i][1]['img']['path'], $x, $y+$k, $this->row_data[$i][1]['img']['w'], $this->row_data[$i][1]['img']['h']);
+         	$this->row_data[$i][1]['img']=false;
          }
       }
    }
