@@ -905,6 +905,8 @@ class easyTable{
             });
             $block_height+=$this->row_heights[$j];
          }
+
+			$rowIsHeader=1+(count($this->header_row)>0);
          if($setAsHeader===true){
             if(count($this->header_row)==0){
                $this->header_row['row_heights']=$this->row_heights;
@@ -916,6 +918,7 @@ class easyTable{
             $this->pdf_obj->addPage($this->document_style['orientation']);
             if(count($this->header_row)>0){
                $this->printing_loop(true);
+               $rowIsHeader--;
             }
          }
          
@@ -928,7 +931,9 @@ class easyTable{
             }
             $this->new_table=false;
          }
-         $this->printing_loop();
+         if($rowIsHeader>0){
+				$this->printing_loop();
+			}
          $this->grid=array();
          $this->row_data=array();
          $this->rows=array();
