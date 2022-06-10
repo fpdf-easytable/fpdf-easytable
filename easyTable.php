@@ -542,14 +542,21 @@ class easyTable{
                   $nh+=$this->row_data[$index][0][$i]['height'];
                }
                $nh*=$this->row_data[$index][1]['line-height'];
-               if($mx==0 && $rr<$nh){
-                  $nw=0;
-                  foreach($keys as $i){
-                     $nw+=$this->row_data[$index][0][$i]['height']*$this->row_data[$index][1]['line-height'];
-                     if($nw>$rr){
-                        $nw-=$this->row_data[$index][0][$i]['height']*$this->row_data[$index][1]['line-height'];
-                        $mx=$rr-$nw;
-                        break;
+               if($mx==0){
+               	if($rr<$nh && $rr>0){
+                     $nw=0;
+                     foreach($keys as $i){
+                        $nw+=$this->row_data[$index][0][$i]['height']*$this->row_data[$index][1]['line-height'];
+                        if($nw>$rr){
+                           $nw-=$this->row_data[$index][0][$i]['height']*$this->row_data[$index][1]['line-height'];
+                	         $mx=$rr-$nw;
+                           break;
+                        }
+                     }
+               	}
+                  else{
+                     if($rr< $this->row_data[$index][1]['img']['h']){
+                        $mx=$this->row_data[$index][1]['img']['h'];
                      }
                   }
                }
