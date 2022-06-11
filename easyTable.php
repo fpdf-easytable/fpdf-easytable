@@ -493,7 +493,7 @@ class easyTable{
             }
             $this->overflow=0;
             $ztmp=array();
-            $this->pdf_obj->addPage($this->document_style['orientation']);
+            $this->pdf_obj->addPage($this->document_style['orientation'], $this->pdf_obj->get_page_size(), $this->pdf_obj->get_rotation());
          }
          else{
             $y+=$h;
@@ -922,7 +922,7 @@ class easyTable{
             }
          }
          if($this->table_style['split-row']==false && $this->pdf_obj->PageBreak()<$this->pdf_obj->GetY()+max($block_height,$this->row_heights[0])){
-            $this->pdf_obj->addPage($this->document_style['orientation']);
+            $this->pdf_obj->addPage($this->document_style['orientation'], $this->pdf_obj->get_page_size(), $this->pdf_obj->get_rotation());
             if(count($this->header_row)>0){
                $this->printing_loop(true);
                $rowIsHeader--;
@@ -933,7 +933,7 @@ class easyTable{
             if(count($this->header_row)>0){
                $r=$this->pdf_obj->PageBreak()-($this->pdf_obj->GetY()+$block_height);
                if($r<0 || $r<self::PBThreshold){
-                  $this->pdf_obj->addPage($this->document_style['orientation']);
+                  $this->pdf_obj->addPage($this->document_style['orientation'], $this->pdf_obj->get_page_size(), $this->pdf_obj->get_rotation());
                }
             }
             $this->new_table=false;
