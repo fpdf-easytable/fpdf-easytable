@@ -105,6 +105,25 @@ class easyTable{
       }
    }
    
+   private function conv_units($x)
+   {
+      if($this->pdf_obj->get_scale_factor()==72/25.4)
+      {
+         return $x;
+      }
+
+      if($this->pdf_obj->get_scale_factor()==72/2.54)
+      {
+         return $x/10;
+      }
+
+      if($this->pdf_obj->get_scale_factor()==72)
+      {
+         return $x/25.4;
+      }
+
+      return $x/0.3527777778;
+   }
 
    private function set_style($str, $c, $pos=''){
       $sty=$this->get_style($str, $c);
@@ -159,7 +178,7 @@ class easyTable{
             $this->inherating($sty, 'paddingX', $c);
          }
          else{
-            $sty['paddingX']=self::XPadding;
+            $sty['paddingX']=$this->conv_units(self::XPadding);
          }
       }
       $sty['paddingX']=abs($sty['paddingX']);
@@ -168,7 +187,7 @@ class easyTable{
             $this->inherating($sty, 'paddingY', $c);
          }
          else{
-            $sty['paddingY']=self::YPadding;
+            $sty['paddingY']=$this->conv_units(self::YPadding);
          }
       }
       $sty['paddingY']=abs($sty['paddingY']);
@@ -208,14 +227,14 @@ class easyTable{
          }
       }
       if(is_numeric($sty['line-height'])){
-         $sty['line-height']=self::LP*abs($sty['line-height']);
+         $sty['line-height']=$this->conv_units(self::LP)*abs($sty['line-height']);
       }
       else{
          if($c=='C' || $c=='R'){
             $this->inherating($sty,'line-height', $c);
          }
          else{
-            $sty['line-height']=self::LP;
+            $sty['line-height']=$this->conv_units(self::LP);
          }
       }
       if($c=='C'){
@@ -367,7 +386,7 @@ class easyTable{
       $k=$padding;
       if($this->row_data[$i][1]['img']!==false){
          if($this->row_data[$i][1]['valign']=='B'){
-            $k+=$this->row_data[$i][1]['img']['h']+self::IMGPadding;
+            $k+=$this->row_data[$i][1]['img']['h']+$this->conv_units(self::IMGPadding);
          }
       }
       $l=0;
@@ -384,7 +403,7 @@ class easyTable{
          $x=$this->row_data[$i][6];
          $k=$padding;
          if($this->row_data[$i][1]['valign']!='B'){
-            $k+=$l+self::IMGPadding;
+            $k+=$l+$this->conv_units(self::IMGPadding);
          }
          if($this->imgbreak($i, $y)==0 && $y+$k+$this->row_data[$i][1]['img']['h']<$this->pdf_obj->PageBreak()){
             $x+=$this->row_data[$i][1]['paddingX'];
@@ -815,7 +834,7 @@ class easyTable{
                $sty['img']['w']=$w;
             }
             if($h){
-               $h+=self::IMGPadding;
+               $h+=$this->conv_units(self::IMGPadding);
             }
             $h+=$sty['img']['h'];
          }
@@ -932,7 +951,7 @@ class easyTable{
          if($this->new_table){
             if(count($this->header_row)>0){
                $r=$this->pdf_obj->PageBreak()-($this->pdf_obj->GetY()+$block_height);
-               if($r<0 || $r<self::PBThreshold){
+               if($r<0 || $r<$this->conv_units(self::PBThreshold)){
                   $this->pdf_obj->addPage($this->document_style['orientation'], $this->pdf_obj->get_page_size(), $this->pdf_obj->get_rotation());
                }
             }

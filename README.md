@@ -42,7 +42,8 @@ Building and styling a table with easyTable is simple, clean and fast.
 - [Documentation](#documentation)
 - [Fonts And UTF8 Support](#fonts-and-utf8-support)
 - [Using with FPDI](#using-with-fpdi)
-- [Tag based font style](#tag-based-font-style) **_NEW FEATURE!!_**
+- [Tag based font style](#tag-based-font-style)
+- [User units](#user-units) **_NEW FEATURE!!_**
 - [Common error](#common-error)
 - [Get In Touch](#get-in-touch)
 - [Donations](#donations)
@@ -50,7 +51,7 @@ Building and styling a table with easyTable is simple, clean and fast.
 
 # Features
 
-- Table and columns width can be defined in mm or percentage
+- Table and columns width can be defined in [user units](#user-units) or percentage
 
 - Every table cell is a fully customizable 
   (font family, font size, font color, background color, position of the text, 
@@ -310,8 +311,7 @@ setAsHeader (optional)
 
 bottomMargin (optional)
 
-   Optional. Specify the number of white lines left after 
-   the last row of the table. Default 2.
+   Optional. Specify the size in [user units](#user-units) of the bottom margin for the table. Default 2 in user units.
    
    If it is negative, the vertical position will be set before
    the end of the table.   
@@ -345,15 +345,15 @@ Full list of properties:
 **width** [T]
 
 The width property sets the width of a table.
-This property can be defined in millimetres or in percentage of the width of the document.
+This property can be defined in [user units](#user-units) or in percentage of the width of the document.
 
 Syntax:
 
-    width:mm|%;
+    width:user-units|%;
 
 Examples:
 
-    width:145;
+    width:145;// 145mm if the user units is mm
     width:70%;
 
 Default: the width of the document minus the right and left margin.
@@ -432,7 +432,7 @@ This property indicate the distance from the left margin from where the table sh
 
 Syntax:
 
-    l-maring:mm;
+    l-maring:user-units;
 
 Example:
 
@@ -447,7 +447,7 @@ specific row.
 
 Syntax:
 
-    min-height:mm;
+    min-height:user-units;
 
 Example:
 
@@ -633,7 +633,7 @@ The paddingX property sets the left and right padding (space) of the cells.
 
 Syntax:
 
-    paddingX:mm;
+    paddingX:user-units;
 
 Example:
 
@@ -647,7 +647,7 @@ The paddingY property sets the top and bottom padding (space) of the cells.
 
 Syntax
 
-    paddingY:mm;
+    paddingY:user-units;
 
 Example:
 
@@ -864,6 +864,14 @@ Use the property 'href' to set links
 The sequence '\\<s' is parced as '<s'
 
     <b>Helo <s "font-family:my_fab_font;">\<sammy@example.com></s></b>
+
+
+# User units
+
+EasyTable supports the same user units (pt/mm/cm/in) supported by [FPDF: construct](http://www.fpdf.org/en/doc/__construct.htm).
+Bare in mind that any unit related setting (width, border) needs to be in the respective unit set at the 
+top document. For example if the units for the document is set as inch, then, all the settings
+unit related will be considered in the same user units, for instance min-height:1.2; will mean 1.2in.
 
 # Common Error
 
