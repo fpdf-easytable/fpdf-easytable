@@ -869,7 +869,7 @@ The sequence '\\<s' is parced as '<s'
 # User units
 
 EasyTable supports the same user units (pt/mm/cm/in) supported by [FPDF: construct](http://www.fpdf.org/en/doc/__construct.htm).
-Bare in mind that any unit related setting (width, border) needs to be in the respective unit set at the 
+Bare in mind that any unit related setting (width, border, etc.) needs to be in the respective unit set at the 
 top document. For example if the units for the document is set as inch, then, all the settings
 unit related will be considered in the same user units, for instance min-height:1.2; will mean 1.2in.
 
@@ -881,11 +881,12 @@ reported is
     Fatal error: Uncaught exception 'Exception' with message 'FPDF error: Some data has 
     already been output, can't send PDF file... etc etc...
 
-It is because when the server hit the script to output a PDF document, it already set 
-the headers as PDF document, however somewhere/how (trigger by an configuration error of your server) 
+This happens because when the server runs the script to output a PDF document, it sets the headers 
+as PDF document, however something is trying to output text or html code (for instance an exception or an 
+echo statment) so the server can not change the header for the respective output. 
 is outputting html/txt data.
- 
-One very common error is to forget to add the fonts and its different style (I, B, IB) used in the document. 
+
+Another very common error is to forget to add the fonts and its appropiated style (I, B, IB) used in the document. 
 Let's suppose that in your document you use "my_favourite_font". Then you need to add 
 
     $pdf->AddFont('MyFabFont','','my_favourite_font.php'); 
