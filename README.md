@@ -917,6 +917,8 @@ Your comments and questions are welcome: easytable@yandex.com (with the subject:
 - [SimpleCharts.js](https://github.com/fpdf-easytable/simpleCharts.js)
 - [Ajax Server Response Hander](https://github.com/fpdf-easytable/ajax_server_response_hander) Simplify server response from ajax calls
 - [Crypt](https://github.com/fpdf-easytable/Crypt)
+- [Duplicate Image Finder](https://github.com/volatilflerovium/Duplicate_Image_Finder)
+- [Classic 3D-Puzzles](https://github.com/volatilflerovium/3D-Puzzles)
 
 # Donations
 
