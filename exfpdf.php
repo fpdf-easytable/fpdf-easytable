@@ -283,8 +283,8 @@
       if($w==0){
          return $result;
       }
-      $this->current_font=array('font-family'=>$font_family, 'style'=>$font_style, 'font-size'=>$font_size, 'font-color'=>$font_color);
-      $fstring=new formatedString($txt, $w, $this->current_font);
+      $current_font=array('font-family'=>$font_family, 'style'=>$font_style, 'font-size'=>$font_size, 'font-color'=>$font_color);
+      $fstring=new formatedString($txt, $w, $current_font);
       $word='';
       $p=0;
       $i=0;
