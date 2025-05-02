@@ -46,6 +46,7 @@ Building and styling a table with easyTable is simple, clean and fast.
 - [User units](#user-units) **_NEW FEATURE!!_**
 - [Common error](#common-error)
 - [Get In Touch](#get-in-touch)
+- [Other Projects](#other-projects)
 - [Donations](#donations)
 - [License](#license)
 
@@ -911,14 +912,16 @@ refer to your font documentation and see [Fonts And UTF8 Support](https://github
 
 Your comments and questions are welcome: easytable@yandex.com (with the subject: EasyTable)
 
-# Other projects
+# Other Projects
 
-- [Simple Unit Test](https://github.com/fpdf-easytable/simple_unit_test) PHP unit test as it should be.
-- [SimpleCharts.js](https://github.com/fpdf-easytable/simpleCharts.js)
+- [GUI Tester](https://github.com/volatilflerovium/keyboard_and_mouse_input_recorder_and_player) Recorder/Player of HID that can be used to automatic test GUI includeing webpages.
+- [ECEF Path Generator](https://github.com/fpdf-easytable/ECEF_path_generator) Generate ECEF paths that can be used to generate GPS data via gps-sdr-sim.
+- [Client-Server Web API](https://github.com/fpdf-easytable/simple_client-server_web_api_class)
 - [Ajax Server Response Hander](https://github.com/fpdf-easytable/ajax_server_response_hander) Simplify server response from ajax calls
-- [Crypt](https://github.com/fpdf-easytable/Crypt)
 - [Duplicate Image Finder](https://github.com/volatilflerovium/Duplicate_Image_Finder)
 - [Classic 3D-Puzzles](https://github.com/volatilflerovium/3D-Puzzles)
+- [Simple Unit Test](https://github.com/fpdf-easytable/simple_unit_test) PHP unit test as it should be.
+- [Crypt](https://github.com/fpdf-easytable/Crypt)
 
 # Donations
 
